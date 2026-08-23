@@ -1,24 +1,38 @@
 {
   "name": "BBaSEM",
+  "servePlaceIds": [103183711587193],
+  "servePort": 8080,
   "tree": {
     "$className": "DataModel",
 
     "ReplicatedStorage": {
-      "Shared": {
-        "$path": "src/shared"
+      "S_Shared":{
+        "$path": "Game/shared"
+      },
+      "Shared":{
+        "$path": "FrameworkTemp/src/shared"
+      },
+      "Packages":  {
+        "$path": "FrameworkTemp/Packages"
       }
     },
 
     "ServerScriptService": {
-      "Server": {
-        "$path": "src/server"
+      "S_Server":{
+        "$path": "Game/server"
+      },
+      "Server":{
+        "$path": "FrameworkTemp/src/server"
       }
     },
 
     "StarterPlayer": {
       "StarterPlayerScripts": {
-        "Client": {
-          "$path": "src/client"
+        "S_Client":{
+          "$path": "Game/client"
+        },
+        "Client":{
+          "$path": "FrameworkTemp/src/client"
         }
       }
     }
