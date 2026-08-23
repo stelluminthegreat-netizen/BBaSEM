@@ -1,0 +1,3 @@
+[submodule "FrameworkTemp"]
+	path = FrameworkTemp
+	url = https://github.com/stelluminthegreat-netizen/Framework_Template.git
