@@ -80,7 +80,7 @@ function class:DetectObstacle()
 	local pivot = self.Instance:GetPivot()
 
 	local origin = pivot.Position
-	local direction = pivot.LookVector * 1 -- Change to 2 to avoid collision bug
+	local direction = pivot.LookVector * 2
 
 	local params = RaycastParams.new()
 	params.FilterType = Enum.RaycastFilterType.Exclude
