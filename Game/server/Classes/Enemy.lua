@@ -1,14 +1,26 @@
+-- There will be two types of targeting
+-- 1. Limited: The range is small
+-- 2. Unli: If there is no target within the small range, randomly find a target from a list
+
+
 local class = {}
 class.__index = class
 
 class.Enemies = {}
+class.EnemyInstances = {}
 class.BulkPivotList = {}
+class.NoTarget = {}
+class.Moving = {}
+class.Blocked = {}
 local enemyCount = 0
 
 local configs = game.ServerScriptService.S_Server.Data.EnemyConfig
 
 function class.initialize()
 	BulkSetPivot()
+	BulkFindTarget()
+	BulkObstacleDetect()
+	BulkAttack()
 end
 
 function class.new(type: string)
@@ -18,7 +30,8 @@ function class.new(type: string)
 	self.Instance = game.ReplicatedStorage.ToClone.Enemies[type]:Clone()
 	self.Id = type .. tostring(enemyCount)
 	self.Instance:SetAttribute("Id", self.Id)
-	self.Enemies[self.Id] = self
+	class.Enemies[self.Id] = self
+	table.insert(class.EnemyInstances, self.Instance)
 
 	return self
 end
@@ -31,19 +44,20 @@ function class:Init(pivot: CFrame)
 end
 
 function class:Start()
+	class.NoTarget[self.Id] = self
 	self:Move() -- Start movement
 end
 
+------------------------ MOVEMENT SYSTEM
+
 function class:Move()
 	class.BulkPivotList[self.Id] = self
+	class.Moving[self.Id] = self
+	if class.Blocked[self.Id] then class.Blocked[self.Id] = nil end
 end
 
 function class:StopMove()
 	class.BulkPivotList[self.Id] = nil
-end
-
-function class:TargetLock(target: Model)
-	self.Target = target
 end
 
 function class:CalcNextPos()
@@ -52,6 +66,8 @@ function class:CalcNextPos()
 end
 
 function class:CalcDirection()
+	-- Terminate if there is no target
+	if not self.Target then return end
 	-- Terminate if target did not move
 	local samePos = self.PreviousTargetPos == self.Target:GetPivot().Position
 	if self.PreviousTargetPos and samePos then return end
@@ -60,19 +76,158 @@ function class:CalcDirection()
 	self.Direction = (self.Target:GetPivot().Position - self.NextPos).Unit
 end
 
+function class:DetectObstacle()
+	local pivot = self.Instance:GetPivot()
+
+	local origin = pivot.Position
+	local direction = pivot.LookVector * 1 -- Change to 2 to avoid collision bug
+
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = class.EnemyInstances
+
+	local result = workspace:Raycast(origin, direction, params)
+
+	if not result then
+		return
+	end
+	print(result.Instance)
+
+	self:StopMove()
+	class.Moving[self.Id] = nil
+
+	class.Blocked[self.Id] = self
+end
+
+------------------------ TARGET SYSTEM
+
+function class:FindTarget()
+	if self.Target then class.NoTarget[self.Id] = nil return end
+
+	-- Limited: Find a target in normal range
+	local inRange = workspace:GetPartBoundsInBox(self.Instance:GetPivot(), self.FindTargetRange)
+	for _, part in inRange do
+		local model = shared.Libraries.Find.FindFirstAncestorWithTag(part, "Targetable")
+		if not model then continue end
+
+		self:TargetLock(model)
+	end
+
+	-- Unli: If no target is within the normal range, ignore limit and find target
+	if self.Target then class.NoTarget[self.Id] = nil return end
+
+	-- When proper character and structure systems are set up, depricate then spatial query
+	-- Instead of spatial query, we will randomly choose between character or structure
+	-- if structure is chosen, get the list of all existing structures
+	-- Randomly select from any of them -- Find the targetables in TargetManager object
+	-- Target lock the randomly selected structure
+	-- Same goes if character was chosen
+
+	local inRange = workspace:GetPartBoundsInBox(self.Instance:GetPivot(), Vector3.new(math.huge, math.huge, math.huge))
+	for _, part in inRange do
+		local model = shared.Libraries.Find.FindFirstAncestorWithTag(part, "Targetable")
+		if not model then continue end
+
+		self:TargetLock(model)
+	end
+end
+
+function class:TargetLock(target: Model)
+	self.Target = target
+	self:CalcNextPos()
+	self:CalcDirection()
+end
+
+------------------------ ATTACK SYSTEM
+function class:Attack()
+	-- Debounce if an attack is in progress
+	if self.State.Attacking == true then return end
+	self.State.Attacking = true
+
+	table.clear(self.InAttRange)
+
+	-- Hitbox
+	local params = OverlapParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = class.EnemyInstances
+
+	local pivot = self.Instance:GetPivot()
+	local hitBoxPos = pivot.Position + pivot.LookVector * 2
+	local inRange = workspace:GetPartBoundsInBox(CFrame.new(hitBoxPos), self.Hitbox, params)
+
+	-- Scan and store possible targets
+	for _, item in inRange do
+		-- Filter non-targetable
+		local model = shared.Libraries.Find.FindFirstAncestorWithTag(item, "Targetable")
+		if not model then continue end
+
+		local id = model:GetAttribute("Id")
+		if self.InAttRange[id] then continue end
+		self.InAttRange[id] = model
+	end
+
+	-- Apply damage
+	for id, target in self.InAttRange do
+		local humanoid = target.Humanoid
+		humanoid:TakeDamage(self.Dmg)
+		self.InAttRange[id] = nil
+	end
+
+	task.wait(self.AttackSpeed)
+	self.State.Attacking = false
+end
+
+------------------------ BULKS
+
+-- Calls the attack method for enemy objects
+function BulkAttack()
+	shared.Classes.Task.OnTick:Connect(function()
+		for _, enemy in class.Blocked do
+			if not enemy then return end
+			if enemy.State.Attacking == true then continue end
+			enemy:Attack()
+		end
+	end)
+end
+
 -- Sets the Pivot of all Enemies per tick
 function BulkSetPivot()
 	shared.Classes.Task.OnTick:Connect(function()
 		for _, enemy in class.BulkPivotList do
 			-- Terminate if list is empty
 			if not enemy then return end
-			-- Terminate if enemy NextPos has not yet been calculated
+			-- Terminate if enemy NextPos/Direction has not yet been calculated
 			if not enemy.NextPos then continue end
+			if not enemy.Direction then continue end
 			-- Faces enemy to its target and pivot it forward
 			enemy.Instance:PivotTo(CFrame.lookAt(enemy.NextPos, enemy.NextPos + enemy.Direction))
 			enemy:CalcNextPos()
 			enemy:CalcDirection()
 		end
+	end)
+end
+
+-- Finds a target for all enemies
+function BulkFindTarget()
+	shared.Classes.Task.OnTick:Connect(function()
+		for _, enemy in class.NoTarget do
+			-- Terminate if list is empty
+			if not enemy then return end
+
+			enemy:FindTarget()
+		end	
+	end)
+end
+
+-- 
+function BulkObstacleDetect()
+	shared.Classes.Task.OnTick:Connect(function()
+		for _, enemy in class.Moving do
+			-- Terminate if list is empty
+			if not enemy then return end
+
+			enemy:DetectObstacle()
+		end	
 	end)
 end
 
