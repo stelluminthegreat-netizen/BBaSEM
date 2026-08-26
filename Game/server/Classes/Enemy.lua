@@ -87,11 +87,15 @@ function class:DetectObstacle()
 	params.FilterDescendantsInstances = class.EnemyInstances
 
 	local result = workspace:Raycast(origin, direction, params)
-
 	if not result then
 		return
 	end
-	print(result.Instance)
+
+	-- Set obstacle as target if it is targetable
+	local model = shared.Libraries.Find.FindFirstAncestorWithTag(result.Instance, "Targetable")
+	if model then
+		self:TargetLock(model)
+	end
 
 	self:StopMove()
 	class.Moving[self.Id] = nil
