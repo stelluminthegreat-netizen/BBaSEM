@@ -1,5 +1,6 @@
 return {
     Health = 100,
+
     Dmg = 10,
     WalkSpeed = 0.31,
     AttackSpd = 1,
@@ -11,4 +12,5 @@ return {
     },
     InAttRange = {},
     Conns = {},
+
 }
