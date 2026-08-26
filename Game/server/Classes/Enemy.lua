@@ -107,7 +107,6 @@ end
 
 function class:FindTarget()
 	if self.Target then class.NoTarget[self.Id] = nil return end
-
 	-- Limited: Find a target in normal range
 	local inRange = workspace:GetPartBoundsInBox(self.Instance:GetPivot(), self.FindTargetRange)
 	for _, part in inRange do
@@ -127,19 +126,46 @@ function class:FindTarget()
 	-- Target lock the randomly selected structure
 	-- Same goes if character was chosen
 
-	local inRange = workspace:GetPartBoundsInBox(self.Instance:GetPivot(), Vector3.new(math.huge, math.huge, math.huge))
+	local inRange = workspace:GetPartBoundsInBox(self.Instance:GetPivot(), Vector3.new(30000, 30000, 30000))
 	for _, part in inRange do
 		local model = shared.Libraries.Find.FindFirstAncestorWithTag(part, "Targetable")
 		if not model then continue end
 
 		self:TargetLock(model)
+		return
 	end
 end
 
 function class:TargetLock(target: Model)
+	print("TARGET: " .. target.Name)
 	self.Target = target
 	self:CalcNextPos()
 	self:CalcDirection()
+	self:MonitorTarget()
+	self:Move()
+	class.Blocked[self.Id] = nil
+	class.BulkPivotList[self.Id] = self
+end
+
+function class:TargetDestroyed()
+	if not self.Called then self.Called = 0 end
+	self.Called += 1
+	if self.Called >= 50 then return end
+	self.Target = nil
+	class.NoTarget[self.Id] = self
+end
+
+function class:MonitorTarget()
+	if not self.Target then return end
+	local conn
+	conn = self.Target.Humanoid.HealthChanged:Connect(function(health)
+		if self.Target == nil then return end
+		if health <= 0 then
+			self.Target:Destroy()
+			conn:Disconnect()
+			self:TargetDestroyed()
+		end
+	end)
 end
 
 ------------------------ ATTACK SYSTEM
@@ -147,6 +173,7 @@ function class:Attack()
 	-- Debounce if an attack is in progress
 	if self.State.Attacking == true then return end
 	self.State.Attacking = true
+	task.wait(self.AttackSpd)
 
 	table.clear(self.InAttRange)
 
@@ -177,7 +204,6 @@ function class:Attack()
 		self.InAttRange[id] = nil
 	end
 
-	task.wait(self.AttackSpeed)
 	self.State.Attacking = false
 end
 
