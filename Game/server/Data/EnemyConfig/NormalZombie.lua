@@ -1,7 +1,7 @@
 return {
     Health = 100,
     Dmg = 10,
-    WalkSpeed = 1,
+    WalkSpeed = 0.31,
     AttackSpd = 1,
     Hitbox = Vector3.new(3, 3, 3),
     CurrentTarget = "",
@@ -10,4 +10,5 @@ return {
         Attacking = false,
     },
     InAttRange = {},
+    Conns = {},
 }
