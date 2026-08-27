@@ -88,6 +88,9 @@ function class:DetectObstacle()
 
 	local result = workspace:Raycast(origin, direction, params)
 	if not result then
+		self:Move()
+		class.Moving[self.Id] = self
+		class.Blocked[self.Id] = nil
 		return
 	end
 
@@ -97,12 +100,9 @@ function class:DetectObstacle()
 		self:TargetLock(model)
 	end
 	
-	class.Blocked[self.Id] = self
-	if game.Players:FindFirstChild(model.Name) then return end
 
 	self:StopMove()
-	class.Moving[self.Id] = nil
-
+	class.Blocked[self.Id] = self
 end
 
 ------------------------ TARGET SYSTEM
@@ -139,7 +139,6 @@ function class:FindTarget()
 end
 
 function class:TargetLock(target: Model)
-	print("TARGET: " .. target.Name)
 	self.Target = target
 	self:CalcNextPos()
 	self:CalcDirection()
@@ -187,7 +186,7 @@ function class:Attack()
 	local pivot = self.Instance:GetPivot()
 	local hitBoxPos = pivot.Position + pivot.LookVector * 2
 	local inRange = workspace:GetPartBoundsInBox(CFrame.new(hitBoxPos), self.Hitbox, params)
-
+	if #inRange == 0 then self:Move() class.Moving[self.Id] = self return end
 	-- Scan and store possible targets
 	for _, item in inRange do
 		-- Filter non-targetable
