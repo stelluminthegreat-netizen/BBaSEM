@@ -96,11 +96,13 @@ function class:DetectObstacle()
 	if model then
 		self:TargetLock(model)
 	end
+	
+	class.Blocked[self.Id] = self
+	if game.Players:FindFirstChild(model.Name) then return end
 
 	self:StopMove()
 	class.Moving[self.Id] = nil
 
-	class.Blocked[self.Id] = self
 end
 
 ------------------------ TARGET SYSTEM
