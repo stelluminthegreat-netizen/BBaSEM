@@ -104,6 +104,27 @@ function self:Remove(x: number, z:number, model: Model, class: string)
     self.Regions[x][z][class][model:GetAttribute("Id")] = nil   
     print("Removed from prev location", self.Regions[x][z].Position, self.Regions[x][z][class])
 end
+function self:Get(x: number, z: number, class: string, includeSurroundings: boolean)
+    x, z = clamp(x, z)
+    if includeSurroundings == true then
+        local surroundingContents = {}
+
+        for _, xVal in self.PossibleVals do
+            for _, zVal in self.PossibleVals do
+                local xReg = self.Regions[x + xVal]
+                if not xReg then continue end
+                local zReg = self.Regions[x + xVal][z + zVal]
+                if not zReg then continue end
+                print(zReg)
+                table.insert(surroundingContents, zReg[class])
+            end
+        end
+
+        return surroundingContents
+    end
+
+    print("Searching: ", self.Regions[x][z])
+    return self.Regions[x][z][class]
 end
 
 function self:Visualize(region)
