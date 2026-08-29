@@ -97,6 +97,13 @@ function self:Insert(x: number, z:number, model: Model, class: string)
     self.Regions[x][z][class][model:GetAttribute("Id")] = model   
     warn(model.Name .. " is in region " .. x .. " / " .. z)
 end
+function self:Remove(x: number, z:number, model: Model, class: string)
+    x = math.floor(x / self.SIZE) * self.SIZE
+    z = math.floor(z / self.SIZE) * self.SIZE
+    print("Removing from prev location", self.Regions[x][z].Position,self.Regions[x][z][class])
+    self.Regions[x][z][class][model:GetAttribute("Id")] = nil   
+    print("Removed from prev location", self.Regions[x][z].Position, self.Regions[x][z][class])
+end
 end
 
 function self:Visualize(region)
