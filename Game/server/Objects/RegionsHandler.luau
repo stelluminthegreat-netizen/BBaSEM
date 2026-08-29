@@ -136,8 +136,8 @@ end
 function self:Visualize(region)
     local part = Instance.new("Part", workspace)
     part.Anchored = true
-    part.Transparency = 0.7
-    part.Position = Vector3.new(region.Position.x, 0, region.Position.z)
+    part.Transparency = 0.8
+    part.Position = Vector3.new(region.Position.x + 25, 0, region.Position.z + 25)
     part.Size = Vector3.new(self.SIZE, self.SIZE, self.SIZE)
 function clamp(x: number, z: number)
     x = math.floor(x / self.SIZE) * self.SIZE
