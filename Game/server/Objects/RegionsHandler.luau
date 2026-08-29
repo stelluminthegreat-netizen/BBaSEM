@@ -5,11 +5,16 @@ self.SIZE = 50
 self.PossibleVals = {50, -50, 0}
 
 function self.initialize()
-	self:Create(0, 0)
-    while true do
-        task.wait(1)
-        self:Expand()
-    end
+    shared.Classes.Threads:Spawn(function()
+        self:Create(0, 0)
+        local count = 0
+        while true do
+            count += 1
+            task.wait(0.5)
+            self:Expand()
+            if count == 10 then break end
+        end
+    end)
 end
 
 function self.start()
