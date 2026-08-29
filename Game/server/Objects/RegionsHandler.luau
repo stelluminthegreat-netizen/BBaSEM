@@ -103,6 +103,7 @@ function self:Insert(x: number, z:number, model: Model, class: string)
     self.Regions[x][z][class][model:GetAttribute("Id")] = model   
     warn(model.Name .. " is in region " .. x .. " / " .. z)
 end
+
 function self:Remove(x: number, z:number, model: Model, class: string)
     x = math.floor(x / self.SIZE) * self.SIZE
     z = math.floor(z / self.SIZE) * self.SIZE
@@ -110,6 +111,7 @@ function self:Remove(x: number, z:number, model: Model, class: string)
     self.Regions[x][z][class][model:GetAttribute("Id")] = nil   
     print("Removed from prev location", self.Regions[x][z].Position, self.Regions[x][z][class])
 end
+
 function self:Get(x: number, z: number, class: string, includeSurroundings: boolean)
     x, z = clamp(x, z)
     if includeSurroundings == true then
@@ -139,6 +141,8 @@ function self:Visualize(region)
     part.Transparency = 0.8
     part.Position = Vector3.new(region.Position.x + 25, 0, region.Position.z + 25)
     part.Size = Vector3.new(self.SIZE, self.SIZE, self.SIZE)
+end
+
 function clamp(x: number, z: number)
     x = math.floor(x / self.SIZE) * self.SIZE
     z = math.floor(z / self.SIZE) * self.SIZE
