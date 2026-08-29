@@ -89,8 +89,14 @@ function self:GetAvailableSpaces(x: number, z: number)
     return availableSpaces
 end
 
-function self:Insert()
-    
+function self:Insert(x: number, z:number, model: Model, class: string)
+    x = math.floor(x / self.SIZE) * self.SIZE
+    z = math.floor(z / self.SIZE) * self.SIZE
+    if not self.Regions[x][z][class] then self.Regions[x][z][class] = {} end
+    if self.Regions[x][z][class][model:GetAttribute("Id")] then return true end
+    self.Regions[x][z][class][model:GetAttribute("Id")] = model   
+    warn(model.Name .. " is in region " .. x .. " / " .. z)
+end
 end
 
 function self:Visualize(region)
