@@ -12,7 +12,34 @@ function self.initialize()
 end
 
 function self.start()
-	
+	shared.Classes.Task.OnTick:Connect(function()
+        for _, descendant in game.Workspace:GetDescendants() do
+            if not descendant:IsA("Model") then continue end
+            if not descendant:HasTag("Object") then continue end
+            if self.GLOBAL[descendant:GetAttribute("Class")][descendant:GetAttribute("Id")] then continue end
+            self.GLOBAL[descendant:GetAttribute("Class")][descendant:GetAttribute("Id")] = descendant
+        end
+
+        for _, object in self.GLOBAL do
+            local position = object:GetPivot().Position
+            local x, z = clamp(position.X, position.Z)
+
+            local PreviousCoords = object:GetAttribute("PreviousCoords")
+            if PreviousCoords then
+                local prevX, prevZ = clamp(PreviousCoords.X, PreviousCoords.Y)
+
+                -- Remove from previous region if current position is not equal to previous position
+                if x ~= prevX or z ~= prevZ then 
+                    self:Remove(prevX, prevZ, object, object:GetAttribute("Class"))
+                end
+            end
+
+            local existing = self:Insert(x, z, object, object:GetAttribute("Class"))
+            if existing == true then continue end 
+
+            object:SetAttribute("PreviousCoords", Vector2.new(x, z))
+        end
+    end)
 end
 
 function self:Create(x: number, z: number)
