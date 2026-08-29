@@ -133,6 +133,11 @@ function self:Visualize(region)
     part.Transparency = 0.7
     part.Position = Vector3.new(region.Position.x, 0, region.Position.z)
     part.Size = Vector3.new(self.SIZE, self.SIZE, self.SIZE)
+function clamp(x: number, z: number)
+    x = math.floor(x / self.SIZE) * self.SIZE
+    z = math.floor(z / self.SIZE) * self.SIZE
+
+    return x, z
 end
 
 return self
