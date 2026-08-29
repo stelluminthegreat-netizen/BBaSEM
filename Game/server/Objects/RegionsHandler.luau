@@ -1,5 +1,6 @@
 local self = {}
 self.Regions = {}
+self.GLOBAL = {}
 self.SIZE = 50
 self.PossibleVals = {50, -50, 0}
 
