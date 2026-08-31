@@ -16,6 +16,14 @@ local enemyCount = 0
 
 local configs = game.ServerScriptService.S_Server.Data.EnemyConfig
 
+local RegionHandler 
+shared.Classes.Threads:Spawn(function()
+	while not RegionHandler do
+		task.wait()
+		RegionHandler = shared.GameClasses.RegionsHandler
+	end
+end)
+
 function class.initialize()
 	BulkSetPivot()
 	BulkFindTarget()
@@ -99,8 +107,6 @@ function class:DetectObstacle()
 	if model then
 		self:TargetLock(model)
 	end
-	
-
 	self:StopMove()
 	class.Blocked[self.Id] = self
 end
@@ -110,12 +116,29 @@ end
 function class:FindTarget()
 	if self.Target then class.NoTarget[self.Id] = nil return end
 	-- Limited: Find a target in normal range
-	local inRange = workspace:GetPartBoundsInBox(self.Instance:GetPivot(), self.FindTargetRange)
-	for _, part in inRange do
-		local model = shared.Libraries.Find.FindFirstAncestorWithTag(part, "Targetable")
-		if not model then continue end
+	local pivot = self.Instance:GetPivot()
+	local x, z = pivot.X, pivot.Z
+	local result = RegionHandler:Get(x, z, "Target", true)
+	local inRange = {}
 
-		self:TargetLock(model)
+	for _, tbl in result do
+		for _, item in tbl do
+			table.insert(inRange, item)
+		end
+	end
+
+	for _, target in inRange do
+		if not target then continue end
+		if not self.PrevTargDist then self.PrevTargDist = 0 end
+		if target.Parent ~= workspace then continue end
+
+		local distance = target:GetPivot().Position - pivot.Position
+		local x, z = distance.X, distance.Z
+		local hypo = x * x + z * z
+		if hypo > self.PrevTargDist then continue end
+
+		self.PrevTargDist = distance
+		self:TargetLock(target)
 	end
 
 	-- Unli: If no target is within the normal range, ignore limit and find target
@@ -128,12 +151,11 @@ function class:FindTarget()
 	-- Target lock the randomly selected structure
 	-- Same goes if character was chosen
 
-	local inRange = workspace:GetPartBoundsInBox(self.Instance:GetPivot(), Vector3.new(30000, 30000, 30000))
-	for _, part in inRange do
-		local model = shared.Libraries.Find.FindFirstAncestorWithTag(part, "Targetable")
-		if not model then continue end
-
-		self:TargetLock(model)
+	local inRange = RegionHandler.GLOBAL
+	for _, target in inRange do
+		if target:GetAttribute("Class") ~= "Target" then continue end
+		if target.Parent ~= workspace then continue end
+		self:TargetLock(target)
 		return
 	end
 end
@@ -158,6 +180,7 @@ end
 
 function class:MonitorTarget()
 	if not self.Target then return end
+	if self.Target.Parent ~= workspace then return end
 	local conn
 	conn = self.Target.Humanoid.HealthChanged:Connect(function(health)
 		if self.Target == nil then return end
