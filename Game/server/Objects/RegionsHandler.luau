@@ -26,6 +26,7 @@ function self.start()
             local id = descendant:GetAttribute("Id")
             -- if not self.GLOBAL[class] then self.GLOBAL[class] = {} end
             if self.GLOBAL[id] then continue end
+            self.GLOBAL[id] = descendant
         end
 
         for _, object in self.GLOBAL do
