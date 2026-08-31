@@ -22,8 +22,10 @@ function self.start()
         for _, descendant in game.Workspace:GetDescendants() do
             if not descendant:IsA("Model") then continue end
             if not descendant:HasTag("Object") then continue end
-            if self.GLOBAL[descendant:GetAttribute("Class")][descendant:GetAttribute("Id")] then continue end
-            self.GLOBAL[descendant:GetAttribute("Class")][descendant:GetAttribute("Id")] = descendant
+            local class = descendant:GetAttribute("Class")
+            local id = descendant:GetAttribute("Id")
+            -- if not self.GLOBAL[class] then self.GLOBAL[class] = {} end
+            if self.GLOBAL[id] then continue end
         end
 
         for _, object in self.GLOBAL do
