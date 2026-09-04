@@ -135,6 +135,7 @@ end
 
 function class:FindTarget()
 	if self.Target then class.NoTarget[self.Id] = nil return end
+	self:StopMove()
 	-- Limited: Find a target in normal range
 	local pivot = self.Instance:GetPivot()
 	local x, z = pivot.X, pivot.Z
@@ -163,6 +164,7 @@ function class:FindTarget()
 
 	-- Unli: If no target is within the normal range, ignore limit and find target
 	if self.Target then class.NoTarget[self.Id] = nil return end
+	self:StopMove()
 
 	-- When proper character and structure systems are set up, depricate then spatial query
 	-- Instead of spatial query, we will randomly choose between character or structure
