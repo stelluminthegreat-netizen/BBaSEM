@@ -178,6 +178,10 @@ function class:FindTarget()
 		if target:GetAttribute("Class") ~= "Target" then continue end
 		if target.Parent ~= workspace then continue end
 		self:TargetLock(target)
+		local distance = target:GetPivot().Position - pivot.Position
+		local x, z = distance.X, distance.Z
+		local hypo = math.sqrt(x * x + z * z)
+		self.PrevTargDist = hypo
 		return
 	end
 end
