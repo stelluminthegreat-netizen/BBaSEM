@@ -50,6 +50,7 @@ function class:Init(pivot: CFrame)
 	self.Instance:PivotTo(pivot)
 	self:CalcNextPos()
 	self:CalcDirection()
+	self:InitAttack()
 end
 
 function class:LoadAnims()
@@ -223,38 +224,45 @@ function class:Attack()
 	-- Debounce if an attack is in progress
 	if self.State.Attacking == true then return end
 	self.State.Attacking = true
+	self.AnimTracks["ZombieAttack_002"]:Play()
+	self.AnimTracks["ZombieAttack_002"].Ended:Wait()
 	task.wait(self.AttackSpd)
-
-	table.clear(self.InAttRange)
-
-	-- Hitbox
-	local params = OverlapParams.new()
-	params.FilterType = Enum.RaycastFilterType.Exclude
-	params.FilterDescendantsInstances = class.EnemyInstances
-
-	local pivot = self.Instance:GetPivot()
-	local hitBoxPos = pivot.Position + pivot.LookVector * 2
-	local inRange = workspace:GetPartBoundsInBox(CFrame.new(hitBoxPos), self.Hitbox, params)
-	if #inRange == 0 then self:Move() class.Moving[self.Id] = self return end
-	-- Scan and store possible targets
-	for _, item in inRange do
-		-- Filter non-targetable
-		local model = shared.Libraries.Find.FindFirstAncestorWithTag(item, "Targetable")
-		if not model then continue end
-
-		local id = model:GetAttribute("Id")
-		if self.InAttRange[id] then continue end
-		self.InAttRange[id] = model
-	end
-
-	-- Apply damage
-	for id, target in self.InAttRange do
-		local humanoid = target.Humanoid
-		humanoid:TakeDamage(self.Dmg)
-		self.InAttRange[id] = nil
-	end
-
 	self.State.Attacking = false
+end
+
+function class:InitAttack()
+	self.Conns["AnimHit"] = self.AnimTracks["ZombieAttack_002"]:GetMarkerReachedSignal("Hit"):Connect(function()
+		print("Hit")
+		table.clear(self.InAttRange)
+
+		-- Hitbox
+		local params = OverlapParams.new()
+		params.FilterType = Enum.RaycastFilterType.Exclude
+		params.FilterDescendantsInstances = class.EnemyInstances
+
+		local pivot = self.Instance:GetPivot()
+		local hitBoxPos = pivot.Position + pivot.LookVector * 2
+		local inRange = workspace:GetPartBoundsInBox(CFrame.new(hitBoxPos), self.Hitbox, params)
+		if #inRange == 0 then self:Move() class.Moving[self.Id] = self return end
+		-- Scan and store possible targets
+		for _, item in inRange do
+			-- Filter non-targetable
+			local model = shared.Libraries.Find.FindFirstAncestorWithTag(item, "Targetable")
+			if not model then continue end
+
+			local id = model:GetAttribute("Id")
+			if self.InAttRange[id] then continue end
+			self.InAttRange[id] = model
+		end
+
+		-- Apply damage
+		for id, target in self.InAttRange do
+			local humanoid = target.Humanoid
+			humanoid:TakeDamage(self.Dmg)
+			self.InAttRange[id] = nil
+		end
+
+	end)
 end
 
 ------------------------ BULKS
