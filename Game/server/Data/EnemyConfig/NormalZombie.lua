@@ -15,7 +15,7 @@ return {
     AnimNames = {
         [1] = "ZombieWalk_001",
         [2] = "ZombieIdle_001",
-        [3] = "ZombieAttack_001"
+        [3] = "ZombieAttack_002"
     },
     AnimTracks = {},
 
