@@ -144,6 +144,11 @@ function self:Visualize(region)
     part.Transparency = 0.8
     part.Position = Vector3.new(region.Position.x + 25, 0, region.Position.z + 25)
     part.Size = Vector3.new(self.SIZE, self.SIZE, self.SIZE)
+    
+    part.CanCollide = false
+    part.CanQuery = false
+    part.CanTouch = false
+    part.Anchored = true
 end
 
 function clamp(x: number, z: number)
