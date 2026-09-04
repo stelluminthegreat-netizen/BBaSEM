@@ -46,9 +46,24 @@ end
 
 function class:Init(pivot: CFrame)
 	self.Instance.Parent = workspace
+	self:LoadAnims()
 	self.Instance:PivotTo(pivot)
 	self:CalcNextPos()
 	self:CalcDirection()
+end
+
+function class:LoadAnims()
+	local animCont = Instance.new("AnimationController")
+	animCont.Parent = self.Instance
+
+	local animator = Instance.new("Animator")
+	animator.Parent = animCont
+
+	for _, name in self.AnimNames do
+		animation = game.ReplicatedStorage.Anims[name]
+		local track = animator:LoadAnimation(animation)
+		self.AnimTracks[name] = track
+	end
 end
 
 function class:Start()
