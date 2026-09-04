@@ -67,6 +67,7 @@ function class:LoadAnims()
 end
 
 function class:Start()
+	
 	class.NoTarget[self.Id] = self
 	self:Move() -- Start movement
 end
@@ -74,12 +75,16 @@ end
 ------------------------ MOVEMENT SYSTEM
 
 function class:Move()
+	-- if self.AnimTracks["ZombieIdle_001"].IsPlaying == true then self.AnimTracks["ZombieIdle_001"]:Stop() end
+	if self.AnimTracks["ZombieWalk_001"].IsPlaying ~= true then self.AnimTracks["ZombieWalk_001"]:Play() end
 	class.BulkPivotList[self.Id] = self
 	class.Moving[self.Id] = self
 	if class.Blocked[self.Id] then class.Blocked[self.Id] = nil end
 end
 
 function class:StopMove()
+	if self.AnimTracks["ZombieWalk_001"].IsPlaying == true then self.AnimTracks["ZombieWalk_001"]:Stop() end
+	if self.AnimTracks["ZombieIdle_001"].IsPlaying ~= true then print("Playing") self.AnimTracks["ZombieIdle_001"]:Play() end
 	class.BulkPivotList[self.Id] = nil
 end
 
