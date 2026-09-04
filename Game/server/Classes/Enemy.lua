@@ -154,10 +154,10 @@ function class:FindTarget()
 
 		local distance = target:GetPivot().Position - pivot.Position
 		local x, z = distance.X, distance.Z
-		local hypo = x * x + z * z
+		local hypo = math.sqrt(x * x + z * z)
 		if hypo > self.PrevTargDist then continue end
 
-		self.PrevTargDist = distance
+		self.PrevTargDist = hypo
 		self:TargetLock(target)
 	end
 
