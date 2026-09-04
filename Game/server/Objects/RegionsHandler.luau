@@ -10,7 +10,7 @@ function self.initialize()
         local count = 0
         while true do
             count += 1
-            task.wait(0.5)
+            -- task.wait(0.5)
             self:Expand()
             if count == 10 then break end
         end
@@ -58,7 +58,7 @@ function self:Create(x: number, z: number)
         Position = {["z"] = z, ["x"] = x},
         Objects = {},
     }
-    self:Visualize(self.Regions[x][z])
+    -- self:Visualize(self.Regions[x][z])
 end
 
 function self:Expand()
@@ -104,15 +104,12 @@ function self:Insert(x: number, z:number, model: Model, class: string)
     if not self.Regions[x][z][class] then self.Regions[x][z][class] = {} end
     if self.Regions[x][z][class][model:GetAttribute("Id")] then return true end
     self.Regions[x][z][class][model:GetAttribute("Id")] = model   
-    warn(model.Name .. " is in region " .. x .. " / " .. z)
 end
 
 function self:Remove(x: number, z:number, model: Model, class: string)
     x = math.floor(x / self.SIZE) * self.SIZE
     z = math.floor(z / self.SIZE) * self.SIZE
-    print("Removing from prev location", self.Regions[x][z].Position,self.Regions[x][z][class])
     self.Regions[x][z][class][model:GetAttribute("Id")] = nil   
-    print("Removed from prev location", self.Regions[x][z].Position, self.Regions[x][z][class])
 end
 
 function self:Get(x: number, z: number, class: string, includeSurroundings: boolean)
@@ -126,7 +123,6 @@ function self:Get(x: number, z: number, class: string, includeSurroundings: bool
                 if not xReg then continue end
                 local zReg = self.Regions[x + xVal][z + zVal]
                 if not zReg then continue end
-                print(zReg)
                 table.insert(surroundingContents, zReg[class])
             end
         end
@@ -134,13 +130,11 @@ function self:Get(x: number, z: number, class: string, includeSurroundings: bool
         return surroundingContents
     end
 
-    print("Searching: ", self.Regions[x][z])
     return self.Regions[x][z][class]
 end
 
 function self:Visualize(region)
     local part = Instance.new("Part", workspace)
-    part.Anchored = true
     part.Transparency = 0.8
     part.Position = Vector3.new(region.Position.x + 25, 0, region.Position.z + 25)
     part.Size = Vector3.new(self.SIZE, self.SIZE, self.SIZE)
