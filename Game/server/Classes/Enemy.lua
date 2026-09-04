@@ -121,7 +121,7 @@ function class:DetectObstacle()
 		class.Blocked[self.Id] = nil
 		return
 	end
-
+	if result.Instance.Name == "Baseplate" then return end
 	-- Set obstacle as target if it is targetable
 	local model = shared.Libraries.Find.FindFirstAncestorWithTag(result.Instance, "Targetable")
 	if model then
