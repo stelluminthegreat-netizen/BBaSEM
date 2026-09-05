@@ -8,7 +8,7 @@ function self.start()
     local num = 0
     while task.wait() and num ~= 1 do
         num += 1
-        local pivot = CFrame.new(Vector3.new(63.29, 0, -196.31))
+        local pivot = CFrame.new(Vector3.new(70, 0.5, -33.46))
         local enemy = shared.GameClasses.Enemy.new("NormalZombie")
         enemy:Init(pivot)
         enemy:Start()

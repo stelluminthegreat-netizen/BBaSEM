@@ -238,7 +238,6 @@ end
 
 function class:InitAttack()
 	self.Conns["AnimHit"] = self.AnimTracks["ZombieAttack_002"]:GetMarkerReachedSignal("Hit"):Connect(function()
-		print("Hit")
 		table.clear(self.InAttRange)
 
 		-- Hitbox
@@ -265,7 +264,7 @@ function class:InitAttack()
 
 		-- Apply damage
 		for id, target in self.InAttRange do
-			target:IncrementHealth(self.Dmg)
+			target:IncrementHealth(-self.Dmg)
 			self.InAttRange[id] = nil
 		end
 	end)

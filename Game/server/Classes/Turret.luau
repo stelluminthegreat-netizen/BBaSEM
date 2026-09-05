@@ -57,15 +57,16 @@ function class:FindTarget()
 			table.insert(inRange, item)
 		end
 	end
-	print(result)
 	for _, target in inRange do
 		if not target then continue end
-		if not self.PrevTargDist then self.PrevTargDist = 0 end
-		if target.Parent ~= workspace then continue end
+		if not self.PrevTargDist then self.PrevTargDist = 100 end
+		if target.Instance.Parent ~= workspace then continue end
+		
 
-		local distance = target.Position - pivot.Position
+		local distance = target.Instance:GetPivot().Position - pivot.Position
 		local x, z = distance.X, distance.Z
 		local hypo = math.sqrt(x * x + z * z)
+		print(target, hypo, self.PrevTargDist)
 		if hypo > self.PrevTargDist then continue end
 
 		self.PrevTargDist = hypo
@@ -76,6 +77,7 @@ end
 function class:TargetLock(target)
 	self.Target = target
 	class.HasTarget[self.Id] = self
+	class.NoTarget[self.Id] = nil
 end
 
 function class:Aim()
@@ -92,7 +94,7 @@ function class:Aim()
 	local yawHinge = self.Instance:FindFirstChild("YawHinge", true)
 	local pitchHinge = self.Instance:FindFirstChild("PitchHinge", true)
 
-	local direction = ref.CFrame:PointToObjectSpace(self.Target.Position)
+	local direction = ref.CFrame:PointToObjectSpace(self.Target.Instance.Head.Position)
 
 	local flatDirection = direction * Vector3.new(1, 0, 1)
 	yawHinge.TargetAngle =  -math.deg(Vector3.zAxis:Angle(flatDirection, Vector3.yAxis))
@@ -102,11 +104,10 @@ function class:Aim()
 end
 
 function class:Fire()
-	local targetDirection =  (self.Target.Position - self.Instance.Ref.Position).Unit
+	local targetDirection =  (self.Target.Instance.Head.Position - self.Instance.Ref.Position).Unit
 	local look = self.Instance.Housing.Gun.Barrel.CFrame.LookVector
 	local dot = look:Dot(targetDirection)
-	if dot < 0.9 then print("Not yet", dot) return end
-	print("FIRE FIRE FIRE FIRE")
+	if dot < 0.9 then return end
 end
 
 function BulkAttack()
