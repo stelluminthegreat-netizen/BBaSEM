@@ -2,6 +2,7 @@ task.wait()
 local loaded = game.ReplicatedStorage.Values.ServerFrameworkLoaded
 while loaded.Value == false do task.wait() end
 if not shared.GameClasses then shared["GameClasses"] = {} end
+shared.Entities = {}
 
 for index, descendant in script.Parent:GetDescendants() do
 	if descendant.ClassName == "ModuleScript" then shared.GameClasses[descendant.Name] = require(descendant) end
