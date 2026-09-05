@@ -99,7 +99,7 @@ function class:CalcDirection()
 	-- Terminate if there is no target
 	if not self.Target then return end
 	-- Terminate if target did not move
-	local samePos = self.PreviousTargetPos == self.Target:GetPivot().Position
+	local targetPivot = self.Target.Instance:GetPivot()
 	if self.PreviousTargetPos and samePos then return end
 
 	self.PreviousTargetPos = self.Target:GetPivot().Position
