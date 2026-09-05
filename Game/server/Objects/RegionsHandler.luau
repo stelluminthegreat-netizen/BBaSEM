@@ -103,25 +103,33 @@ function self:Remove(x: number, z: number, object, class: string)
     self.Regions[x][z][class][object.Id] = nil   
 end
 
-function self:Get(x: number, z: number, class: string, includeSurroundings: boolean)
+function self:Get(x: number, z: number, class: string, radius: number)
     x, z = clamp(x, z)
-    if includeSurroundings == true then
-        local surroundingContents = {}
+    local vals = {0}
+    local contents = {}
+    local n = 0 -- Negative value
+    local p = 0 -- Positive value
 
-        for _, xVal in self.PossibleVals do
-            for _, zVal in self.PossibleVals do
-                local xReg = self.Regions[x + xVal]
-                if not xReg then continue end
-                local zReg = self.Regions[x + xVal][z + zVal]
-                if not zReg then continue end
-                table.insert(surroundingContents, zReg[class])
-            end
-        end
+    for i = 1, radius do
+        p += self.SIZE
+        n -= self.SIZE
 
-        return surroundingContents
+        table.insert(vals, p)
+        table.insert(vals, n)
     end
 
-    return self.Regions[x][z][class]
+
+    for _, xVal in vals do
+        for _, zVal in vals do
+            local xReg = self.Regions[x + xVal]
+            if not xReg then continue end
+            local zReg = self.Regions[x + xVal][z + zVal]
+            if not zReg then continue end
+            table.insert(contents, zReg[class])
+        end
+    end
+
+    return contents
 end
 
 function self:Visualize(region)
