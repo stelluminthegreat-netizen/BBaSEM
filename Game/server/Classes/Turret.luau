@@ -125,5 +125,10 @@ function BulkFindTarget()
 		end
 	end)
 end
+-- APIs
+function class:IncrementHealth(n: number)
+	self.Health += n
+	print(self.Health)
+end
 
 return class
