@@ -19,34 +19,25 @@ end
 
 function self.start()
 	shared.Classes.Task.OnTick:Connect(function()
-        for _, descendant in game.Workspace:GetDescendants() do
-            if not descendant:IsA("Model") then continue end
-            if not descendant:HasTag("Object") then continue end
-            local class = descendant:GetAttribute("Class")
-            local id = descendant:GetAttribute("Id")
-            -- if not self.GLOBAL[class] then self.GLOBAL[class] = {} end
-            if self.GLOBAL[id] then continue end
-            self.GLOBAL[id] = descendant
-        end
-
-        for _, object in self.GLOBAL do
-            local position = object:GetPivot().Position
+        for _, entity in shared.Entities do
+            local position = entity.Instance:GetPivot().Position
             local x, z = clamp(position.X, position.Z)
 
-            local PreviousCoords = object:GetAttribute("PreviousCoords")
+            local PreviousCoords = entity.PreviousCoords
             if PreviousCoords then
-                local prevX, prevZ = clamp(PreviousCoords.X, PreviousCoords.Y)
+                local prevX, prevZ = clamp(PreviousCoords.x, PreviousCoords.z)
 
                 -- Remove from previous region if current position is not equal to previous position
                 if x ~= prevX or z ~= prevZ then 
-                    self:Remove(prevX, prevZ, object, object:GetAttribute("Class"))
+                    self:Remove(prevX, prevZ, entity, entity.Instance:GetAttribute("Class"))
                 end
             end
 
-            local existing = self:Insert(x, z, object, object:GetAttribute("Class"))
+            local existing = self:Insert(x, z, entity, entity.Instance:GetAttribute("Class"))
             if existing == true then continue end 
 
-            object:SetAttribute("PreviousCoords", Vector2.new(x, z))
+            entity.PreviousCoords = {["x"] = x, ["z"] = z}
+            print(entity)
         end
     end)
 end
