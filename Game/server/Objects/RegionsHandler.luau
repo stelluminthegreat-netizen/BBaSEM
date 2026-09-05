@@ -89,18 +89,18 @@ function self:GetAvailableSpaces(x: number, z: number)
     return availableSpaces
 end
 
-function self:Insert(x: number, z:number, model: Model, class: string)
+function self:Insert(x: number, z:number, object, class: string)
     x = math.floor(x / self.SIZE) * self.SIZE
     z = math.floor(z / self.SIZE) * self.SIZE
     if not self.Regions[x][z][class] then self.Regions[x][z][class] = {} end
-    if self.Regions[x][z][class][model:GetAttribute("Id")] then return true end
-    self.Regions[x][z][class][model:GetAttribute("Id")] = model   
+    if self.Regions[x][z][class][object.Id] then return true end
+    self.Regions[x][z][class][object.Id] = object   
 end
 
-function self:Remove(x: number, z:number, model: Model, class: string)
+function self:Remove(x: number, z: number, object, class: string)
     x = math.floor(x / self.SIZE) * self.SIZE
     z = math.floor(z / self.SIZE) * self.SIZE
-    self.Regions[x][z][class][model:GetAttribute("Id")] = nil   
+    self.Regions[x][z][class][object.Id] = nil   
 end
 
 function self:Get(x: number, z: number, class: string, includeSurroundings: boolean)
