@@ -6,7 +6,7 @@
 local class = {}
 class.__index = class
 
-class.Enemies = {}
+class.Objects = {}
 class.EnemyInstances = {}
 class.BulkPivotList = {}
 class.NoTarget = {}
