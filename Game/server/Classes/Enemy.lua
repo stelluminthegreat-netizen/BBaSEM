@@ -253,21 +253,21 @@ function class:InitAttack()
 		-- Scan and store possible targets
 		for _, item in inRange do
 			-- Filter non-targetable
-			local model = shared.Libraries.Find.FindFirstAncestorWithTag(item, "Targetable")
+			local model = shared.Libraries.Find.FindFirstAncestorWithTag(item, "Object")
 			if not model then continue end
 
 			local id = model:GetAttribute("Id")
 			if self.InAttRange[id] then continue end
-			self.InAttRange[id] = model
+			local class = model:GetAttribute("Class")
+			local object = shared.GameClasses[class].Objects[id]
+			self.InAttRange[id] = object
 		end
 
 		-- Apply damage
 		for id, target in self.InAttRange do
-			local humanoid = target.Humanoid
-			humanoid:TakeDamage(self.Dmg)
+			target:IncrementHealth(self.Dmg)
 			self.InAttRange[id] = nil
 		end
-
 	end)
 end
 
