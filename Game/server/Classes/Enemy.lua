@@ -128,8 +128,12 @@ function class:DetectObstacle()
 	-- Set obstacle as target if it is targetable
 	local model = shared.Libraries.Find.FindFirstAncestorWithTag(result.Instance, "Targetable")
 	if model then
-		self:TargetLock(model)
+		local class = model:GetAttribute("Class")
+		local id = model:GetAttribute("Id")
+		local object = shared.GameClasses[class].Objects[id]
+		self:TargetLock(object)
 	end
+
 	self:StopMove()
 	class.Blocked[self.Id] = self
 end
