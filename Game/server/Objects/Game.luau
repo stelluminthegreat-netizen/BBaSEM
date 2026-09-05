@@ -13,6 +13,9 @@ function self.start()
         enemy:Init(pivot)
         enemy:Start()
     end
+    local turret = shared.GameClasses.Turret.new("MG_001")
+    turret:Init()
+    turret:Start()
 end
 
 return self
