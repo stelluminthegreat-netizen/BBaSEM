@@ -2,7 +2,7 @@ local class = {}
 class.__index = class
 class.HasTarget = {}
 class.NoTarget = {}
-class.Turrets = {}
+class.Objects = {}
 local turretCount = 0
 
 local configs = game.ServerScriptService.S_Server.Data.TurretConfig
@@ -26,7 +26,7 @@ function class.new(type: string)
 	self.Instance = game.ReplicatedStorage.ToClone.Turrets[type]:Clone()
 	self.Id = type .. turretCount
 	self.Instance:SetAttribute("Id", self.Id)
-	class.Turrets[self.Id] = self
+	class.Objects[self.Id] = self
 
 	return self
 end
