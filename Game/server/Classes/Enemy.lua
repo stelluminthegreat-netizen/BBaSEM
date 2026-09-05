@@ -146,7 +146,7 @@ function class:FindTarget()
 	-- Limited: Find a target in normal range
 	local pivot = self.Instance:GetPivot()
 	local x, z = pivot.X, pivot.Z
-	local result = RegionHandler:Get(x, z, "Target", true)
+	local result = RegionHandler:Get(x, z, "Target", 1)
 	local inRange = {}
 
 	for _, tbl in result do
@@ -155,18 +155,18 @@ function class:FindTarget()
 		end
 	end
 
-	for _, target in inRange do
-		if not target then continue end
+	for _, entity in inRange do
+		if not entity then continue end
 		if not self.PrevTargDist then self.PrevTargDist = 0 end
-		if target.Parent ~= workspace then continue end
+		if entity.Instance.Parent ~= workspace then continue end
 
-		local distance = target:GetPivot().Position - pivot.Position
+		local distance = entity.Instance:GetPivot().Position - pivot.Position
 		local x, z = distance.X, distance.Z
 		local hypo = math.sqrt(x * x + z * z)
 		if hypo > self.PrevTargDist then continue end
 
 		self.PrevTargDist = hypo
-		self:TargetLock(target)
+		self:TargetLock(entity)
 	end
 
 	-- Unli: If no target is within the normal range, ignore limit and find target
@@ -180,12 +180,12 @@ function class:FindTarget()
 	-- Target lock the randomly selected structure
 	-- Same goes if character was chosen
 
-	local inRange = RegionHandler.GLOBAL
-	for _, target in inRange do
-		if target:GetAttribute("Class") ~= "Target" then continue end
-		if target.Parent ~= workspace then continue end
-		self:TargetLock(target)
-		local distance = target:GetPivot().Position - pivot.Position
+	local inRange = shared.Entities
+	for _, entity in inRange do
+		if not entity.Instance:HasTag("Structure") and not entity.Instance:HasTag("Character") then continue end
+		if entity.Instance.Parent ~= workspace then continue end
+		self:TargetLock(entity)
+		local distance = entity.Instance:GetPivot().Position - pivot.Position
 		local x, z = distance.X, distance.Z
 		local hypo = math.sqrt(x * x + z * z)
 		self.PrevTargDist = hypo
@@ -193,7 +193,7 @@ function class:FindTarget()
 	end
 end
 
-function class:TargetLock(target: Model)
+function class:TargetLock(target: object)
 	self.Target = target
 	self:CalcNextPos()
 	self:CalcDirection()
