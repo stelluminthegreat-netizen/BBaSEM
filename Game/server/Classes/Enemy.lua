@@ -126,7 +126,7 @@ function class:DetectObstacle()
 	end
 	if result.Instance.Name == "Baseplate" then return end
 	-- Set obstacle as target if it is targetable
-	local model = shared.Libraries.Find.FindFirstAncestorWithTag(result.Instance, "Targetable")
+	local model = shared.Libraries.Find.FindFirstAncestorWithTag(result.Instance, "Object")
 	if model then
 		local class = model:GetAttribute("Class")
 		local id = model:GetAttribute("Id")
