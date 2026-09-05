@@ -45,6 +45,7 @@ function class.new(type: string)
 end
 
 function class:Init(pivot: CFrame)
+	shared.Entities[self.Id] = self
 	self.Instance.Parent = workspace
 	self:LoadAnims()
 	self.Instance:PivotTo(pivot)
