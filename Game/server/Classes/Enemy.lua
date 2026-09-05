@@ -100,10 +100,11 @@ function class:CalcDirection()
 	if not self.Target then return end
 	-- Terminate if target did not move
 	local targetPivot = self.Target.Instance:GetPivot()
+	local samePos = self.PreviousTargetPos == targetPivot.Position
 	if self.PreviousTargetPos and samePos then return end
 
-	self.PreviousTargetPos = self.Target:GetPivot().Position
-	self.Direction = (self.Target:GetPivot().Position - self.NextPos).Unit
+	self.PreviousTargetPos = targetPivot.Position * Vector3.new(0, 1, 0)
+	self.Direction = (targetPivot.Position - self.NextPos).Unit
 end
 
 function class:DetectObstacle()
