@@ -67,9 +67,7 @@ function class:FindTarget()
 		local distance = target.Instance:GetPivot().Position - pivot.Position
 		local x, z = distance.X, distance.Z
 		local hypo = math.sqrt(x * x + z * z)
-		print(target, hypo, self.PrevTargDist)
 		if hypo > self.PrevTargDist then continue end
-
 		self.PrevTargDist = hypo
 		self:TargetLock(target)
 	end
@@ -130,7 +128,6 @@ end
 -- APIs
 function class:IncrementHealth(n: number)
 	self.Health += n
-	print(self.Health)
 end
 
 return class
