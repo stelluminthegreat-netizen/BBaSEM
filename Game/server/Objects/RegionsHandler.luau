@@ -37,7 +37,6 @@ function self.start()
             if existing == true then continue end 
 
             entity.PreviousCoords = {["x"] = x, ["z"] = z}
-            print(entity)
         end
     end)
 end
