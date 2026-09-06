@@ -101,7 +101,7 @@ function class:Aim()
 	yawHinge.TargetAngle =  -math.deg(Vector3.zAxis:Angle(flatDirection, Vector3.yAxis))
 
 	local axis = Vector3.yAxis:Cross(flatDirection)
-	pitchHinge.TargetAngle = math.deg(flatDirection:Angle(-direction, axis))
+	pitchHinge.TargetAngle = -math.deg(flatDirection:Angle(direction, axis))
 end
 
 function class:Fire()
