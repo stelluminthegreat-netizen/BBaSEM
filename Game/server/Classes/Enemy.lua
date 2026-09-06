@@ -103,8 +103,11 @@ function class:CalcDirection()
 	local samePos = self.PreviousTargetPos == targetPivot.Position
 	if self.PreviousTargetPos and samePos then return end
 
-	self.PreviousTargetPos = targetPivot.Position * Vector3.new(0, 1, 0)
-	self.Direction = (targetPivot.Position - self.NextPos).Unit
+	self.PreviousTargetPos = targetPivot.Position 
+	local direction = targetPivot.Position - self.NextPos
+	direction = Vector3.new(direction.X, 0, direction.Z)
+
+	self.Direction = direction.Unit
 end
 
 function class:DetectObstacle()
