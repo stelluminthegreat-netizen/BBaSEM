@@ -31,9 +31,10 @@ function class.new(type: string)
 	return self
 end
 
-function class:Init()
+function class:Init(position: Vector3)
 	shared.Entities[self.Id] = self
 	self.Instance.Parent = workspace
+	self.Instance:PivotTo(self.Instance:GetPivot() - self.Instance:GetPivot().Position + position)
 end
 
 function class:Start()
