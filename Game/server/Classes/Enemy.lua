@@ -290,6 +290,35 @@ function class:IncrementHealth(n: number)
 	if self.Health <= 0 then self:Die() end
 end
 
+function class:Die()
+	-- Do death stuff like animations 
+	shared.Entities[self.Id] = nil
+
+	class.Objects[self.Id] = nil
+	class.EnemyInstances[self.Id] = nil
+	class.BulkPivotList[self.Id] = nil
+	class.NoTarget[self.Id] = nil
+	class.Moving[self.Id] = nil
+	class.Blocked[self.Id] = nil
+
+	local x, z = self.PreviousCoords.x, self.PreviousCoords.z
+	shared.GameClasses.RegionsHandler:Remove(x, z, self, "Enemy")
+
+	for _, child in self.Instance:GetChildren() do
+		if not child:IsA("BasePart") then continue end
+		shared.Classes.Threads:Spawn(function()
+			while child.Transparency ~= 1 do
+				child.Transparency += 0.1
+				task.wait(0.1)
+			end
+		end)
+	end
+	self.Target = nil
+
+	self.Events.Died:Fire()
+	self:Destroy()
+end
+
 
 ------------------------ BULKS
 
