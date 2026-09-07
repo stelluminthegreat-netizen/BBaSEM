@@ -106,7 +106,14 @@ function class:Fire()
 	local targetDirection =  (self.Target.Instance.Head.Position - self.Instance.Ref.Position).Unit
 	local look = self.Instance.Housing.Gun.Barrel.CFrame.LookVector
 	local dot = look:Dot(targetDirection)
-	if dot < 0.9 then return end
+	if dot < 0.95 then return end
+	if self.Status.Attacking == true then return end
+	print(dot)
+	self.Status.Attacking = true
+	self.Target:IncrementHealth(-self.Dmg)
+	task.wait(0.5)
+	self.Status.Attacking = false
+end
 end
 
 function BulkAttack()
