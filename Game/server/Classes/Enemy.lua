@@ -284,6 +284,13 @@ function class:InitAttack()
 	end)
 end
 
+------------------------ SELF
+function class:IncrementHealth(n: number)
+	self.Health += n
+	if self.Health <= 0 then self:Die() end
+end
+
+
 ------------------------ BULKS
 
 -- Calls the attack method for enemy objects
