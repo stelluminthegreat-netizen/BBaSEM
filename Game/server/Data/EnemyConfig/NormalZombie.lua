@@ -12,6 +12,11 @@ return {
     },
     InAttRange = {},
     Conns = {},
+    Events = {},
+    EventNames = {
+        [1] = "Destroyed",
+        [2] = "Died",
+    },
     AnimNames = {
         [1] = "ZombieWalk_001",
         [2] = "ZombieIdle_001",
