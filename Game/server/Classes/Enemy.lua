@@ -47,11 +47,21 @@ end
 function class:Init(pivot: CFrame)
 	shared.Entities[self.Id] = self
 	self.Instance.Parent = workspace
+
+	self:InitEvents()
 	self:LoadAnims()
+	
 	self.Instance:PivotTo(pivot)
 	self:CalcNextPos()
 	self:CalcDirection()
 	self:InitAttack()
+end
+
+function class:InitEvents()
+	for _, name in self.EventNames do
+		local event = shared.Classes.Event.new()
+		self.Events[name] = event
+	end
 end
 
 function class:LoadAnims()
