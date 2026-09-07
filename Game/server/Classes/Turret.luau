@@ -75,6 +75,7 @@ end
 
 function class:TargetLock(target)
 	self.Target = target
+	self:MonitorTarget()
 	class.HasTarget[self.Id] = self
 	class.NoTarget[self.Id] = nil
 end
@@ -103,7 +104,7 @@ function class:Aim()
 end
 
 function class:Fire()
-	local targetDirection =  (self.Target.Instance.Head.Position - self.Instance.Ref.Position).Unit
+	local targetDirection = (self.Target.Instance.Head.Position - self.Instance.Ref.Position).Unit
 	local look = self.Instance.Housing.Gun.Barrel.CFrame.LookVector
 	local dot = look:Dot(targetDirection)
 	if dot < 0.95 then return end
@@ -114,6 +115,18 @@ function class:Fire()
 	task.wait(0.5)
 	self.Status.Attacking = false
 end
+
+function class:MonitorTarget()
+	if not self.Target then return end
+	local conn
+	conn = self.Target.Events.Died:Connect(function()
+		self.Target = nil
+		class.NoTarget[self.Id] = self
+		class.HasTarget[self.Id] = nil
+		self.Status.Attacking = false
+		self.PrevTargDist = 100
+		conn:Disconnect()
+	end)
 end
 
 function BulkAttack()
