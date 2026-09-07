@@ -246,6 +246,7 @@ function class:Attack()
 	self.AnimTracks["ZombieAttack_002"]:Play()
 	self.AnimTracks["ZombieAttack_002"].Ended:Wait()
 	task.wait(self.AttackSpd)
+	if not self.State then return end
 	self.State.Attacking = false
 end
 
