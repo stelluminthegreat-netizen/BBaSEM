@@ -319,6 +319,11 @@ function class:Die()
 	self:Destroy()
 end
 
+function class:Destroy()
+	for _, conn in self.Conns do conn:Disconnect() end
+	self.Instance:Destroy()
+	shared.Libraries.Table.DeepClean(self)
+end
 
 ------------------------ BULKS
 
