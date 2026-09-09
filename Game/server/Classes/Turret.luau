@@ -117,9 +117,8 @@ function class:Fire()
 	local dot = look:Dot(targetDirection)
 	if dot < 0.95 then return end
 	if self.Status.Attacking == true then return end
-	print(dot)
 	self.Status.Attacking = true
-	self.Target:IncrementHealth(-self.Dmg)
+	self.Target:IncrementHealth(-self.Dmg)	
 	task.wait(0.5)
 	self.Status.Attacking = false
 end
