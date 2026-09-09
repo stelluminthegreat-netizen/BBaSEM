@@ -225,17 +225,16 @@ function class:TargetDestroyed()
 end
 
 function class:MonitorTarget()
-	-- if not self.Target then return end
-	-- if self.Target.Parent ~= workspace then return end
-	-- local conn
-	-- conn = self.Target.Humanoid.HealthChanged:Connect(function(health)
-	-- 	if self.Target == nil then return end
-	-- 	if health <= 0 then
-	-- 		self.Target:Destroy()
-	-- 		conn:Disconnect()
-	-- 		self:TargetDestroyed()
-	-- 	end
-	-- end)
+	if not self.Target then return end
+	if self.Target.Instance.Parent ~= workspace then return end
+	if self.PrevTargId == self.Target.Id then return end
+	self.PrevTargId = self.Target.Id
+
+	if self.Conns.MonitorTarg then self.Conns["MonitorTarg"]:Disconnect() end
+	self.Conns["MonitorTarg"] = self.Target.Events.Died:Connect(function()
+		self:TargetDestroyed()
+		self.Conns["MonitorTarg"]:Disconnect()
+	end)
 end
 
 ------------------------ ATTACK SYSTEM
