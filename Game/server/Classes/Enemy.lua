@@ -320,7 +320,9 @@ function class:Die()
 end
 
 function class:Destroy()
-	for _, conn in self.Conns do conn:Disconnect() end
+	for name, conn in self.Conns do conn:Disconnect() self.Conns[name] = nil end
+	for name, _ in self.Events do self.Events[name] = nil end
+	
 	self.Instance:Destroy()
 	shared.Libraries.Table.DeepClean(self)
 end
