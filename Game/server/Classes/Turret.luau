@@ -155,6 +155,10 @@ end
 -- APIs
 function class:IncrementHealth(n: number)
 	self.Health += n
+	if self.Health > 0 then return end
+
+	self:Die()
+end
 end
 
 return class
