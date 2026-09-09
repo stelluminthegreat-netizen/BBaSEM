@@ -159,6 +159,34 @@ function class:IncrementHealth(n: number)
 
 	self:Die()
 end
+
+function class:Die()
+	
+		-- Do death stuff like animations 
+	shared.Entities[self.Id] = nil
+
+	class.Objects[self.Id] = nil
+	class.NoTarget[self.Id] = nil
+	class.HasTarget[self.Id] = nil
+
+	local x, z = self.PreviousCoords.x, self.PreviousCoords.z
+	shared.GameClasses.RegionsHandler:Remove(x, z, self, "Turret")
+
+	for _, child in self.Instance:GetChildren() do
+		if not child:IsA("BasePart") then continue end
+		shared.Classes.Threads:Spawn(function()
+			while child.Transparency ~= 1 do
+				child.Transparency += 0.1
+				task.wait(0.1)
+			end
+		end)
+	end
+	self.Events.Died:Fire()
+	self.Target = nil
+
+	self.Events.Destroyed:Fire()
+	self:Destroy()
+end
 end
 
 return class
