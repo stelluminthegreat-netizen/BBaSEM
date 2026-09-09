@@ -96,7 +96,7 @@ end
 
 function class:StopMove()
 	if self.AnimTracks["ZombieWalk_001"].IsPlaying == true then self.AnimTracks["ZombieWalk_001"]:Stop() end
-	if self.AnimTracks["ZombieIdle_001"].IsPlaying ~= true then print("Playing") self.AnimTracks["ZombieIdle_001"]:Play() end
+	if self.AnimTracks["ZombieIdle_001"].IsPlaying ~= true then self.AnimTracks["ZombieIdle_001"]:Play() end
 	class.BulkPivotList[self.Id] = nil
 end
 
