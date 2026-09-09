@@ -126,14 +126,13 @@ end
 
 function class:MonitorTarget()
 	if not self.Target then return end
-	local conn
-	conn = self.Target.Events.Died:Connect(function()
+	self.Conns["MonitorTarg"] = self.Target.Events.Died:Connect(function()
 		self.Target = nil
 		class.NoTarget[self.Id] = self
 		class.HasTarget[self.Id] = nil
 		self.Status.Attacking = false
 		self.PrevTargDist = 100
-		conn:Disconnect()
+		self.Conns["MonitorTarg"]:Disconnect()
 	end)
 end
 
