@@ -32,9 +32,17 @@ function class.new(type: string)
 end
 
 function class:Init(position: Vector3)
+	self:InitEvents()
 	shared.Entities[self.Id] = self
 	self.Instance.Parent = workspace
 	self.Instance:PivotTo(self.Instance:GetPivot() - self.Instance:GetPivot().Position + position)
+end
+
+function class:InitEvents()
+	for _, name in self.EventNames do
+		local event = shared.Classes.Event.new()
+		self.Events[name] = event
+	end
 end
 
 function class:Start()
