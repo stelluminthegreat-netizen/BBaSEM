@@ -285,6 +285,8 @@ end
 
 ------------------------ SELF
 function class:IncrementHealth(n: number)
+	if not self then return end
+	if not self.Health then return end
 	self.Health += n
 	if self.Health <= 0 then self:Die() end
 end
