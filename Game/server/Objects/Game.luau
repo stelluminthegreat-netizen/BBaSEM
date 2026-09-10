@@ -5,7 +5,7 @@ function self.initialize()
 end
 
 function random()
-    return math.random(90, 120)
+    return math.random(-90, 100)
 end
 
 function self.start()
@@ -13,24 +13,25 @@ function self.start()
     local turretStart = 0
     local enemyStart = 0
     task.spawn(function()
-       while task.wait(0.1) do
+       while true do
         enemyStart += 1
-        if enemyStart == 200 then break end
+        if enemyStart == 1000 then break end
         local pivot = CFrame.new(Vector3.new(random(), 0.5, random()))
         local enemy = shared.GameClasses.Enemy.new("NormalZombie")
         enemy:Init(pivot)
         enemy:Start()
+        task.wait(0.5)
        end
     end)
-    while task.wait() and num ~= 2 do
+    while task.wait() and num ~= 5 do
         num += 1
 
         turretStart += 30
         local turret = shared.GameClasses.Turret.new("MG_001")
-        turret:Init(Vector3.new(turretStart, 0.1, 100))
+        turret:Init(Vector3.new(0, 0.1, -turretStart))
         turret:Start()
 
-        task.wait(20)
+        -- task.wait(20)
     end
 end
 
