@@ -123,7 +123,7 @@ function class:Fire()
 	local muzzleCFrame = self.Instance.Housing.Gun.Muzzle.CFrame
 	bullet:Initialize(muzzleCFrame.Position, muzzleCFrame.LookVector)
 	bullet:Start()
-	task.wait(0.1)
+	task.wait(self.AttackInterval)
 	self.Status.Attacking = false
 end
 

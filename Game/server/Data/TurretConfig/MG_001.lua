@@ -1,5 +1,5 @@
 return {
-    AttackSpd = 4,
+    AttackInterval = 0.01,
     Health = 150,
     Dmg = 10,
     Range = 2,
