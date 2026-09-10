@@ -133,7 +133,6 @@ function class:MonitorTarget()
 		self.Target = nil
 		class.NoTarget[self.Id] = self
 		class.HasTarget[self.Id] = nil
-		self.Status.Attacking = false
 		self.PrevTargDist = 100
 		self.Conns["MonitorTarg"]:Disconnect()
 	end)
