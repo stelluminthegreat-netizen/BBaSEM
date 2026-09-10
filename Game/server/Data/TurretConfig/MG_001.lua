@@ -3,6 +3,7 @@ return {
     Health = 150,
     Dmg = 10,
     Range = 2,
+    BulletType = "MG_Normal_001",
     Conns = {},
     Events = {},
     EventNames = {

@@ -118,8 +118,12 @@ function class:Fire()
 	if dot < 0.95 then return end
 	if self.Status.Attacking == true then return end
 	self.Status.Attacking = true
-	self.Target:IncrementHealth(-self.Dmg)	
-	task.wait(0.5)
+	-- self.Target:IncrementHealth(-self.Dmg)	
+	local bullet = shared.GameClasses.Bullet.new(self.BulletType)
+	local muzzleCFrame = self.Instance.Housing.Gun.Muzzle.CFrame
+	bullet:Initialize(muzzleCFrame.Position, muzzleCFrame.LookVector)
+	bullet:Start()
+	task.wait(0.1)
 	self.Status.Attacking = false
 end
 
