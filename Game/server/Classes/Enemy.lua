@@ -231,14 +231,23 @@ function class:Attack()
 	-- Debounce if an attack is in progress
 	if self.State.Attacking == true then return end
 	self.State.Attacking = true
-	self.AnimTracks["ZombieAttack_002"]:Play()
-	self.AnimTracks["ZombieAttack_002"].Ended:Wait()
+	
+	-- Inform client to play attack anim
+
+	-- Delay to match hit 
+	task.wait(self.HitDelay)
+	self:ActualAttack()
+	-- Wait for the remainder of the animation
+	task.wait(self.RemainingDelay)
+
+	-- Wait based on Attack Spd
+	-- Set attacking to false
 	task.wait(self.AttackSpd)
 	if not self.State then return end
 	self.State.Attacking = false
 end
 
-function class:InitAttack()
+function class:ActualAttack()
 		actionEvent:FireAllClients(self.Id, "Attack")
 		table.clear(self.InAttRange)
 
@@ -250,7 +259,7 @@ function class:InitAttack()
 		local pivot = self.Instance:GetPivot()
 		local hitBoxPos = pivot.Position + pivot.LookVector * 2
 		local inRange = workspace:GetPartBoundsInBox(CFrame.new(hitBoxPos), self.Hitbox, params)
-		if #inRange == 0 then self:Move() class.Moving[self.Id] = self return end
+		if #inRange == 0 then self:Move() return end
 		-- Scan and store possible targets
 		for _, item in inRange do
 			-- Filter non-targetable
