@@ -19,6 +19,7 @@ function class.initialize()
 		local enemy = class.Objects[id]
 		enemy:SetDirection(direction)
 		enemy:CalcNextPos()
+		enemy[action](enemy)
 	end)
 end
 
