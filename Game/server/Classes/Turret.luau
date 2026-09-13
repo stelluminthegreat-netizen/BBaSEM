@@ -23,7 +23,7 @@ end
 function class.new(type: string)
 	turretCount += 1
 	local self = setmetatable(shared.Libraries.Table.DeepClone(require(configs[type])), class)
-	self.Instance = game.ReplicatedStorage.ToClone.Turrets[type]:Clone()
+	self.Instance = game.ReplicatedStorage.ToClone.Server.Turrets[type]:Clone()
 	self.Id = type .. turretCount
 	self.Instance:SetAttribute("Id", self.Id)
 	class.Objects[self.Id] = self
