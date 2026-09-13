@@ -75,9 +75,8 @@ end
 ------------------------ MOVEMENT SYSTEM
 
 function class:Move()
-	-- if self.AnimTracks["ZombieIdle_001"].IsPlaying == true then self.AnimTracks["ZombieIdle_001"]:Stop() end
-	if self.AnimTracks["ZombieWalk_001"].IsPlaying ~= true then self.AnimTracks["ZombieWalk_001"]:Play() end
-	class.BulkPivotList[self.Id] = self
+	if class.Moving[self.Id] then return end
+	class.Idling[self.Id] = nil
 	class.Moving[self.Id] = self
 	
 	actionEvent:FireAllClients(self.Id, "Move", self.Direction)
