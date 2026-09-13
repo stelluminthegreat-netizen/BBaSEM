@@ -14,7 +14,7 @@ function class.new(TYPE: string)
 	count += 1
 
 	local self = setmetatable(shared.Libraries.Table.DeepClone(require(configs[TYPE])), class)
-	self.Instance = game.ReplicatedStorage.ToClone.Fabricators[TYPE]:Clone()
+	self.Instance = game.ReplicatedStorage.ToClone.Server.Fabricators[TYPE]:Clone()
 	self.Id = TYPE .. "_" .. count
 	self.Instance:SetAttribute("Id", self.Id)
 	return self
