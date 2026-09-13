@@ -33,6 +33,7 @@ function class.new(id, name)
 end
 
 function class:Initialize(pivot: CFrame)
+	self.Instance.Parent = workspace
 	self.Instance:PivotTo(pivot)
 	self:LoadAnims()
 end
