@@ -102,7 +102,7 @@ function class:Aim()
 	local yawHinge = self.Instance:FindFirstChild("YawHinge", true)
 	local pitchHinge = self.Instance:FindFirstChild("PitchHinge", true)
 
-	local direction = ref.CFrame:PointToObjectSpace(self.Target.Instance.Head.Position)
+	local direction = ref.CFrame:PointToObjectSpace(self.Target.Instance.HumanoidRootPart.Position)
 
 	local flatDirection = direction * Vector3.new(1, 0, 1)
 	yawHinge.TargetAngle =  -math.deg(Vector3.zAxis:Angle(flatDirection, Vector3.yAxis))
@@ -112,7 +112,7 @@ function class:Aim()
 end
 
 function class:Fire()
-	local targetDirection = (self.Target.Instance.Head.Position - self.Instance.Ref.Position).Unit
+	local targetDirection = (self.Target.Instance.HumanoidRootPart.Position - self.Instance.Ref.Position).Unit
 	local look = self.Instance.Housing.Gun.Barrel.CFrame.LookVector
 	local dot = look:Dot(targetDirection)
 	if dot < 0.9999 then return end
