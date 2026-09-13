@@ -79,12 +79,19 @@ function class:Attack()
 end
 
 -- Sets the Pivot of all Enemies per tick
+local cont = true
+
 function BulkMove()
 	shared.Classes.Task.OnTick:Connect(function()
+		if cont ~= true then return end
+		cont = false
+		shared.Classes.Task:Wait(48 / 24)
+		cont = true
 		for _, enemy in class.Moving do
 			-- Terminate if enemy NextPos/Direction has not yet been calculated
 			if not enemy.NextPos then continue end
 			if not enemy.Direction then continue end
+			-- if math.random(1, 10) == 5 then print(enemy, "Moving") end
 			-- Faces enemy to its target and pivot it forward
 			enemy.Instance:PivotTo(CFrame.lookAt(enemy.NextPos, enemy.NextPos + enemy.Direction))
 			enemy:CalcNextPos()
