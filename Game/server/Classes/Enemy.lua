@@ -15,6 +15,8 @@ class.Blocked = {}
 local enemyCount = 0
 
 local configs = game.ServerScriptService.S_Server.Data.EnemyConfig
+local newEvent = game.ReplicatedStorage.Remotes.Events.NewEnemy
+local actionEvent = game.ReplicatedStorage.Remotes.Events.EnemyActions
 
 local RegionHandler 
 shared.Classes.Threads:Spawn(function()
@@ -45,9 +47,10 @@ function class.new(type: string)
 end
 
 function class:Init(pivot: CFrame)
-	shared.Entities[self.Id] = self
-	self.Instance.Parent = workspace
+	newEvent:FireAllClients(self.Id, self.Type, pivot)
 
+	shared.Entities[self.Id] = self
+	self.Instance.Parent = workspace.Camera
 	self:InitEvents()
 	self:LoadAnims()
 	
@@ -91,13 +94,12 @@ function class:Move()
 	if self.AnimTracks["ZombieWalk_001"].IsPlaying ~= true then self.AnimTracks["ZombieWalk_001"]:Play() end
 	class.BulkPivotList[self.Id] = self
 	class.Moving[self.Id] = self
-	if class.Blocked[self.Id] then class.Blocked[self.Id] = nil end
+	
+	actionEvent:FireAllClients(self.Id, "Move", self.Direction)
 end
 
 function class:StopMove()
-	if self.AnimTracks["ZombieWalk_001"].IsPlaying == true then self.AnimTracks["ZombieWalk_001"]:Stop() end
-	if self.AnimTracks["ZombieIdle_001"].IsPlaying ~= true then self.AnimTracks["ZombieIdle_001"]:Play() end
-	class.BulkPivotList[self.Id] = nil
+	actionEvent:FireAllClients(self.Id, "StopMove")
 end
 
 function class:CalcNextPos()
@@ -250,7 +252,7 @@ function class:Attack()
 end
 
 function class:InitAttack()
-	self.Conns["AnimHit"] = self.AnimTracks["ZombieAttack_002"]:GetMarkerReachedSignal("Hit"):Connect(function()
+		actionEvent:FireAllClients(self.Id, "Attack")
 		table.clear(self.InAttRange)
 
 		-- Hitbox
