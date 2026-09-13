@@ -36,6 +36,8 @@ function class.new(type: string)
 	self.Instance = game.ReplicatedStorage.ToClone.Server.Enemies[type]:Clone()
 	self.Id = type .. tostring(enemyCount)
 	self.Instance:SetAttribute("Id", self.Id)
+	self.Type = type
+	self.Class = "Enemy"
 	class.Objects[self.Id] = self
 	table.insert(class.EnemyInstances, self.Instance)
 
