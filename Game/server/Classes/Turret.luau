@@ -69,7 +69,7 @@ function class:FindTarget()
 	for _, target in inRange do
 		if not target then continue end
 		if not self.PrevTargDist then self.PrevTargDist = 100 end
-		if target.Instance.Parent ~= workspace then continue end
+		if target.Instance.Parent ~= workspace.Camera then continue end
 		
 
 		local distance = target.Instance:GetPivot().Position - pivot.Position
