@@ -33,7 +33,7 @@ function class.new(type: string)
 	enemyCount += 1
 
 	local self = setmetatable(shared.Libraries.Table.DeepClone(require(configs[type])), class)
-	self.Instance = game.ReplicatedStorage.ToClone.Enemies[type]:Clone()
+	self.Instance = game.ReplicatedStorage.ToClone.Server.Enemies[type]:Clone()
 	self.Id = type .. tostring(enemyCount)
 	self.Instance:SetAttribute("Id", self.Id)
 	class.Objects[self.Id] = self
