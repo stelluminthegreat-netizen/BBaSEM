@@ -15,6 +15,7 @@ function class.initialize()
 		class.Objects[id]:Initialize(pivot)
 	end)
 	actionEvent.OnClientEvent:Connect(function(id: string, action: string, direction: Vector3)
+		if direction then direction = Vector3.new(direction.X, 0, direction.Z) end
 		local enemy = class.Objects[id]
 		enemy[action](enemy, direction)
 	end)
