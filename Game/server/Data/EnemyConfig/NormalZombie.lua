@@ -17,11 +17,6 @@ return {
         [1] = "Destroyed",
         [2] = "Died",
     },
-    AnimNames = {
-        [1] = "ZombieWalk_001",
-        [2] = "ZombieIdle_001",
-        [3] = "ZombieAttack_002"
-    },
-    AnimTracks = {},
-
+    HitDelay = 0.7,
+    RemainingDelay = 0.2,
 }
