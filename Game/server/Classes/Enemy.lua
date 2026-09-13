@@ -50,12 +50,10 @@ function class:Init(pivot: CFrame)
 	shared.Entities[self.Id] = self
 	self.Instance.Parent = workspace.Camera
 	self:InitEvents()
-	self:LoadAnims()
 	
 	self.Instance:PivotTo(pivot)
 	self:CalcNextPos()
 	self:CalcDirection()
-	self:InitAttack()
 end
 
 function class:InitEvents()
@@ -122,8 +120,6 @@ function class:DetectObstacle()
 	local result = workspace:Raycast(origin, direction, params)
 	if not result then
 		self:Move()
-		class.Moving[self.Id] = self
-		class.Blocked[self.Id] = nil
 		return
 	end
 	if result.Instance.Name == "Baseplate" then return end
@@ -137,7 +133,6 @@ function class:DetectObstacle()
 	end
 
 	self:StopMove()
-	class.Blocked[self.Id] = self
 end
 
 ------------------------ TARGET SYSTEM
@@ -201,8 +196,6 @@ function class:TargetLock(target: object)
 	self:CalcDirection()
 	self:MonitorTarget()
 	self:Move()
-	class.Blocked[self.Id] = nil
-	class.BulkPivotList[self.Id] = self
 end
 
 function class:TargetDestroyed()
@@ -295,8 +288,6 @@ function class:Die()
 
 	class.Objects[self.Id] = nil
 	class.EnemyInstances[self.Id] = nil
-	class.BulkPivotList[self.Id] = nil
-	class.NoTarget[self.Id] = nil
 	class.Moving[self.Id] = nil
 	class.Idling[self.Id] = nil
 
@@ -327,17 +318,7 @@ function class:Destroy()
 end
 
 ------------------------ BULKS
-
--- Calls the attack method for enemy objects
-function BulkAttack()
-	shared.Classes.Task.OnTick:Connect(function()
-		for _, enemy in class.Blocked do
-			if not enemy then return end
-			if enemy.State.Attacking == true then continue end
-			enemy:Attack()
-		end
-	end)
-end
+local cont = true
 
 -- Sets the Pivot of all Enemies per tick
 function BulkMoving()
