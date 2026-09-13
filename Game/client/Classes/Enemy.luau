@@ -42,10 +42,10 @@ function class:LoadAnims()
 	local controller = self.Instance.AnimationController
 	local animator = controller.Animator
 
-	for _, name in self.AnimNames do
+	for key, name in self.AnimNames do
 		local anim = game.ReplicatedStorage.Anims[name]
 		local track = animator:LoadAnimation(anim)
-		self.AnimTracks[name] = track
+		self.AnimTracks[key] = track
 	end
 end
 
