@@ -50,19 +50,23 @@ function class:LoadAnims()
 end
 
 function class:Move()
+	if class.Moving[self.Id] then return end
+	class.Moving[self.Id] = self
 	self.AnimTracks.Idle:Stop()
 	self.AnimTracks.Walk:Play()
-	class.Moving[self.Id] = self
 end
 
 function class:StopMove()
+	if class.Moving[self.Id] == nil then return end
+	class.Moving[self.Id] = nil
+	
 	self.AnimTracks.Walk:Stop()
 	self.AnimTracks.Idle:Play()
-	class.Moving[self.Id] = nil
 end
 
 function class:SetDirection(direction: Vector3)
-	self.NextDirection = direction
+	if not direction then return end
+	self.Direction = direction
 end
 
 function class:CalcNextPos()
