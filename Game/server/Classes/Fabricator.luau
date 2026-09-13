@@ -43,6 +43,7 @@ end
 
 function class:Generate()
 	shared.Classes.Threads:Spawn(function()
+		if not class.IsReady[self.Id] then return end
 		class.IsReady[self.Id] = nil
 		shared.GameClasses.Economy:IncrementCash(self.GenerationRate)
 		task.wait(self.GenerationInterval)
