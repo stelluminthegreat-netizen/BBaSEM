@@ -14,12 +14,12 @@ function class.initialize()
 		class.new(id, name)
 		class.Objects[id]:Initialize(pivot)
 	end)
-	actionEvent.OnClientEvent:Connect(function(id: string, action: string, direction: Vector3)
+	actionEvent.OnClientEvent:Connect(function(id: string, action: string, direction: Vector3, ...)
 		if direction then direction = Vector3.new(direction.X, 0, direction.Z) end
 		local enemy = class.Objects[id]
 		enemy:SetDirection(direction)
 		enemy:CalcNextPos()
-		enemy[action](enemy)
+		enemy[action](enemy, ...)
 	end)
 end
 
