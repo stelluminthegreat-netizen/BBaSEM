@@ -280,6 +280,7 @@ function class:IncrementHealth(n: number)
 	if not self.Health then return end
 	self.Health += n
 	if self.Health <= 0 then self:Die() end
+	actionEvent:FireAllClients(self.Id, "IncrementHealth", nil, self.Health)
 end
 
 function class:Die()
