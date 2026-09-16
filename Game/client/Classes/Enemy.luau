@@ -28,6 +28,7 @@ function class.new(id, name)
 	self.Id = id
 	self.Instance = game.ReplicatedStorage.ToClone.Client.Enemies[name]:Clone()
 	class.Objects[id] = self
+	self.HealthBar = shared.GameClasses.HealthBar.new(self.Instance.Head, self.MaxHealth)
 
 	return self
 end
@@ -77,6 +78,12 @@ end
 function class:Attack()
 	self.AnimTracks.Attack:Play()
 end
+
+function class:IncrementHealth(amount: number)
+	self.Health = amount
+	self.HealthBar:ChangeHealth(self.Health)
+end
+
 
 -- Sets the Pivot of all Enemies per tick
 local cont = true
