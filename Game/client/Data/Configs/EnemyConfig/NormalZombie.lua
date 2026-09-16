@@ -5,5 +5,7 @@ return {
         ["Idle"] = "ZombieIdle_001",
         ["Attack"] = "ZombieAttack_002"
     },
-    WalkSpeed = 0.1
+    WalkSpeed = 0.1,
+    MaxHealth = 100,
+    Health = 100
 }
