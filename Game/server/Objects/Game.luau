@@ -9,7 +9,8 @@ function random()
 end
 
 function self.start()
-    game.Players.PlayerAdded:Wait()
+    -- game.Players.PlayerAdded:Wait()
+    task.wait(3)
     print("Added")
     task.wait(7)
     print("Starting")
@@ -19,7 +20,7 @@ function self.start()
     task.spawn(function()
        while true do
         enemyStart += 1
-        if enemyStart == 100 then break end
+        if enemyStart == 5 then break end
         local pivot = CFrame.new(Vector3.new(random(), 0.5, random()))
         local enemy = shared.GameClasses.Enemy.new("NormalZombie")
         enemy:Init(pivot)
@@ -28,6 +29,7 @@ function self.start()
         print(enemyStart)
        end
     end)
+    task.wait(2)
     task.spawn(function()
         while task.wait(5) and num ~= 2 do
             num += 1
