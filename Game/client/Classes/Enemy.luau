@@ -98,6 +98,7 @@ function BulkMove()
 		cont = false
 		shared.Classes.Task:Wait(48 / 24)
 		cont = true
+		print("Tick")
 		for _, enemy in class.Moving do
 			-- Terminate if enemy NextPos/Direction has not yet been calculated
 			if not enemy.NextPos then continue end
