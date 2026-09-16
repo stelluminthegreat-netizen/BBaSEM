@@ -285,6 +285,8 @@ end
 
 function class:Die()
 	-- Do death stuff like animations 
+	actionEvent:FireAllClients(self.Id, "Destroy")
+
 	shared.Entities[self.Id] = nil
 
 	class.Objects[self.Id] = nil
