@@ -1,6 +1,7 @@
 return {
+    MaxHealth = 100,
     Health = 100,
-
+    
     Dmg = 5,
     WalkSpeed = 0.1,
     AttackSpd = 1,
