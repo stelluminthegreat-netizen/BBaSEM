@@ -84,6 +84,10 @@ function class:IncrementHealth(amount: number)
 	self.HealthBar:ChangeHealth(self.Health)
 end
 
+function class:Destroy()
+	self.Instance:Destroy()
+	shared.Classes.Libraries.DeepClean(self)
+end
 
 -- Sets the Pivot of all Enemies per tick
 local cont = true
