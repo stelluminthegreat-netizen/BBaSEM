@@ -20,6 +20,7 @@ end
 function self.start()
 	shared.Classes.Task.OnTick:Connect(function()
         for _, entity in shared.Entities do
+            if not entity.Instance then continue end
             local position = entity.Instance:GetPivot().Position
             local x, z = clamp(position.X, position.Z)
 

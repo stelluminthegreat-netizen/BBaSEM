@@ -17,6 +17,7 @@ function class.initialize()
 	actionEvent.OnClientEvent:Connect(function(id: string, action: string, direction: Vector3, ...)
 		if direction then direction = Vector3.new(direction.X, 0, direction.Z) end
 		local enemy = class.Objects[id]
+		if not enemy then return end
 		if action == "Move" then
 			enemy:SetDirection(direction)
 			enemy:CalcNextPos()
@@ -88,19 +89,14 @@ end
 
 function class:Destroy()
 	self.Instance:Destroy()
-	shared.Classes.Libraries.DeepClean(self)
+	shared.Libraries.Table.DeepClean(self)
 end
 
 -- Sets the Pivot of all Enemies per tick
-local cont = true
 
 function BulkMove()
-	shared.Classes.Task.OnTick:Connect(function()
-		if cont ~= true then return end
-		cont = false
-		shared.Classes.Task:Wait(48 / 24)
-		cont = true
-		print("Tick")
+	shared.Classes.Task.OnTick:Connect(function(_, tick)
+		if tick % 2 ~= 0 then return end
 		for _, enemy in class.Moving do
 			-- Terminate if enemy NextPos/Direction has not yet been calculated
 			if not enemy.NextPos then continue end

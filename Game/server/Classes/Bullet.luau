@@ -3,6 +3,12 @@ class.Objects = {}
 class.BulkMoveList = {}
 class.__index = class
 
+local overlapParams = OverlapParams.new()
+overlapParams.FilterType = Enum.RaycastFilterType.Include
+
+local raycastParams = RaycastParams.new()
+raycastParams.FilterType = Enum.RaycastFilterType.Include
+
 local count = 0
 
 local configs = script.Parent.Parent.Data.BulletConfig
@@ -39,10 +45,11 @@ end
 
 function class:DetectObstacle()
 	-- Get previous CFrame
+	raycastParams.FilterDescendantsInstances = shared.GameClasses.Enemy.ObjectsInstances
 	local origin = self.CFrame.Position
 	local direction = self.PrevCFrame.Position - origin
 
-	local result = workspace:Raycast(origin, direction)
+	local result = workspace:Raycast(origin, direction, raycastParams)
 	if not result then
 		return
 	end
@@ -60,7 +67,8 @@ end
 
 function class:Activate()
 	self.Instance:Destroy()
-	local results = workspace:GetPartBoundsInBox(CFrame.new(self.ObstaclePos), self.Hitbox)
+	overlapParams.FilterDescendantsInstances = shared.GameClasses.Enemy.ObjectsInstances
+	local results = workspace:GetPartBoundsInBox(CFrame.new(self.ObstaclePos), self.Hitbox, overlapParams)
 	local inRange = {}
 	-- Filter
 	for _, result in results do

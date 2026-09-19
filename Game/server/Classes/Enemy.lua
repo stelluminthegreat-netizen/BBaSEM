@@ -7,7 +7,7 @@ local class = {}
 class.__index = class
 
 class.Objects = {}
-class.EnemyInstances = {}
+class.ObjectsInstances = {}
 class.Moving = {}
 class.Idling = {}
 local enemyCount = 0
@@ -39,12 +39,16 @@ function class.new(type: string)
 	self.Type = type
 	self.Class = "Enemy"
 	class.Objects[self.Id] = self
-	table.insert(class.EnemyInstances, self.Instance)
+	table.insert(class.ObjectsInstances, self.Instance)
 
 	return self
 end
 
 function class:Init(pivot: CFrame)
+	if self.Dying then return end
+	self.StartTick = 0
+	self.CurrentTick = 0
+
 	newEvent:FireAllClients(self.Id, self.Type, pivot)
 
 	shared.Entities[self.Id] = self
@@ -57,6 +61,7 @@ function class:Init(pivot: CFrame)
 end
 
 function class:InitEvents()
+	if self.Dying then return end
 	for _, name in self.EventNames do
 		local event = shared.Classes.Event.new()
 		self.Events[name] = event
@@ -67,12 +72,14 @@ end
 
 
 function class:Start()
+	if self.Dying then return end
 	self:StopMove()
 end
 
 ------------------------ MOVEMENT SYSTEM
 
 function class:Move()
+	if self.Dying then return end
 	if class.Moving[self.Id] then return end
 	class.Idling[self.Id] = nil
 	class.Moving[self.Id] = self
@@ -81,6 +88,7 @@ function class:Move()
 end
 
 function class:StopMove()
+	if self.Dying then return end
 	if class.Idling[self.Id] then return end
 	actionEvent:FireAllClients(self.Id, "StopMove")
 	class.Moving[self.Id] = nil
@@ -88,13 +96,17 @@ function class:StopMove()
 end
 
 function class:CalcNextPos()
+	if self.Dying then return end
+	if not self.Instance then return end
 	local pivot = self.Instance:GetPivot()
 	self.NextPos = pivot.Position + pivot.LookVector * self.WalkSpeed
 end
 
 function class:CalcDirection()
+	if self.Dying then return end
 	-- Terminate if there is no target
 	if not self.Target then return end
+	if not self.Target.Instance then return end
 	-- Terminate if target did not move
 	local targetPivot = self.Target.Instance:GetPivot()
 	local samePos = self.PreviousTargetPos == targetPivot.Position
@@ -108,6 +120,8 @@ function class:CalcDirection()
 end
 
 function class:DetectObstacle()
+	if self.Dying then return end
+	if not self.Instance then return end
 	local pivot = self.Instance:GetPivot()
 
 	local origin = pivot.Position
@@ -115,7 +129,7 @@ function class:DetectObstacle()
 
 	local params = RaycastParams.new()
 	params.FilterType = Enum.RaycastFilterType.Exclude
-	params.FilterDescendantsInstances = class.EnemyInstances
+	params.FilterDescendantsInstances = class.ObjectsInstances
 
 	local result = workspace:Raycast(origin, direction, params)
 	if not result then
@@ -138,15 +152,24 @@ end
 ------------------------ TARGET SYSTEM
 
 function class:FindTarget()
+	if self.Dying then return end
+	if not self.Instance then return end
 	if self.Target then return end
 	self:StopMove()
 	-- Limited: Find a target in normal range
 	local pivot = self.Instance:GetPivot()
 	local x, z = pivot.X, pivot.Z
-	local result = RegionHandler:Get(x, z, "Target", 1)
+	local turretResult = RegionHandler:Get(x, z, "Turret", 1)
+	local fabricatorResult = RegionHandler:Get(x, z, "Fabricator", 1)
 	local inRange = {}
 
-	for _, tbl in result do
+	for _, tbl in turretResult do
+		for _, item in tbl do
+			table.insert(inRange, item)
+		end
+	end
+
+	for _, tbl in fabricatorResult do
 		for _, item in tbl do
 			table.insert(inRange, item)
 		end
@@ -191,6 +214,7 @@ function class:FindTarget()
 end
 
 function class:TargetLock(target: object)
+	if self.Dying then return end
 	self.Target = target
 	self:CalcNextPos()
 	self:CalcDirection()
@@ -199,6 +223,7 @@ function class:TargetLock(target: object)
 end
 
 function class:TargetDestroyed()
+	if self.Dying then return end
 	if not self.Called then self.Called = 0 end
 	self.Called += 1
 	if self.Called >= 50 then return end
@@ -207,6 +232,7 @@ function class:TargetDestroyed()
 end
 
 function class:MonitorTarget()
+	if self.Dying then return end
 	if not self.Target then return end
 	if self.Target.Instance.Parent ~= workspace then return end
 	if self.PrevTargId == self.Target.Id then return end
@@ -221,11 +247,14 @@ end
 
 ------------------------ ATTACK SYSTEM
 function class:Attack()
+	if self.Dying then return end
 	-- Debounce if an attack is in progress
+	if not self.State then return end
 	if self.State.Attacking == true then return end
 	self.State.Attacking = true
 	
 	-- Inform client to play attack anim
+	actionEvent:FireAllClients(self.Id, "Attack")
 
 	-- Delay to match hit 
 	task.wait(self.HitDelay)
@@ -241,13 +270,16 @@ function class:Attack()
 end
 
 function class:ActualAttack()
-		actionEvent:FireAllClients(self.Id, "Attack")
+	print("Attack")
+	if self.Dying then return end
+		if not self then return end
+		if not self.Instance then return end
 		table.clear(self.InAttRange)
 
 		-- Hitbox
 		local params = OverlapParams.new()
 		params.FilterType = Enum.RaycastFilterType.Exclude
-		params.FilterDescendantsInstances = class.EnemyInstances
+		params.FilterDescendantsInstances = class.ObjectsInstances
 
 		local pivot = self.Instance:GetPivot()
 		local hitBoxPos = pivot.Position + pivot.LookVector * 2
@@ -276,6 +308,7 @@ end
 
 ------------------------ SELF
 function class:IncrementHealth(n: number)
+	if self.Dying then return end
 	if not self then return end
 	if not self.Health then return end
 	self.Health += n
@@ -284,13 +317,16 @@ function class:IncrementHealth(n: number)
 end
 
 function class:Die()
+	if self.Dying then return end
+	self.Dying = true
 	-- Do death stuff like animations 
 	actionEvent:FireAllClients(self.Id, "Destroy")
+
 
 	shared.Entities[self.Id] = nil
 
 	class.Objects[self.Id] = nil
-	class.EnemyInstances[self.Id] = nil
+	class.ObjectsInstances[self.Id] = nil
 	class.Moving[self.Id] = nil
 	class.Idling[self.Id] = nil
 
@@ -313,6 +349,9 @@ function class:Die()
 end
 
 function class:Destroy()
+	if self.Destroying then return end
+	self.Destroying = true
+
 	for name, conn in self.Conns do conn:Disconnect() self.Conns[name] = nil end
 	for name, _ in self.Events do self.Events[name] = nil end
 	
@@ -321,18 +360,15 @@ function class:Destroy()
 end
 
 ------------------------ BULKS
-local cont = true
 
 -- Sets the Pivot of all Enemies per tick
 function BulkMoving()
-	shared.Classes.Task.OnTick:Connect(function()
-		if cont ~= true then return end
-		cont = false
-		shared.Classes.Task:Wait(48 / 24)
-		cont = true
+	shared.Classes.Task.OnTick:Connect(function(_, tick)
+		if tick % 2 ~= 0 then return end
 		for _, enemy in class.Moving do
 			-- Terminate if list is empty
 			if not enemy then return end
+			if enemy.Dying or enemy.Destroying then return end
 			
 			enemy:DetectObstacle()
 			enemy:CalcNextPos()
@@ -343,11 +379,12 @@ function BulkMoving()
 end
 
 function BulkIdling()
-	shared.Classes.Task.OnTick:Connect(function()
-		if cont ~= true then return end
+	shared.Classes.Task.OnTick:Connect(function(_, tick)
+		if tick % 2 ~= 0 then return end
 		for _, enemy in class.Idling do
 			-- Terminate if list is empty
 			if not enemy then return end
+			if enemy.Dying or enemy.Destroying then return end
 			-- Terminate if enemy NextPos/Direction has not yet been calculated
 			
 			if enemy.Target then enemy:Attack() end

@@ -32,13 +32,18 @@ function class.new(type: string)
 end
 
 function class:Init(position: Vector3)
+	if self.Dying then return end
 	self:InitEvents()
 	shared.Entities[self.Id] = self
 	self.Instance.Parent = workspace
 	self.Instance:PivotTo(self.Instance:GetPivot() - self.Instance:GetPivot().Position + position)
+
+	self.HealthBar = shared.GameClasses.HealthBar.new(self.Instance.Ref, self.MaxHealth)
+	print(self.HealthBar)
 end
 
 function class:InitEvents()
+	if self.Dying then return end
 	for _, name in self.EventNames do
 		local event = shared.Classes.Event.new()
 		self.Events[name] = event
@@ -46,11 +51,14 @@ function class:InitEvents()
 end
 
 function class:Start()
+	if self.Dying then return end
 	task.wait()
 	class.NoTarget[self.Id] = self
 end
 
 function class:FindTarget()
+	if self.Dying then return end
+	if not self.Instance then return end
 	if self.Target then 
 		class.HasTarget[self.Id] = self
 		class.NoTarget[self.Id] = nil
@@ -82,6 +90,7 @@ function class:FindTarget()
 end
 
 function class:TargetLock(target)
+	if self.Dying then return end
 	self.Target = target
 	self:MonitorTarget()
 	class.HasTarget[self.Id] = self
@@ -89,6 +98,8 @@ function class:TargetLock(target)
 end
 
 function class:Aim()
+	if self.Dying then return end
+	if not self.Instance then return end
 	if not self.Target then
 		class.HasTarget[self.Id] = nil
 		class.NoTarget[self.Id] = self
@@ -112,6 +123,8 @@ function class:Aim()
 end
 
 function class:Fire()
+	if self.Dying then return end
+	if not self.Instance then return end
 	local targetDirection = (self.Target.Instance.HumanoidRootPart.Position - self.Instance.Ref.Position).Unit
 	local look = self.Instance.Housing.Gun.Barrel.CFrame.LookVector
 	local dot = look:Dot(targetDirection)
@@ -128,8 +141,10 @@ function class:Fire()
 end
 
 function class:MonitorTarget()
+	if self.Dying then return end
 	if not self.Target then return end
 	self.Conns["MonitorTarg"] = self.Target.Events.Died:Connect(function()
+		if self.Dying or not self then return end
 		self.Target = nil
 		class.NoTarget[self.Id] = self
 		class.HasTarget[self.Id] = nil
@@ -156,13 +171,17 @@ function BulkFindTarget()
 end
 -- APIs
 function class:IncrementHealth(n: number)
+	if self.Dying then return end
 	self.Health += n
+	self.HealthBar:ChangeHealth(self.Health)
 	if self.Health > 0 then return end
 
 	self:Die()
 end
 
 function class:Die()
+	if self.Dying then return end
+	self.Dying = true
 	
 		-- Do death stuff like animations 
 	shared.Entities[self.Id] = nil

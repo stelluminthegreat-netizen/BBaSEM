@@ -1,11 +1,11 @@
 return {
-    MaxHealth = 100,
-    Health = 100,
+    MaxHealth = 10000,
+    Health = 10000,
     
     Dmg = 5,
     WalkSpeed = 0.1,
     AttackSpd = 1,
-    Hitbox = Vector3.new(3, 5, 3),
+    Hitbox = Vector3.new(1, 5, 1),
     CurrentTarget = "",
     FindTargetRange = Vector3.new(100, 100, 100),
     State = {

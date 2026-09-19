@@ -17,6 +17,7 @@ function class.new(TYPE: string)
 	self.Instance = game.ReplicatedStorage.ToClone.Server.Fabricators[TYPE]:Clone()
 	self.Id = TYPE .. "_" .. count
 	self.Instance:SetAttribute("Id", self.Id)
+
 	return self
 end
 
@@ -28,6 +29,8 @@ function class:Init(pos: Vector3)
 
 	self.Instance.Parent = workspace
 	self.Instance:PivotTo(self.Instance:GetPivot() - self.Instance:GetPivot().Position + pos)
+
+	self.HealthBar = shared.GameClasses.HealthBar.new(self.Instance.Head, self.MaxHealth)
 end
 
 function class:InitEvents()
@@ -43,10 +46,12 @@ end
 
 function class:Generate()
 	shared.Classes.Threads:Spawn(function()
+		if self.Dying then return end
 		if not class.IsReady[self.Id] then return end
 		class.IsReady[self.Id] = nil
 		shared.GameClasses.Economy:IncrementCash(self.GenerationRate)
 		task.wait(self.GenerationInterval)
+		if not class.IsReady[self.Id] then return end
 		class.IsReady[self.Id] = self
 	end)
 end
@@ -54,11 +59,13 @@ end
 function class:IncrementHealth(n: number)
 	if not self or not self.Health then return end
 	self.Health += n
+	self.HealthBar:ChangeHealth(self.Health)
 	if self.Health > 0 then return end
 	self:Die()
 end
 
 function class:Die()
+	self.Dying = true
 	-- Do death stuff like animations 
 	shared.Entities[self.Id] = nil
 
