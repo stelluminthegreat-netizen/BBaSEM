@@ -85,7 +85,7 @@ function class:Move()
 	class.Idling[self.Id] = nil
 	class.Moving[self.Id] = self
 
-	actionEvent:FireAllClients(self.Id, "Move", self.Direction)
+	actionEvent:FireAllClients(self.Id, "Move", self.Direction, self.StartTick)
 end
 
 function class:StopMove()
@@ -103,9 +103,8 @@ function class:CalcNextPos()
 	local pivot = self.Instance:GetPivot()
 	local currentTick = shared.Classes.Task.Tick
 
-	self.ElapsedTick = (currentTick - (self.StartTick or currentTick))
+	self.ElapsedTick = currentTick - (self.StartTick or currentTick)
 	self.NextPos = (self.StartPos or pivot.Position) + (self.Direction or pivot.LookVector) * self.ElapsedTick * self.WalkSpeed
-	print(self.StartPos, "||", self.Direction * self.ElapsedTick * self.WalkSpeed)
 end
 
 function class:CalcDirection()

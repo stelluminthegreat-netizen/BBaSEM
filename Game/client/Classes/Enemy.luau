@@ -19,8 +19,8 @@ function class.initialize()
 		local enemy = class.Objects[id]
 		if not enemy then return end
 		if action == "Move" then
-			enemy:SetDirection(direction)
-			enemy:CalcNextPos()
+			enemy:SetDirection(direction, ...)
+			enemy:CalcNextPos(...)
 		end
 		enemy[action](enemy, ...)
 	end)
@@ -68,14 +68,18 @@ function class:StopMove()
 	self.AnimTracks.Idle:Play()
 end
 
-function class:SetDirection(direction: Vector3)
+function class:SetDirection(direction: Vector3, startTick: number)
 	if not direction then return end
 	self.Direction = direction
+	self.StartTick = startTick
+	self.StartPos = self.Instance:GetPivot().Position
 end
 
 function class:CalcNextPos()
 	local pivot = self.Instance:GetPivot()
-	self.NextPos = pivot.Position + pivot.LookVector * self.WalkSpeed
+	local currentTick = shared.Classes.Task.Tick
+	self.ElapsedTick = currentTick - (self.StartTick or currentTick)
+	self.NextPos = (self.StartPos or pivot.Position) + self.Direction * self.ElapsedTick * self.WalkSpeed
 end
 
 function class:Attack()
