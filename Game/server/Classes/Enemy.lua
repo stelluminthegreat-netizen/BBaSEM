@@ -80,10 +80,11 @@ end
 
 function class:Move()
 	if self.Dying then return end
-	if class.Moving[self.Id] then return end
+	if class.Moving[self.Id] then return end	
+
 	class.Idling[self.Id] = nil
 	class.Moving[self.Id] = self
-	
+
 	actionEvent:FireAllClients(self.Id, "Move", self.Direction)
 end
 
@@ -97,9 +98,14 @@ end
 
 function class:CalcNextPos()
 	if self.Dying then return end
-	if not self.Instance then return end
+	if not self.Direction then return end
+
 	local pivot = self.Instance:GetPivot()
-	self.NextPos = pivot.Position + pivot.LookVector * self.WalkSpeed
+	local currentTick = shared.Classes.Task.Tick
+
+	self.ElapsedTick = (currentTick - (self.StartTick or currentTick))
+	self.NextPos = (self.StartPos or pivot.Position) + (self.Direction or pivot.LookVector) * self.ElapsedTick * self.WalkSpeed
+	print(self.StartPos, "||", self.Direction * self.ElapsedTick * self.WalkSpeed)
 end
 
 function class:CalcDirection()
@@ -112,8 +118,11 @@ function class:CalcDirection()
 	local samePos = self.PreviousTargetPos == targetPivot.Position
 	if self.PreviousTargetPos and samePos then return end
 
+	self.StartTick = shared.Classes.Task.Tick
+	self.StartPos = self.Instance:GetPivot().Position
+	
 	self.PreviousTargetPos = targetPivot.Position 
-	local direction = targetPivot.Position - self.NextPos
+	local direction = targetPivot.Position - (self.NextPos or self.Instance:GetPivot().Position)
 	direction = Vector3.new(direction.X, 0, direction.Z)
 
 	self.Direction = direction.Unit
@@ -365,15 +374,26 @@ end
 function BulkMoving()
 	shared.Classes.Task.OnTick:Connect(function(_, tick)
 		if tick % 2 ~= 0 then return end
+
 		for _, enemy in class.Moving do
-			-- Terminate if list is empty
 			if not enemy then return end
 			if enemy.Dying or enemy.Destroying then return end
-			
+
 			enemy:DetectObstacle()
+
+			-- Continue the current trajectory
 			enemy:CalcNextPos()
+
+			-- Actually move there
+			enemy.Instance:PivotTo(
+				CFrame.lookAt(
+					enemy.NextPos,
+					enemy.NextPos + enemy.Direction
+				)
+			)
+
+			-- Now redirect from the position we actually reached
 			enemy:CalcDirection()
-			enemy.Instance:PivotTo(CFrame.lookAt(enemy.NextPos, enemy.NextPos + enemy.Direction))
 		end
 	end)
 end
