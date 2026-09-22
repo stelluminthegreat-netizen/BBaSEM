@@ -1,6 +1,6 @@
 return {
-    MaxHealth = 10000,
-    Health = 10000,
+    MaxHealth = 200,
+    Health = 200,
     
     Dmg = 5,
     WalkSpeed = 0.1,
