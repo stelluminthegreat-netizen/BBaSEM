@@ -68,11 +68,12 @@ function class:StopMove()
 	self.AnimTracks.Idle:Play()
 end
 
-function class:SetDirection(direction: Vector3, startTick: number)
+function class:SetDirection(direction: Vector3, startTick: number, StartPos: Vector3)
 	if not direction then return end
+	print("CLIENT", direction)
 	self.Direction = direction
 	self.StartTick = startTick
-	self.StartPos = self.Instance:GetPivot().Position
+	self.StartPos = StartPos
 end
 
 function class:CalcNextPos()

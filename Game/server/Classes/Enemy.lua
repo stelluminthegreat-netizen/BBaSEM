@@ -84,8 +84,7 @@ function class:Move()
 
 	class.Idling[self.Id] = nil
 	class.Moving[self.Id] = self
-
-	actionEvent:FireAllClients(self.Id, "Move", self.Direction, self.StartTick)
+	actionEvent:FireAllClients(self.Id, "Move", self.Direction, self.StartTick, self.StartPos)
 end
 
 function class:StopMove()
@@ -121,7 +120,7 @@ function class:CalcDirection()
 	self.StartPos = self.Instance:GetPivot().Position
 	
 	self.PreviousTargetPos = targetPivot.Position 
-	local direction = targetPivot.Position - (self.NextPos or self.Instance:GetPivot().Position)
+	local direction = targetPivot.Position - (self.Instance:GetPivot().Position)
 	direction = Vector3.new(direction.X, 0, direction.Z)
 
 	self.Direction = direction.Unit
