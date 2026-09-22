@@ -9,10 +9,10 @@ function random()
 end
 
 function self.start()
-    -- game.Players.PlayerAdded:Wait()
+    game.Players.PlayerAdded:Wait()
     task.wait(3)
     print("Added")
-    task.wait(2 )
+    task.wait(2)
     print("Starting")
     local num = 0
     local turretStart = 0
@@ -20,7 +20,7 @@ function self.start()
     task.spawn(function()
        while true do
         enemyStart += 1
-        if enemyStart == 20 then break end
+        if enemyStart == 221 then break end
         local pivot = CFrame.new(Vector3.new(random(), 0, random()))
         local enemy = shared.GameClasses.Enemy.new("NormalZombie")
         enemy:Init(pivot)
@@ -44,7 +44,7 @@ function self.start()
     end)
 
     local num = 0
-    while num ~= 20 do
+    while num ~= 2000 do
         num += 5
         local fab = shared.GameClasses.Fabricator.new("Fabricator_T1")
         fab:Init(Vector3.new(num, 0, 0))
