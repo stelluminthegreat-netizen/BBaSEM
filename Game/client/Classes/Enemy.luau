@@ -70,7 +70,6 @@ end
 
 function class:SetDirection(direction: Vector3, startTick: number, StartPos: Vector3)
 	if not direction then return end
-	print("CLIENT", direction)
 	self.Direction = direction
 	self.StartTick = startTick
 	self.StartPos = StartPos
