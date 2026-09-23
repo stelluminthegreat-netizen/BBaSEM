@@ -61,8 +61,15 @@ function self.start()
 
         -- Calculate Budget
         self:CalcBudget()
-        print(self.Budget, self.WaveType, "Wave: " .. self.WaveCount)
+
+        -- Upgrade enemies if eligible
+        local upgEligible = self:CheckUpgEligibilty()
+        print(upgEligible)
     end
+end
+
+function self:CheckUpgEligibilty()
+    return self.UpgradeCheckpoints[self.WaveCount]
 end
 
 function self:CalcBudget()
