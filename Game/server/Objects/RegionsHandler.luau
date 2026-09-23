@@ -49,7 +49,7 @@ function self:Create(x: number, z: number)
         Position = {["z"] = z, ["x"] = x},
         Objects = {},
     }
-    -- self:Visualize(self.Regions[x][z])
+    self:Visualize(self.Regions[x][z])
 end
 
 function self:Expand()
@@ -103,6 +103,35 @@ function self:Remove(x: number, z: number, object, class: string)
     self.Regions[x][z][class][object.Id] = nil   
 end
 
+function self:GetNearbyRegions(x: number, z: number, radius: number)
+    x, z = clamp(x, z)
+    local vals = {0}
+    local nearby = {}
+    local n = 0 -- Negative value
+    local p = 0 -- Positive value
+
+    for i = 1, radius do
+        p += self.SIZE
+        n -= self.SIZE
+
+        table.insert(vals, p)
+        table.insert(vals, n)
+    end
+
+    for _, xVal in vals do
+        for _, zVal in vals do
+            local xReg = self.Regions[x + xVal]
+            if not xReg then continue end
+            local zReg = self.Regions[x + xVal][z + zVal]
+            if not zReg then continue end
+            if not nearby[x + xVal] then nearby[x + xVal] = {} end
+            nearby[x + xVal][z + zVal] = zReg
+        end
+    end
+
+    return nearby
+end
+
 function self:Get(x: number, z: number, class: string, radius: number)
     x, z = clamp(x, z)
     local vals = {0}
@@ -142,6 +171,8 @@ function self:Visualize(region)
     part.CanQuery = false
     part.CanTouch = false
     part.Anchored = true
+
+    region.Instance = part
 end
 
 function clamp(x: number, z: number)
