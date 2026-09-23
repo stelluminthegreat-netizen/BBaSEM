@@ -76,6 +76,7 @@ end
 
 function class:Activate()
 	-- self.Instance:Destroy()
+	activateEvent:FireAllClients(self.Id)
 	overlapParams.FilterDescendantsInstances = shared.GameClasses.Enemy.ObjectsInstances
 	local results = workspace:GetPartBoundsInBox(CFrame.new(self.ObstaclePos), self.Hitbox, overlapParams)
 	local inRange = {}
@@ -91,6 +92,7 @@ function class:Activate()
 	for id, object in inRange do
 		object:IncrementHealth(-self.Dmg)
 	end
+	task.wait(self.DestroyDelay)
 	self:Destroy()
 end
 

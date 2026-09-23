@@ -16,7 +16,7 @@ function class.initialize()
 	end)
 
 	activateEvent.OnClientEvent:Connect(function(id: string)
-		
+		class.Started[id]:Activate()
 	end)
 end
 
@@ -45,6 +45,20 @@ function class:Move()
 	local elapsed = current - self.StartTick
 
 	self.Instance.CFrame = self.StartCFrame + self.StartCFrame.LookVector * elapsed * self.Speed
+end
+
+function class:Activate()
+	class.Started[self.Id] = nil
+	self.Instance.Shape = "Ball"
+	self.Instance.Size = Vector3.new(3, 3, 3)
+	self.Instance.Transparency = 0.5
+	task.wait(self.DestroyDelay)
+	self:Destroy()
+end
+
+function class:Destroy()
+	self.Instance:Destroy()
+	shared.Libraries.Table.DeepClean(self)
 end
 
 function BulkMove()
