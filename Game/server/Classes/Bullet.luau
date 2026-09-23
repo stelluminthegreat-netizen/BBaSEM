@@ -12,6 +12,8 @@ raycastParams.FilterType = Enum.RaycastFilterType.Include
 local count = 0
 
 local configs = script.Parent.Parent.Data.BulletConfig
+local newEvent = game.ReplicatedStorage.Remotes.Events.NewBullet
+local activateEvent = game.ReplicatedStorage.Remotes.Events.ActivateBullet
 
 function class.initialize()
 	BulkMove()
@@ -22,9 +24,10 @@ function class.new(TYPE: string)
 	local config = shared.Libraries.Table.DeepClone(require(configs[TYPE]))
 	local self = setmetatable(config, class)
 	self.Id = TYPE .. count
+	self.Type = TYPE
 
-	self.Instance = game.ReplicatedStorage.Pools.Bullets[TYPE]:Clone()
-	self.Instance.Parent = workspace
+	-- self.Instance = game.ReplicatedStorage.Pools.Bullets[TYPE]:Clone()
+	-- self.Instance.Parent = workspace
 
 	class.Objects[self.Id] = self
 	return self
@@ -32,6 +35,9 @@ end
 
 function class:Initialize(pos: Vector3, dir: Vector3)
 	self.CFrame = CFrame.lookAt(pos, pos + dir)
+	self.StartCFrame = self.CFrame
+	-- self.Instance.CFrame = self.CFrame
+
 	shared.Classes.Threads:Spawn(function()
 		task.wait(5)
 		if class.Objects[self.Id] == nil then return end
@@ -40,6 +46,9 @@ function class:Initialize(pos: Vector3, dir: Vector3)
 end
 
 function class:Start()
+	self.StartTick = shared.Classes.Task.Tick
+	
+	newEvent:FireAllClients(self.Type, self.Id, self.CFrame, self.StartTick)
 	class.BulkMoveList[self.Id] = self
 end
 
@@ -66,7 +75,7 @@ function class:Stop()
 end
 
 function class:Activate()
-	self.Instance:Destroy()
+	-- self.Instance:Destroy()
 	overlapParams.FilterDescendantsInstances = shared.GameClasses.Enemy.ObjectsInstances
 	local results = workspace:GetPartBoundsInBox(CFrame.new(self.ObstaclePos), self.Hitbox, overlapParams)
 	local inRange = {}
@@ -102,9 +111,15 @@ end
 function BulkMove()
 	shared.Classes.Task.OnTick:Connect(function()
 		for _, bullet in class.BulkMoveList do
+			if not bullet then continue end
+			local current = shared.Classes.Task.Tick
+			local elapsed = current - bullet.StartTick
+			
+			
 			bullet.PrevCFrame = bullet.CFrame
-			bullet.CFrame = bullet.CFrame + (bullet.CFrame.LookVector * bullet.Speed)
-			bullet:Visualize()
+			bullet.CFrame = bullet.StartCFrame + bullet.StartCFrame.LookVector * elapsed * bullet.Speed
+
+			-- bullet:Visualize()
 			bullet:DetectObstacle()	
 		end
 	end)
