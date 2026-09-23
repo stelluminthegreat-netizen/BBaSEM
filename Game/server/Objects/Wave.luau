@@ -37,14 +37,37 @@ function self.initialize()
                 Cost = 2,
                 Rarity = 0.5
             }
+        },
+        [2] = {
+            AbnormalZombie_001 = {
+                Cost = 3,
+                Rarity = 0.5
+            },
+            Destroyer = {
+                Cost = 3,
+                Rarity = 0.2
+            }
+        },
+        [3] = {
+            Mutant = {
+                Cost = 4,
+                Rarity = 0.5
+            },
+            Intelligent = {
+                Cost = 3,
+                Rarity = 0.2
+            }
         }
     }
     self.EnemyTypes = self.EnemyLevels[1]
     self.CurrentEnemyTypes = {}
     self.UpgradeCheckpoints = {
-        [25] = true
+        [1] = true,
+        [25] = true,
+        [30] = true
     }
     self.SelectedEnemies = {}
+    self.CurentLevel = 0
 
     -- ETC
     self.AvailRegions = {}
@@ -52,7 +75,7 @@ function self.initialize()
 end
 
 function self.start()
-    while task.wait(0.5) do
+    while task.wait(0.1) do
         -- Increment Wave count
         self.WaveCount += 1
 
@@ -64,8 +87,14 @@ function self.start()
 
         -- Upgrade enemies if eligible
         local upgEligible = self:CheckUpgEligibilty()
-        print(upgEligible)
+        if upgEligible then self:UpgradeEnemies() end
+        print(self.CurrentEnemyTypes, upgEligible)
     end
+end
+
+function self:UpgradeEnemies()
+    self.CurentLevel += 1
+    self.CurrentEnemyTypes = self.EnemyLevels[self.CurentLevel]
 end
 
 function self:CheckUpgEligibilty()
