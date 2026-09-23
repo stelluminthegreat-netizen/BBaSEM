@@ -52,16 +52,26 @@ function self.initialize()
 end
 
 function self.start()
-    -- Increment Wave count
-    self.WaveCount += 1
     while task.wait(0.5) do
+        -- Increment Wave count
+        self.WaveCount += 1
+
+        -- Select Wave Type
         self:SelectWaveType()
+
+        -- Calculate Budget
+        self:CalcBudget()
+        print(self.Budget, self.WaveType, "Wave: " .. self.WaveCount)
     end
-    -- Select Wave Type
+end
+
+function self:CalcBudget()
+    local currentWave = self.WaveTypes[self.WaveType]
+    self.Budget = math.round((100 + self.WaveCount ^ 1.5)* currentWave.Difficulty)
 end
 
 function self:SelectWaveType()
-    if self.PreviousWave == "Crisis" then self.WaveType = "Recovery" self.PreviousWave = "" print(self.WaveType) return end
+    if self.PreviousWave == "Crisis" then self.WaveType = "Recovery" self.PreviousWave = "" return end
     local randomNum = math.random()
 
     if randomNum <= 0.6 and randomNum >= 0 then
@@ -78,6 +88,7 @@ function self:SelectWaveType()
     self.PreviousWave = self.WaveType
     return
 end
+
 
 
 return self
