@@ -88,9 +88,62 @@ function self.start()
         -- Upgrade enemies if eligible
         local upgEligible = self:CheckUpgEligibilty()
         if upgEligible then self:UpgradeEnemies() end
-        print(self.CurrentEnemyTypes, upgEligible)
+
+        -- GetAvailable regions
+        self:GetAvailRegions()
     end
 end
+
+function self:GetAvailRegions()
+    local regionsHandler = shared.GameClasses.RegionsHandler
+    local initialOccupied = {}
+    local finalOccupied = {}
+    local available = {}
+
+    -- Get occupied regions
+    for x, zS in regionsHandler.Regions do
+        for z, region in zS do
+            local isOccupied = next(region.Turret or {}) or next(region.Fabricator or {}) or next(region.Wall or {})
+            if isOccupied then
+                initialOccupied[x .. z] = region
+                finalOccupied[x .. z] = region
+                -- region.Instance.BrickColor = BrickColor.Red()
+            end
+        end
+    end
+
+    -- Add nearby regions of occupied regions to occupied regions
+    -- To give distance allowance
+    for _, region in initialOccupied do
+        local surroundings = regionsHandler:GetNearbyRegions(region.Position.x, region.Position.z, 1)
+        for x, Zs in surroundings do
+            for z, nearbyRegion in Zs do
+                if finalOccupied[x .. z] then continue end
+                finalOccupied[x .. z] = nearbyRegion
+                -- nearbyRegion.Instance.BrickColor = BrickColor.Yellow()
+            end
+        end
+    end
+
+    -- Get unoccupied regions near regions in occupied list
+    for _, region in finalOccupied do
+        local nearbyRegions = regionsHandler:GetNearbyRegions(region.Position.x, region.Position.z, 1)
+        for x, zS in nearbyRegions do
+            for z, nearbyRegion in zS do
+                -- Skip if region is occupied
+                if finalOccupied[x .. z] then continue end
+                if available[x .. z] then continue end
+
+                available[x .. z] = nearbyRegion
+                -- nearbyRegion.Instance.BrickColor = BrickColor.Green()
+            end
+        end
+    end
+
+    return available
+end
+
+
 
 function self:UpgradeEnemies()
     self.CurentLevel += 1
