@@ -35,27 +35,31 @@ function self.initialize()
         [1] = {
             NormalZombie_001 = {
                 Cost = 2,
-                Rarity = 0.5
+                Rarity = 1
             }
         },
         [2] = {
             AbnormalZombie_001 = {
                 Cost = 3,
-                Rarity = 0.5
+                Rarity = 5
             },
             Destroyer = {
                 Cost = 3,
-                Rarity = 0.2
+                Rarity = 2
             }
         },
         [3] = {
             Mutant = {
                 Cost = 4,
-                Rarity = 0.5
+                Rarity = 5
             },
             Intelligent = {
                 Cost = 3,
-                Rarity = 0.2
+                Rarity = 1
+            },
+            Boss = {
+                Cost = 3,
+                Rarity = 0.5    
             }
         }
     }
@@ -91,6 +95,36 @@ function self.start()
 
         -- GetAvailable regions
         self:GetAvailRegions()
+
+        -- Select random enemies
+        self:SelectRandomEnemies()
+    end
+end
+
+function self:SelectRandomEnemies()
+    table.clear(self.SelectedEnemies)
+    while self.Budget > 0 do
+        local selected = self:SelectRandomEnemy()
+        local info = self.CurrentEnemyTypes[selected]
+
+        self.Budget -= info.Cost
+        table.insert(self.SelectedEnemies, selected)
+    end
+    print("SELECTED", self.WaveCount ,self.SelectedEnemies)
+end
+
+function self:SelectRandomEnemy()
+    local totalWeight = 0
+
+    for _, info in self.CurrentEnemyTypes do totalWeight += info.Rarity end
+
+    local random = math.random() * totalWeight
+    local cum = 0
+
+    for enemy, info in self.CurrentEnemyTypes do
+        cum += info.Rarity
+
+        if random <= cum then  return enemy end
     end
 end
 
