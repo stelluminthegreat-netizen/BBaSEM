@@ -1,3 +1,4 @@
+local RegionsHandler = require(script.Parent.RegionsHandler)
 local self = {}
 
 function self.initialize()
@@ -9,8 +10,9 @@ function random()
 end
 
 function self.start()
-    game.Players.PlayerAdded:Wait()
-    task.wait(3)
+    task.wait(1)
+    -- game.Players.PlayerAdded:Wait()
+    -- task.wait(3)
     print("Added")
     -- task.wait(2)
     print("Starting")
@@ -31,15 +33,15 @@ function self.start()
     end)
     -- task.wait(1)
     task.spawn(function()
-        while task.wait(0) and num ~= 2 do
+        while task.wait() and num ~= 2 do
             num += 1
 
             turretStart += 5
             local turret = shared.GameClasses.Turret.new("MG_001")
-            turret:Init(Vector3.new(0, 0.1, -turretStart))
+            turret:Init(Vector3.new(random(), 0.1, random()))
             turret:Start()
 
-            -- task.wait(20)
+            task.wait(20)
         end
     end)
 
