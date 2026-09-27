@@ -1,4 +1,3 @@
-local MatchmakingService = game:GetService("MatchmakingService")
 local self = {}
 
 function self.initialize()
@@ -7,7 +6,7 @@ function self.initialize()
     self.Budget = 0
     self.EndWait = 0
     self.StartWait = 30
-    self.Cleared = false
+    self.Cleared = true
     self.WaveTypes = {
         Recovery = {
             Difficulty = 0.7,
@@ -79,20 +78,27 @@ function self.initialize()
     }
     self.SelectedEnemies = {}
     self.CurentLevel = 0
+    self.EnemyCount = 0
 
     -- ETC
     self.AvailRegions = {}
-
+    self:ClearedListener()
 end
 
 function self.start()
-    task.wait(2)
     while true do
         -- Increment Wave count
         self.WaveCount += 1
 
         -- Select Wave Type
         self:SelectWaveType()
+
+        warn("Wave " .. self.WaveCount)
+        warn("Next wave: " .. self.WaveType)
+
+        -- Start wait
+        self:StartWaveWait()
+        self.Cleared = false
 
         -- Calculate Budget
         self:CalcBudget()
@@ -108,9 +114,34 @@ function self.start()
         self:SelectRandomEnemies()
         self:RandomEnemySpawn()
 
+        self.Cleared = false
+
         -- End wait
         self:CalcEndWait()
         self:EndWaveWait()
+    end
+end
+
+function self:OnCleared()
+    self.Cleared = true
+    warn("Wave " .. self.WaveCount .. " of type " .. self.WaveType .. " Cleared!")
+end
+
+function self:ClearedListener()
+    shared.Classes.Threads:Spawn(function()
+        shared.Classes.Task.OnTick:Connect(function()
+            if self.EnemyCount > 0 then return end
+            if self.Cleared == true then return end
+            self:OnCleared()
+        end)
+    end)
+end
+
+function self:StartWaveWait()
+    for i = 30, 0, -1 do
+        task.wait(1)
+        local secs = ConvertToDisplayable(i)
+        print("Starting in 00:" .. secs)
     end
 end
 
@@ -125,15 +156,15 @@ function self:EndWaveWait()
     minsDisplay = ConvertToDisplayable(currentMins)
     secsDisplay = ConvertToDisplayable(currentSecs)
 
-    warn("CURRENT", currentMins .. " : "  .. currentSecs)
-
     for min = currentMins, 0, -1 do
         minsDisplay = ConvertToDisplayable(min)
         for sec = currentSecs, 0, -1 do
             secsDisplay = ConvertToDisplayable(sec)
-            print(minsDisplay .. " : " .. secsDisplay)
+            warn("Wave " .. self.WaveCount .. " of type " .. self.WaveType .. " ending in " .. minsDisplay .. ":" .. secsDisplay)
+            if self.Cleared == true then break end
             task.wait(1)
         end
+        if self.Cleared == true then break end
         currentSecs = 59
     end
 end
@@ -167,6 +198,13 @@ function self:RandomEnemySpawn()
         ENEMY:Init(CFrame.new(Vector3.new(randomSelectedLoc.X, 0.1, randomSelectedLoc.Y)))
         ENEMY:Start()
 
+        self.EnemyCount += 1
+
+        local conn
+        conn = ENEMY.Events.Died:Connect(function()
+            self.EnemyCount -= 1
+            conn:Disconnect()
+        end)
     end
 
 end
