@@ -1,4 +1,5 @@
 local self = {}
+local updateEvent = game.ReplicatedStorage.Remotes.Events.UpdWaveUI 
 
 function self.initialize()
     -- WAVE RELATED
@@ -14,15 +15,15 @@ function self.initialize()
         },
         Normal = {
             Difficulty = 1.4,
-            Rarity = 0.6
+            Rarity = 0.75
         },
         Hard = {
             Difficulty = 1.7,
-            Rarity = 0.4
+            Rarity = 0.2
         },
         Crisis = {
             Difficulty = 2.5,
-            Rarity = 0.1
+            Rarity = 0.05
         },
     }
     self.WaitInSecs = 0
@@ -86,16 +87,18 @@ function self.initialize()
 end
 
 function self.start()
-    while true do
+    task.wait(2)
+    while task.wait(4) do
         -- Increment Wave count
         self.WaveCount += 1
 
         -- Select Wave Type
         self:SelectWaveType()
-
-        warn("Wave " .. self.WaveCount)
-        warn("Next wave: " .. self.WaveType)
-
+        local color = SelectColor()
+        updateEvent:FireAllClients(
+            "TypeUI",
+            'Wave Type: <font color="' .. color .. '">' .. self.WaveType .. "</font>"
+        )
         -- Start wait
         self:StartWaveWait()
         self.Cleared = false
@@ -122,9 +125,17 @@ function self.start()
     end
 end
 
+function SelectColor()
+    if self.WaveType == "Recovery" then return "#3498DB" end
+    if self.WaveType == "Normal" then return "#2ECC71" end
+    if self.WaveType == "Hard" then return "#F39C12" end
+    if self.WaveType == "Crisis" then return "#E74C3C" end
+end
+
 function self:OnCleared()
     self.Cleared = true
-    warn("Wave " .. self.WaveCount .. " of type " .. self.WaveType .. " Cleared!")
+    local txt = '<font color="#2ECC71">Wave ' .. self.WaveCount .. ' Cleared!</font>'   
+    updateEvent:FireAllClients("StateUI", txt)
 end
 
 function self:ClearedListener()
@@ -139,9 +150,10 @@ end
 
 function self:StartWaveWait()
     for i = 30, 0, -1 do
-        task.wait(1)
         local secs = ConvertToDisplayable(i)
-        print("Starting in 00:" .. secs)
+        local text = "Wave " .. self.WaveCount .. " starting in 00:" .. secs
+        updateEvent:FireAllClients("StateUI", text)
+        task.wait(1)
     end
 end
 
@@ -159,9 +171,11 @@ function self:EndWaveWait()
     for min = currentMins, 0, -1 do
         minsDisplay = ConvertToDisplayable(min)
         for sec = currentSecs, 0, -1 do
-            secsDisplay = ConvertToDisplayable(sec)
-            warn("Wave " .. self.WaveCount .. " of type " .. self.WaveType .. " ending in " .. minsDisplay .. ":" .. secsDisplay)
             if self.Cleared == true then break end
+
+            secsDisplay = ConvertToDisplayable(sec)
+            local txt = "Wave " .. self.WaveCount .. " ending in " .. minsDisplay .. ":" .. secsDisplay
+            updateEvent:FireAllClients("StateUI", txt)
             task.wait(1)
         end
         if self.Cleared == true then break end
@@ -319,10 +333,10 @@ function self:SelectWaveType()
     if self.PreviousWave == "Crisis" then self.WaveType = "Recovery" self.PreviousWave = "" return end
     local randomNum = math.random()
 
-    if randomNum <= 0.6 and randomNum >= 0 then
+    if randomNum <= 0.75 and randomNum >= 0 then
         -- Normal
         self.WaveType = "Normal"
-    elseif randomNum <= 0.9 and randomNum > 0.6 then
+    elseif randomNum <= 0.95 and randomNum > 0.75 then
         -- Hard
         self.WaveType = "Hard"
     else
