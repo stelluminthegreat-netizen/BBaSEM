@@ -110,12 +110,44 @@ function self.start()
 
         -- End wait
         self:CalcEndWait()
-        task.wait(1)
+        self:EndWaveWait()
     end
 end
 
+function self:EndWaveWait()
+    local minsDisplay
+    local secsDisplay
+
+    local currentSecs = 0
+    local currentMins = self.WaitInMins
+    if self.WaitInSecs > 0 then currentSecs = self.WaitInSecs end
+
+    minsDisplay = ConvertToDisplayable(currentMins)
+    secsDisplay = ConvertToDisplayable(currentSecs)
+
+    warn("CURRENT", currentMins .. " : "  .. currentSecs)
+
+    for min = currentMins, 0, -1 do
+        minsDisplay = ConvertToDisplayable(min)
+        for sec = currentSecs, 0, -1 do
+            secsDisplay = ConvertToDisplayable(sec)
+            print(minsDisplay .. " : " .. secsDisplay)
+            task.wait(1)
+        end
+        currentSecs = 59
+    end
+end
+
+function ConvertToDisplayable(time: number)
+    if time < 10 then
+        time = "0" .. time
+    end
+
+    return tostring(time)
+end
+
 function self:CalcEndWait()
-    local waitInSecs = math.ceil( 30 * self.WaveTypes[self.WaveType].Difficulty * self.WaveCount ^ 0.5)
+    local waitInSecs = math.ceil( 30 * self.WaveTypes[self.WaveType].Difficulty * self.WaveCount ^ 0.7)
 
     self.WaitInSecs = waitInSecs  % 60 
     self.WaitInMins = math.floor(waitInSecs / 60)
