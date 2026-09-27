@@ -1,5 +1,3 @@
-local ServerScriptService = game:GetService("ServerScriptService")
-local NormalZombie = require(ServerScriptService.S_Server.Data.EnemyConfig.NormalZombie)
 local self = {}
 
 function self.initialize()
@@ -35,8 +33,16 @@ function self.initialize()
         [1] = {
             NormalZombie_001 = {
                 Cost = 2,
-                Rarity = 1
-            }
+                Rarity = 7
+            },
+            Destroyer_001 = {
+                Cost = 4,
+                Rarity = 3
+            },
+            Tank_001 = {
+                Cost = 5,
+                Rarity = 2
+            },
         },
         [2] = {
             AbnormalZombie_001 = {
@@ -79,7 +85,8 @@ function self.initialize()
 end
 
 function self.start()
-    while task.wait(0.1) do
+    task.wait(2)
+    while true do
         -- Increment Wave count
         self.WaveCount += 1
 
@@ -94,11 +101,47 @@ function self.start()
         if upgEligible then self:UpgradeEnemies() end
 
         -- GetAvailable regions
-        self:GetAvailRegions()
+        self.AvailRegions = self:GetAvailRegions()
 
-        -- Select random enemies
+        -- Spawn random enemies
         self:SelectRandomEnemies()
+        self:RandomEnemySpawn()
+
+        task.wait(30)
     end
+end
+
+function self:RandomEnemySpawn()
+    for index, enemy in self.SelectedEnemies do
+        -- Get random region
+        local _, region = GetRandomEntry(self.AvailRegions)
+        local regionLoc = Vector2.new(region.Position.x, region.Position.z)
+        local random = math.random
+
+        local randomSelectedLoc = Vector2.new(random(regionLoc.X, regionLoc.X + 50), random(regionLoc.Y, regionLoc.Y + 50))
+
+        -- Spawn enemy in that region
+        local ENEMY = shared.GameClasses.Enemy.new(enemy)
+        ENEMY:Init(CFrame.new(Vector3.new(randomSelectedLoc.X, 0.1, randomSelectedLoc.Y)))
+        ENEMY:Start()
+
+    end
+
+end
+
+function GetRandomEntry(dictionary)
+    local entries = {}
+
+    for key, value in dictionary do
+        table.insert(entries, {
+            key = key,
+            value = value
+        })
+    end
+
+    local entry = entries[math.random(1, #entries)]
+
+    return entry.key, entry.value
 end
 
 function self:SelectRandomEnemies()
