@@ -1,3 +1,4 @@
+local MatchmakingService = game:GetService("MatchmakingService")
 local self = {}
 
 function self.initialize()
@@ -107,8 +108,17 @@ function self.start()
         self:SelectRandomEnemies()
         self:RandomEnemySpawn()
 
-        task.wait(30)
+        -- End wait
+        self:CalcEndWait()
+        task.wait(1)
     end
+end
+
+function self:CalcEndWait()
+    local waitInSecs = math.ceil( 30 * self.WaveTypes[self.WaveType].Difficulty * self.WaveCount ^ 0.5)
+
+    self.WaitInSecs = waitInSecs  % 60 
+    self.WaitInMins = math.floor(waitInSecs / 60)
 end
 
 function self:RandomEnemySpawn()
@@ -153,7 +163,6 @@ function self:SelectRandomEnemies()
         self.Budget -= info.Cost
         table.insert(self.SelectedEnemies, selected)
     end
-    print("SELECTED", self.WaveCount ,self.SelectedEnemies)
 end
 
 function self:SelectRandomEnemy()
