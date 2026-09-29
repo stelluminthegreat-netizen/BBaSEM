@@ -3,8 +3,10 @@ while not shared.Loaded do
 end
 
 shared["GameClasses"] = {}
+shared["UIConfigs"] = {}
 
 for index, descendant in script.Parent:GetDescendants() do
+	if descendant.ClassName == "ModuleScript" and require(descendant).UIConfig then shared.UIConfigs[descendant.Name] = require(descendant) continue end
 	if descendant.ClassName == "ModuleScript" then shared.GameClasses[descendant.Name] = require(descendant) end
 end
 
