@@ -49,7 +49,7 @@ function self:Create(x: number, z: number)
         Position = {["z"] = z, ["x"] = x},
         Objects = {},
     }
-    self:Visualize(self.Regions[x][z])
+    -- self:Visualize(self.Regions[x][z])
 end
 
 function self:Expand()
