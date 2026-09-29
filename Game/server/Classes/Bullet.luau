@@ -39,9 +39,9 @@ function class:Initialize(pos: Vector3, dir: Vector3)
 	-- self.Instance.CFrame = self.CFrame
 
 	shared.Classes.Threads:Spawn(function()
-		task.wait(5)
+		task.wait(2)
 		if class.Objects[self.Id] == nil then return end
-		self:Destroy()
+		self:Activate()
 	end)
 end
 
