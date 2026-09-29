@@ -181,6 +181,8 @@ function self:EndWaveWait()
         if self.Cleared == true then break end
         currentSecs = 59
     end
+
+    updateEvent:FireAllClients("StateUI" ,'<font color="#E74C3C">Wave ' .. self.WaveCount .. ' Ended.</font>')
 end
 
 function ConvertToDisplayable(time: number)
