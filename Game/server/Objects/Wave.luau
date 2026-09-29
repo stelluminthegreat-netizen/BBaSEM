@@ -312,15 +312,17 @@ function self:GetAvailRegions()
     -- If there is no available regions initially
     if self.WaveCount < 2 and next(available) == nil then
         available["00"] = shared.GameClasses.RegionsHandler.Regions[0][0]
+        self.PrevAvailRegions = available
         warn("INITIAL: No availble region. Returning:", available)
         return available
     end
 
     -- If there is no available region after getting wiped out
     if next(available) == nil then
-        
-        return
+        return self.PrevAvailRegions
     end
+
+    self.PrevAvailRegions = available
 
     return available
 end
