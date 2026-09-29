@@ -149,7 +149,7 @@ function self:ClearedListener()
 end
 
 function self:StartWaveWait()
-    for i = 30, 0, -1 do
+    for i = 3, 0, -1 do
         local secs = ConvertToDisplayable(i)
         local text = "Wave " .. self.WaveCount .. " starting in 00:" .. secs
         updateEvent:FireAllClients("StateUI", text)
@@ -309,6 +309,18 @@ function self:GetAvailRegions()
             end
         end
     end
+    -- If there is no available regions initially
+    if self.WaveCount < 2 and next(available) == nil then
+        available["00"] = shared.GameClasses.RegionsHandler.Regions[0][0]
+        warn("INITIAL: No availble region. Returning:", available)
+        return available
+    end
+
+    -- If there is no available region after getting wiped out
+    if next(available) == nil then
+        
+        return
+    end
 
     return available
 end
@@ -326,7 +338,7 @@ end
 
 function self:CalcBudget()
     local currentWave = self.WaveTypes[self.WaveType]
-    self.Budget = math.round((100 + self.WaveCount ^ 1.5)* currentWave.Difficulty)
+    self.Budget = math.round((10 + self.WaveCount ^ 1.5)* currentWave.Difficulty)
 end
 
 function self:SelectWaveType()
