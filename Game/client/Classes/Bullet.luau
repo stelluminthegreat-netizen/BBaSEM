@@ -15,8 +15,8 @@ function class.initialize()
 		class.new(type, id, pivot, startTick)
 	end)
 
-	activateEvent.OnClientEvent:Connect(function(id: string)
-		class.Started[id]:Activate()
+	activateEvent.OnClientEvent:Connect(function(id: string, obsPos: Vector3)
+		class.Started[id]:Activate(obsPos)
 	end)
 end
 
@@ -47,11 +47,12 @@ function class:Move()
 	self.Instance.CFrame = self.StartCFrame + self.StartCFrame.LookVector * elapsed * self.Speed
 end
 
-function class:Activate()
+function class:Activate(pos: Vector3)
 	class.Started[self.Id] = nil
 	self.Instance.Shape = "Ball"
 	self.Instance.Size = Vector3.new(3, 3, 3)
 	self.Instance.Transparency = 0.5
+	self.Instance.Position = pos
 	task.wait(self.DestroyDelay)
 	self:Destroy()
 end

@@ -76,9 +76,13 @@ end
 
 function class:Activate()
 	-- self.Instance:Destroy()
-	activateEvent:FireAllClients(self.Id)
+	if self.Activated then return end
+	self.Activated = true
+	
+	activateEvent:FireAllClients(self.Id, self.ObstaclePos or self.CFrame.Position)
+
 	overlapParams.FilterDescendantsInstances = shared.GameClasses.Enemy.ObjectsInstances
-	local results = workspace:GetPartBoundsInBox(CFrame.new(self.ObstaclePos), self.Hitbox, overlapParams)
+	local results = workspace:GetPartBoundsInBox(CFrame.new(self.ObstaclePos or self.CFrame.Position), self.Hitbox, overlapParams)
 	local inRange = {}
 	-- Filter
 	for _, result in results do
