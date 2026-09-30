@@ -29,7 +29,7 @@ end
 function class.new(id, name)
 	local self = setmetatable(shared.Libraries.Table.DeepClone(require(configs[name])), class)
 	self.Id = id
-	self.Instance = game.ReplicatedStorage.ToClone.Client.Enemies[name]:Clone()
+	self.Instance = game.ReplicatedStorage.ToClone.Client.Enemies["T" .. self.Level][name]:Clone()
 	class.Objects[id] = self
 	self.HealthBar = shared.GameClasses.HealthBar.new(self.Instance.Head, self.MaxHealth)
 
