@@ -27,7 +27,7 @@ local config = {
     -- Changes
     Changes = {
         Opened = {
-            Position = UDim2.fromScale(0.5, 0.5)
+            Position = UDim2.fromScale(0.4, 0.5)
         },
         Closed = {
             Position = UDim2.fromScale(-0.5, -0.5)
