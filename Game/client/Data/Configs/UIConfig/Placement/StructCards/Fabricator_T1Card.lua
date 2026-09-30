@@ -1,13 +1,14 @@
 local config = {
     UIConfig = true,
 
-    Name = "MG_001",
+    Name = "Fabricator_T1",
     InstanceName = "StructCard",
     InstanceParentName = "StructsFrame",
     UIGroup = "StructsFrame",
 
-    Image = "rbxassetid://6846488809",
-    UI_InfoName = "MG_001Info",
+    Image = "rbxassetid://92073260973532",
+    UI_InfoName = "Fabricator_T1Info",
+
 
     -- Children related
     ChildrenNames = {},
@@ -37,7 +38,7 @@ local config = {
     FrameworkFuncs = {},
     GameInit = {
         [1] = "CardFillUp",
-        [2] = "CardOnClicked"
+        [2] = "CardOnClicked",
     },
     InitFuncs = {},
 

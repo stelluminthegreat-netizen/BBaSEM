@@ -1,3 +1,16 @@
+function OnClicked(self)
+    self.Conns.OnClicked2 = self.Instance.MouseButton1Click:Connect(function()
+        task.wait()
+
+        local StructsFrame = shared.Classes.UI.Objects.StructsFrame
+        local existingInfo = StructsFrame.ExistingInfo
+        if existingInfo then existingInfo:Close() return end
+
+        local newInfo = shared.Classes.UI.new("MG_001Info")
+        StructsFrame.ExistingInfo = newInfo
+    end)
+end
+
 local config = {
     UIConfig = true,
 
@@ -40,11 +53,13 @@ local config = {
         "CloseUIsListener"
     },
     GameInit = {},
-    InitFuncs = {},
+    InitFuncs = {
+        [1] = OnClicked
+    },
 
     -- Target UIs
     ToClose = {
-        "StructsFrame"
+        "StructsFrame",
     },
     ToOpen = {
         "StructsFrame"
