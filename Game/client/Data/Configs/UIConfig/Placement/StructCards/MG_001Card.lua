@@ -32,7 +32,8 @@ local config = {
 
     -- Initializers
     FrameworkFuncs = {},
-    GameInit = {},
+        [2] = "CardOnClicked"
+    },
     InitFuncs = {},
 
     -- Target UIs
