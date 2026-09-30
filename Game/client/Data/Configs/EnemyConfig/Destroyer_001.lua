@@ -1,4 +1,6 @@
 return {
+    Level = 1,
+    
     AnimTracks = {},
     AnimNames = {
         ["Walk"] = "ZombieWalk_001",

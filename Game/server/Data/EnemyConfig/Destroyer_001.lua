@@ -1,4 +1,6 @@
 return {
+    Level = 1,
+    
     MaxHealth = 100,
     Health = 100,
     

@@ -1,4 +1,6 @@
 return {
+    Tier = 1,
+
     MaxHealth = 150,
     Health = 150,
 
