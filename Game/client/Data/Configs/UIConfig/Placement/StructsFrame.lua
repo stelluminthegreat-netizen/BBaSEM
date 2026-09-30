@@ -9,6 +9,7 @@ local config = {
     -- Children related
     ChildrenNames = {
         "MG_001Card",
+        "Fabricator_T1Card",
     },
     Children = {},
 
