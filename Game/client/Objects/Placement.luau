@@ -25,8 +25,6 @@ function self.start()
         )
         if not shared.Placements[tier.Name] then shared.Placements[tier.Name] = {} end
         shared.Placements[tier.Name][type.Name] = placement
-
-        print(shared.Placements)
         end
     end
 end
