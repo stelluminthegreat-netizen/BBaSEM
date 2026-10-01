@@ -7,12 +7,18 @@ local config = {
     UIGroup = "StructInfo",
 
     -- Information
+    Tier = 1,
+    Type = "Turret",
+    ModelName = "MG_001",
+
     Image = "rbxassetid://6846488809",
     Price = "$5,000",
     Stats = "",
 
     -- Children related
-    ChildrenNames = {},
+    ChildrenNames = {
+        [1] = "StructPreviewBtn",
+    },
     Children = {},
 
     -- Event related
@@ -40,7 +46,7 @@ local config = {
     -- Initializers
     FrameworkFuncs = {},
     GameInit = {
-        [1] = "InfoFillUp"
+        [1] = "InfoFillUp",
     },
     InitFuncs = {},
 

@@ -1,18 +1,24 @@
 local config = {
     UIConfig = true,
 
-    Name = "Fabricator_T1",
+    Name = "Fabricator_T1Info",
     InstanceName = "StructInfo",
     InstanceParentName = "IgnoreSafeArea",
     UIGroup = "StructInfo",
 
     -- Information
+    Tier = 1,
+    Type = "Fabricator",
+    ModelName = "Fabricator_T1",
+
     Image = "rbxassetid://92073260973532",
     Price = "$10,000",
     Stats = "",
 
     -- Children related
-    ChildrenNames = {},
+    ChildrenNames = {
+        [1] = "StructPreviewBtn",
+    },
     Children = {},
 
     -- Event related
@@ -40,7 +46,7 @@ local config = {
     -- Initializers
     FrameworkFuncs = {},
     GameInit = {
-        [1] = "InfoFillUp"
+        [1] = "InfoFillUp",
     },
     InitFuncs = {},
 
