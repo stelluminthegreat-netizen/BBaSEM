@@ -21,14 +21,14 @@ function class.new(TYPE: string)
 	return self
 end
 
-function class:Init(pos: Vector3)
+function class:Init(cf: CFrame)
 	self:InitEvents()
 	shared.Entities[self.Id] = self
 	class.Objects[self.Id] = self
 
 
 	self.Instance.Parent = workspace
-	self.Instance:PivotTo(self.Instance:GetPivot() - self.Instance:GetPivot().Position + pos)
+	self.Instance:PivotTo(cf)
 
 	self.HealthBar = shared.GameClasses.HealthBar.new(self.Instance.Head, self.MaxHealth)
 end
