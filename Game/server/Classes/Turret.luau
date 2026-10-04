@@ -129,7 +129,7 @@ function class:Fire()
 	local targetDirection = (self.Target.Instance.HumanoidRootPart.Position - self.Instance.Ref.Position).Unit
 	local look = self.Instance.Housing.Gun.Barrel.CFrame.LookVector
 	local dot = look:Dot(targetDirection)
-	if dot < 0.9999 then return end
+	if dot < 0.99 then return end
 	if self.Status.Attacking == true then return end
 	self.Status.Attacking = true
 	-- self.Target:IncrementHealth(-self.Dmg)	
