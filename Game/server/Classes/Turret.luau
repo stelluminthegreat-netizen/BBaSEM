@@ -138,7 +138,7 @@ function class:Fire()
 	bullet:Initialize(muzzleCFrame.Position, muzzleCFrame.LookVector)
 	bullet:Start()
 	task.wait(self.AttackInterval)
-	self.Status.Attacking = false
+	if not self.Destroying then self.Status.Attacking = false end
 end
 
 function class:MonitorTarget()
