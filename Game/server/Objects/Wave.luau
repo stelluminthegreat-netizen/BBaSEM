@@ -74,8 +74,6 @@ function self.initialize()
     self.CurrentEnemyTypes = {}
     self.UpgradeCheckpoints = {
         [1] = true,
-        [25] = true,
-        [30] = true
     }
     self.SelectedEnemies = {}
     self.CurentLevel = 0
