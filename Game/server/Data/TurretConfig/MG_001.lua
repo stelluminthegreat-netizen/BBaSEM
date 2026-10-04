@@ -4,7 +4,7 @@ return {
     MaxHealth = 150,
     Health = 150,
 
-    AttackInterval = 0.01,
+    AttackInterval = 0.25,
     Range = 2,
     BulletType = "MG_Normal_001",
     Conns = {},
