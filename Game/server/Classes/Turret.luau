@@ -31,12 +31,12 @@ function class.new(type: string)
 	return self
 end
 
-function class:Init(position: Vector3)
+function class:Init(cf)
 	if self.Dying then return end
 	self:InitEvents()
 	shared.Entities[self.Id] = self
 	self.Instance.Parent = workspace
-	self.Instance:PivotTo(self.Instance:GetPivot() - self.Instance:GetPivot().Position + position)
+	self.Instance:PivotTo(cf)
 
 	self.HealthBar = shared.GameClasses.HealthBar.new(self.Instance.Ref, self.MaxHealth)
 	print(self.HealthBar)
