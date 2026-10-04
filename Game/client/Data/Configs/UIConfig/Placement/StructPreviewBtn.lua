@@ -1,22 +1,28 @@
 function Preview(self)
-    self.Instance.MouseButton1Click:Connect(function()
+    self.Conns.MB1 = self.Instance.MouseButton1Click:Connect(function()
         local tier = self.ObjParent.Tier
         local type = self.ObjParent.Type
+        -- Open buy and cancel btn
+        local buyBtn = shared.Classes.UI.new("StructBuyBtn")
+        buyBtn.StructTier = tier
+        buyBtn.StructType = type
 
-        shared.Placements["T" .. tier][type .. "s"]:noPlotActivate(
+        local cancelBtn = shared.Classes.UI.new("StructCancelBtn")
+        cancelBtn.Placement = shared.Placements["T" .. tier][type]
+
+        print("T" .. tier, type, shared.Placements["T" .. tier][type], shared.Placements)
+
+        shared.Placements["T" .. tier][type]:noPlotActivate(
             self.ObjParent.ModelName,
-            workspace.Bas,
+            workspace,
             true,  -- Smart rotation
             false  -- Auto place
         )
 
-        game.Players.LocalPlayer:GetMouse().Button1Down:Connect(function()
-           print(shared.Placements["T" .. tier][type .. "s"]:requestPlacement(game.ReplicatedStorage.Remotes.Events.requestEvent))
-        end)
-        
         local uiObjs = shared.Classes.UI.Objects
         uiObjs.StructsFrame.ExistingInfo:Close()
         uiObjs.StructsFrame:Close()
+        uiObjs.StructsBtn:Close()
     end)
 end
 
