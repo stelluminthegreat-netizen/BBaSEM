@@ -3,9 +3,9 @@ function OnClicked(self)
         task.wait()
 
         local StructsFrame = shared.Classes.UI.Objects.StructsFrame
-        local existingInfo = StructsFrame.ExistingInfo
+        local existingInfo
+        if StructsFrame then existingInfo = StructsFrame.ExistingInfo end 
         if existingInfo then existingInfo:Close() return end
-
         local newInfo = shared.Classes.UI.new("MG_001Info")
         StructsFrame.ExistingInfo = newInfo
     end)
