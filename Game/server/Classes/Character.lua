@@ -11,6 +11,13 @@ function class.new(player: Player)
 	return self
 end
 
+-- Initializer
+function class:Init()
+	self.Instance.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
+
+	HealthChanged(self)
+end
+
 function class:Ragdoll()
 	ragdoll.SetRagdoll(self.Instance, true)
 end
