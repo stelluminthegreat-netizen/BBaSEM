@@ -85,6 +85,8 @@ function class:Move()
 	class.Idling[self.Id] = nil
 	class.Moving[self.Id] = self
 	actionEvent:FireAllClients(self.Id, "Move", self.Direction, self.StartTick, self.StartPos)
+
+	self.Idling = false
 end
 
 function class:StopMove()
@@ -93,6 +95,8 @@ function class:StopMove()
 	actionEvent:FireAllClients(self.Id, "StopMove")
 	class.Moving[self.Id] = nil
 	class.Idling[self.Id] = self
+
+	self.Idling = true
 end
 
 function class:CalcNextPos()
