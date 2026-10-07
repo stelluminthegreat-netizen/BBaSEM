@@ -36,5 +36,15 @@ end
 function class:UnRagdoll()
 	ragdoll.SetRagdoll(self.Instance, false)
 end
+-- API
+function class:Down()
+	if self.Downed == true then return end
+	self.Downed = true
+
+	ToggleRegen(self, false)
+	self.Prompt = Instance.new("ProximityPrompt", self.Instance.HumanoidRootPart)
+	Ragdoll(self)
+	SwitchUI(self)
+end
 
 return class
