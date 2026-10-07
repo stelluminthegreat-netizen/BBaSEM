@@ -31,11 +31,12 @@ function SwitchUI(self)
 end
 
 
-function class:Ragdoll()
+-- Ragdoll
+function Ragdoll(self)
 	ragdoll.SetRagdoll(self.Instance, true)
 end
 
-function class:UnRagdoll()
+function UnRagdoll(self)
 	ragdoll.SetRagdoll(self.Instance, false)
 end
 
@@ -61,6 +62,18 @@ function class:Down()
 	self.Prompt = Instance.new("ProximityPrompt", self.Instance.HumanoidRootPart)
 	Ragdoll(self)
 	SwitchUI(self)
+end
+
+function class:Revive()
+	if self.Downed == false then return end
+	self.Downed = false 
+
+	if self.PromptConn then self.PromptConn:Disconnect() end
+	self.Prompt:Destroy()
+
+	ToggleRegen(self, true)
+	SwitchUI(self)
+	UnRagdoll(self)
 end
 
 return class
