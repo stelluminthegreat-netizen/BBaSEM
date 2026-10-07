@@ -20,12 +20,8 @@ end
 
 -- Listeners
 function HealthChanged(self)
-	self.Instance.Humanoid.Changed:Connect(function(change: string)
-		if change ~= "Health" then return end
-
-		local health = self.Instance.Humanoid.Health
+	self.Instance.Humanoid.HealthChanged:Connect(function(health: number)
 		if health > 0 then return end
-
 		self:Down()
 	end)
 end
