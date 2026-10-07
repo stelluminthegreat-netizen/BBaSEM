@@ -22,7 +22,7 @@ end
 ---------------- Structure Informations
 function self.InfoFillUp(uiInfo)
     local information = uiInfo.Instance.Information
-    information:FindFirstChild("Name").Text = uiInfo.Name
+    information:FindFirstChild("Name").Text = uiInfo.ModelName
     information:FindFirstChild("Price").Text = uiInfo.Price
     information:FindFirstChild("Stats").Text = uiInfo.Stats
     information:FindFirstChild("Icon").Image = uiInfo.Image
