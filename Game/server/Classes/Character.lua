@@ -28,6 +28,10 @@ function HealthChanged(self)
 	end)
 end
 
+function SwitchUI(self)
+	print("Switch2")
+end
+
 
 function class:Ragdoll()
 	ragdoll.SetRagdoll(self.Instance, true)
