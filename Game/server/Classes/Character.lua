@@ -42,6 +42,20 @@ end
 function class:UnRagdoll()
 	ragdoll.SetRagdoll(self.Instance, false)
 end
+
+
+function ToggleRegen(self, value: boolean)
+	if value == true then
+		local original = self.Instance:FindFirstChild("Health")
+		local regen = original:Clone()
+		regen.Parent = self.Instance
+		regen.Enabled = true
+		original:Destroy()
+	else
+		self.Instance:FindFirstChild("Health").Enabled = value
+	end
+end
+
 -- API
 function class:Down()
 	if self.Downed == true then return end
