@@ -12,7 +12,7 @@ local config = {
     ModelName = "Fabricator_T1",
 
     Image = "rbxassetid://92073260973532",
-    Price = "$10,000",
+    Price = "$8,000",
     Stats = "",
 
     -- Children related
