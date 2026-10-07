@@ -51,7 +51,7 @@ function class:Generate()
 		class.IsReady[self.Id] = nil
 		shared.GameClasses.Economy:IncrementCash(self.GenerationRate)
 		task.wait(self.GenerationInterval)
-		if not class.IsReady[self.Id] then return end
+		if not self.Id then return end
 		class.IsReady[self.Id] = self
 	end)
 end
