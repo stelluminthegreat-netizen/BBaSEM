@@ -340,7 +340,7 @@ end
 
 function self:CalcBudget()
     local currentWave = self.WaveTypes[self.WaveType]
-    self.Budget = math.round((10 + self.WaveCount ^ 1.5)* currentWave.Difficulty)
+    self.Budget = math.round((5 + self.WaveCount ^ 1.5)* currentWave.Difficulty)
 end
 
 function self:SelectWaveType()
