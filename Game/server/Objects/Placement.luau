@@ -2,7 +2,7 @@ local self = {}
 self.Prices = {
     -- T1
     ["Fabricator_T1"] = 8000,
-    ["MG_001"] = 000,
+    ["MG_001"] = 5000,
 }
 
 function self.initialize()
