@@ -22,7 +22,9 @@ local config = {
     Status = {},
 
     -- Delays
-    Delays = {},
+    Delays = {
+        Close = 0.0001
+    },
 
     -- Changes
     Changes = {
