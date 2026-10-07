@@ -25,6 +25,8 @@ function HealthChanged(self)
 
 		local health = self.Instance.Humanoid.Health
 		if health > 0 then return end
+
+		self:Down()
 	end)
 end
 
