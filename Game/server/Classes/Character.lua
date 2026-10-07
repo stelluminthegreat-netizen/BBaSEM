@@ -18,6 +18,17 @@ function class:Init()
 	HealthChanged(self)
 end
 
+-- Listeners
+function HealthChanged(self)
+	self.Instance.Humanoid.Changed:Connect(function(change: string)
+		if change ~= "Health" then return end
+
+		local health = self.Instance.Humanoid.Health
+		if health > 0 then return end
+	end)
+end
+
+
 function class:Ragdoll()
 	ragdoll.SetRagdoll(self.Instance, true)
 end
