@@ -2,6 +2,7 @@ local class = {}
 class.__index = class
 
 function class.initialize()
+	game:GetService("StarterGui"):SetCore("ResetButtonCallback", false)
 	class.new(game.Players.LocalPlayer)
 end
 
