@@ -15,8 +15,4 @@ function class:Ragdoll()
 	ragdoll.SetRagdoll(self.Instance, true)
 end
 
-function class:UnRagdoll()
-	ragdoll.SetRagdoll(self.Instance, false)
-end
-
 return class
