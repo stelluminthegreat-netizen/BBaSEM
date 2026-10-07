@@ -41,6 +41,7 @@ function class:InitEvents()
 end
 
 function class:Start()
+	shared.GameClasses.Economy:UpdateIncome(self.GenerationRate)
 	class.IsReady[self.Id] = self
 end
 
@@ -71,6 +72,8 @@ function class:Die()
 
 	class.Objects[self.Id] = nil
 	class.IsReady[self.Id] = nil
+
+	shared.GameClasses.Economy:UpdateIncome(-self.GenerationRate)
 
 	local x, z = self.PreviousCoords.x, self.PreviousCoords.z
 	shared.GameClasses.RegionsHandler:Remove(x, z, self, "Fabricator")
