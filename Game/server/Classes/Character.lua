@@ -59,7 +59,11 @@ function class:Down()
 	self.Downed = true
 
 	ToggleRegen(self, false)
+
 	self.Prompt = Instance.new("ProximityPrompt", self.Instance.HumanoidRootPart)
+	self.Prompt.HoldDuration = 5
+	self.Prompt.ActionText = "Revive"
+
 	Ragdoll(self)
 	SwitchUI(self)
 end
