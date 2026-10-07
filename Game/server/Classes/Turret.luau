@@ -113,8 +113,12 @@ function class:Aim()
 	local yawHinge = self.Instance:FindFirstChild("YawHinge", true)
 	local pitchHinge = self.Instance:FindFirstChild("PitchHinge", true)
 
+	local offset = 2
+	if self.Target.Idling == true then 
+		offset = 0
+	end
 	local root = self.Target.Instance.HumanoidRootPart	
-	local direction = ref.CFrame:PointToObjectSpace(root.Position + root.CFrame.LookVector * 2)
+	local direction = ref.CFrame:PointToObjectSpace(root.Position + root.CFrame.LookVector * offset)
 
 	local flatDirection = direction * Vector3.new(1, 0, 1)
 	yawHinge.TargetAngle =  -math.deg(Vector3.zAxis:Angle(flatDirection, Vector3.yAxis))
