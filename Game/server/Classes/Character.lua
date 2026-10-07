@@ -26,6 +26,23 @@ function HealthChanged(self)
 	end)
 end
 
+function Prompt(self)
+	self.PromptStartConn = self.Prompt.PromptButtonHoldBegan:Connect(function(player)
+		if self.PrevRescuer ~= player then
+			self.Prompt.Enabled = false
+			self.Prompt.HoldDuration = 5 * 0.5
+
+			self.PrevRescuer = player
+		end
+		task.wait(0.1)
+		self.Prompt.Enabled = true
+	end)
+	self.PromptEndConn = self.Prompt.Triggered:Connect(function()
+		self:Revive()
+	end)
+end
+
+
 function SwitchUI(self)
 	print("Switch2")
 end
