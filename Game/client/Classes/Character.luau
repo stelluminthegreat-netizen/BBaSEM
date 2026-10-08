@@ -1,3 +1,6 @@
+local Lighting = game:GetService("Lighting")
+local StarterPlayer = game:GetService("StarterPlayer")
+local UI = require(StarterPlayer.StarterPlayerScripts.Client.ModuleLoader.Modules.Classes.UI)
 local class = {}
 class.__index = class
 
@@ -26,11 +29,12 @@ end
 function class:SwitchUI()
 	if self.Downed == true then
 		self.Downed = false
+		Revived(self)
 	else
 		self.Downed = true
 
 		Downed(self)
-		self.Instance.HumanoidRootPart.ProximityPrompt:Destroy()
+		-- self.Instance.HumanoidRootPart.ProximityPrompt:Destroy()
 	end
 end
 
@@ -54,6 +58,20 @@ function Downed(self)
 	-- Blur
 	ToggleNonObjUIs(self, 1)
 	ToggleBlur(true)
+end
+
+function Revived(self)
+	-- Close UIs
+	local UIs = shared.Classes.UI.Objects
+	UIs.LeaveBtn:Close()
+	UIs.SelfReviveBtn:Close()
+
+	-- Remove blur
+	ToggleNonObjUIs(self, 1)
+	ToggleBlur(false)
+
+	-- Open UIs
+	shared.Classes.UI.new("StructsBtn")
 end
 
 function ToggleBlur(val: boolean)
