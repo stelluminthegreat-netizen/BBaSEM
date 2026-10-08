@@ -36,4 +36,9 @@ end
 
 
 
+function ToggleBlur(val: boolean)
+	Lighting.DepthOfField.Enabled = val
+end
+
+
 return class
