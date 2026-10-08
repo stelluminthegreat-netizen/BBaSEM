@@ -1,3 +1,13 @@
+function Highlight(self)
+    self.Conns.M_Entered = self.Instance.MouseEnter:Connect(function()
+        self.Instance.UIShadow.Enabled = true
+    end)
+    
+    self.Conns.M_Left = self.Instance.MouseLeave:Connect(function()
+        self.Instance.UIShadow.Enabled = false
+    end)
+end
+
 local config = {
     UIConfig = true,
 
@@ -37,7 +47,9 @@ local config = {
     -- Initializers
     FrameworkFuncs = {},
     GameInit = {},
-    InitFuncs = {},
+    InitFuncs = {
+        [1] = Highlight
+    },
 
     -- Target UIs
     ToClose = {},
