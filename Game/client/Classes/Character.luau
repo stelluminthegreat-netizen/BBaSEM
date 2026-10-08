@@ -15,6 +15,11 @@ function class.new(plr)
 end
 
 function class:Init()
+	self.SwitchUIEvent = game.ReplicatedStorage.Remotes.Events.CharSwitchUI
+	self.SwitchUIEvent.OnClientEvent:Connect(function()
+		self:SwitchUI(self)
+	end)
+
 	self.Instance.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
 end
 
