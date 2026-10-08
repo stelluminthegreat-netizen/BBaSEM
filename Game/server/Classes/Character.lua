@@ -14,7 +14,7 @@ end
 -- Initializer
 function class:Init()
 	self.Instance.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
-
+	self.SwitchUIEvent = game.ReplicatedStorage.Remotes.Events.CharSwitchUI
 	HealthChanged(self)
 end
 
@@ -44,7 +44,7 @@ end
 
 
 function SwitchUI(self)
-	print("Switch2")
+	self.SwitchUIEvent:FireClient(self.Player)
 end
 
 
@@ -83,13 +83,17 @@ function class:Down()
 
 	Ragdoll(self)
 	SwitchUI(self)
+	Prompt(self)
+
+	-- Inform client
 end
 
 function class:Revive()
 	if self.Downed == false then return end
 	self.Downed = false 
 
-	if self.PromptConn then self.PromptConn:Disconnect() end
+	if self.PromptStartConn then self.PromptStartConn:Disconnect() end
+	if self.PromptEndconn then self.PromptEndconn:Disconnect() end
 	self.Prompt:Destroy()
 
 	ToggleRegen(self, true)
