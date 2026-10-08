@@ -67,7 +67,7 @@ function Revived(self)
 	UIs.SelfReviveBtn:Close()
 
 	-- Remove blur
-	ToggleNonObjUIs(self, 1)
+	ToggleNonObjUIs(self, 0)
 	ToggleBlur(false)
 
 	-- Open UIs
