@@ -35,6 +35,26 @@ function class:SwitchUI()
 end
 
 
+function Downed(self)
+	-- Close UIs
+	local UIs = shared.Classes.UI.Objects
+
+	local structsFrame = UIs.StructsFrame
+	local info
+	local structsBtn = UIs.StructsBtn
+
+	if structsFrame then info = structsFrame.ExistingInfo structsFrame:Close() end
+	if info then info:Close() end
+	if structsBtn then structsBtn:Close() end
+
+	-- Open UIs
+	local leave = shared.Classes.UI.new("LeaveBtn")
+	local revive = shared.Classes.UI.new("SelfReviveBtn")
+
+	-- Blur
+	ToggleNonObjUIs(self, 1)
+	ToggleBlur(true)
+end
 
 function ToggleBlur(val: boolean)
 	Lighting.DepthOfField.Enabled = val
