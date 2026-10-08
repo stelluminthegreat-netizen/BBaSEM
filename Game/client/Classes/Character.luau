@@ -23,4 +23,17 @@ function class:Init()
 	self.Instance.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
 end
 
+function class:SwitchUI()
+	if self.Downed == true then
+		self.Downed = false
+	else
+		self.Downed = true
+
+		Downed(self)
+		self.Instance.HumanoidRootPart.ProximityPrompt:Destroy()
+	end
+end
+
+
+
 return class
