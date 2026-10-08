@@ -40,5 +40,18 @@ function ToggleBlur(val: boolean)
 	Lighting.DepthOfField.Enabled = val
 end
 
+function ToggleNonObjUIs(self, num: number)
+	self.Cash = self.Player.PlayerGui.ConsiderSafeArea.Cash
+	self.Cash.TextTransparency = num
+	self.Cash.UIStroke.Transparency = num
+
+	self.WaveState = self.Player.PlayerGui.IgnoreSafeArea.WaveState
+	self.WaveState.TextTransparency = num
+	self.WaveState.UIStroke.Transparency = num
+
+	self.WaveType = self.Player.PlayerGui.IgnoreSafeArea.WaveType
+	self.WaveType.TextTransparency = num
+	self.WaveType.UIStroke.Transparency = num
+end
 
 return class
