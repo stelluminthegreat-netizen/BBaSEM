@@ -23,7 +23,6 @@ function class:Init()
 	end)
 
 	self.Instance.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
-	Downed(self)
 end
 
 function class:SwitchUI()
