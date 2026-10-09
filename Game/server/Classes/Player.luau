@@ -40,7 +40,11 @@ function class:Init()
 
 			return func(self)
 		elseif signal == false then
+			local name = key .. "_Ended"
+			local func = self[name]
+			if not func then return end
 
+			return func(self)
 		end
 	end
 end
