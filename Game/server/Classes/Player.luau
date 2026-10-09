@@ -53,5 +53,8 @@ function class:LeftControl_Ended()
 	self.Character:Walk()
 end
 
+function class:LeftControl_Began()
+	self.Character:Run()
+end
 
 return class
