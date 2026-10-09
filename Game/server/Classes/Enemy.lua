@@ -170,8 +170,8 @@ function class:FindTarget()
 	-- Limited: Find a target in normal range
 	local pivot = self.Instance:GetPivot()
 	local x, z = pivot.X, pivot.Z
-	local turretResult = RegionHandler:Get(x, z, "Turret", 1)
-	local fabricatorResult = RegionHandler:Get(x, z, "Fabricator", 1)
+	local turretResult = RegionHandler:Get(x, z, "Turret", 4)
+	local fabricatorResult = RegionHandler:Get(x, z, "Fabricator", 4)
 	local inRange = {}
 
 	for _, tbl in turretResult do
