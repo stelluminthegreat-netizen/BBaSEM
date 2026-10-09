@@ -149,6 +149,10 @@ function class:Run()
 	self:IncrementSpeed(10)
 end
 
+function class:Walk()
+	self:IncrementSpeed(-10)
+end
+
 function ToggleQuery(self, val: boolean)
 	for _, child in self.Instance:GetChildren() do
 		if not child:IsA("BasePart") then continue end
