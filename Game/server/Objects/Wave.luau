@@ -273,7 +273,7 @@ function self:GetAvailRegions()
     -- Get occupied regions
     for x, zS in regionsHandler.Regions do
         for z, region in zS do
-            local isOccupied = next(region.Turret or {}) or next(region.Fabricator or {}) or next(region.Wall or {})
+            local isOccupied = next(region.Turret or {}) or next(region.Fabricator or {}) or next(region.Wall or {}) or next(region.Character or {})
             if isOccupied then
                 initialOccupied[x .. z] = region
                 finalOccupied[x .. z] = region
