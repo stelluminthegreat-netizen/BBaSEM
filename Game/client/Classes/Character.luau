@@ -6,13 +6,12 @@ class.__index = class
 
 function class.initialize()
 	game:GetService("StarterGui"):SetCore("ResetButtonCallback", false)
-	class.new(game.Players.LocalPlayer)
 end
 
 function class.new(plr)
 	local self = setmetatable({}, class)
 	self.Player = plr
-	self.Instance = plr.Character or plr.CharacterAdded:Wait()
+	self.Instance = plr.Instance.Character or plr.Instance.CharacterAdded:Wait()
 	self:Init()
 	return self
 end
@@ -24,6 +23,7 @@ function class:Init()
 	end)
 
 	self.Instance.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
+	Downed(self)
 end
 
 function class:SwitchUI()
@@ -79,15 +79,15 @@ function ToggleBlur(val: boolean)
 end
 
 function ToggleNonObjUIs(self, num: number)
-	self.Cash = self.Player.PlayerGui.ConsiderSafeArea.Cash
+	self.Cash = self.Player.Instance.PlayerGui.ConsiderSafeArea.Cash
 	self.Cash.TextTransparency = num
 	self.Cash.UIStroke.Transparency = num
 
-	self.WaveState = self.Player.PlayerGui.IgnoreSafeArea.WaveState
+	self.WaveState = self.Player.Instance.PlayerGui.IgnoreSafeArea.WaveState
 	self.WaveState.TextTransparency = num
 	self.WaveState.UIStroke.Transparency = num
 
-	self.WaveType = self.Player.PlayerGui.IgnoreSafeArea.WaveType
+	self.WaveType = self.Player.Instance.PlayerGui.IgnoreSafeArea.WaveType
 	self.WaveType.TextTransparency = num
 	self.WaveType.UIStroke.Transparency = num
 end
