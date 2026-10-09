@@ -172,6 +172,8 @@ function class:FindTarget()
 	local x, z = pivot.X, pivot.Z
 	local turretResult = RegionHandler:Get(x, z, "Turret", 4)
 	local fabricatorResult = RegionHandler:Get(x, z, "Fabricator", 4)
+	local characterResult = RegionHandler:Get(x, z, "Character", 4)
+
 	local inRange = {}
 
 	for _, tbl in turretResult do
@@ -181,6 +183,12 @@ function class:FindTarget()
 	end
 
 	for _, tbl in fabricatorResult do
+		for _, item in tbl do
+			table.insert(inRange, item)
+		end
+	end
+	
+	for _, tbl in characterResult do
 		for _, item in tbl do
 			table.insert(inRange, item)
 		end
