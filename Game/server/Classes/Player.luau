@@ -17,7 +17,9 @@ function class.new(plr: Player)
 	self.Instance = plr
 	self.Id = plr.Name
 	self.Character = shared.GameClasses.Character.new(self)
-
+	self.Character:Init()
+	
+	self:Init()
 	return self
 end
 
