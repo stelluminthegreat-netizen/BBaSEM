@@ -15,6 +15,7 @@ end
 function class.new(plr: Player)
 	local self = setmetatable({}, class)
 	self.Instance = plr
+	self.Id = plr.Name
 	self.Character = shared.GameClasses.Character.new(self)
 
 	return self
