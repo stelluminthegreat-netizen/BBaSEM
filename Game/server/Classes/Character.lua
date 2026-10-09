@@ -141,6 +141,10 @@ function class:IncrementHealth(num: number)
 	self.Instance.Humanoid:TakeDamage(-num)
 end
 
+function class:IncrementSpeed(num: number)
+	self.Instance.Humanoid.WalkSpeed += num
+end
+
 function ToggleQuery(self, val: boolean)
 	for _, child in self.Instance:GetChildren() do
 		if not child:IsA("BasePart") then continue end
