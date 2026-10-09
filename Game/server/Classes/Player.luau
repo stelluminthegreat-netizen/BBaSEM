@@ -49,4 +49,9 @@ function class:Init()
 	end
 end
 
+function class:LeftControl_Ended()
+	self.Character:Walk()
+end
+
+
 return class
