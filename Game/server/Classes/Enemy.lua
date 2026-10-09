@@ -411,6 +411,7 @@ function BulkIdling()
 			
 			if enemy.Target then enemy:Attack() end
 			enemy:FindTarget()
+			enemy:DetectObstacle()
 		end
 	end)
 end
