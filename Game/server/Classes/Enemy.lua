@@ -84,7 +84,6 @@ function class:Move()
 
 	class.Idling[self.Id] = nil
 	class.Moving[self.Id] = self
-	actionEvent:FireAllClients(self.Id, "Move", self.Direction, self.StartTick, self.StartPos)
 
 	self.Idling = false
 end
@@ -128,6 +127,7 @@ function class:CalcDirection()
 	direction = Vector3.new(direction.X, 0, direction.Z)
 
 	self.Direction = direction.Unit
+	actionEvent:FireAllClients(self.Id, "Move", self.Direction, self.StartTick, self.StartPos)
 end
 
 function class:DetectObstacle()
