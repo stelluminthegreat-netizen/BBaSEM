@@ -2,6 +2,10 @@ local class = {}
 class.Objects = {}
 class.__index = class
 
+local remoteFunc = Instance.new("RemoteFunction")
+remoteFunc.Name = "UserInput"
+remoteFunc.Parent = game.ReplicatedStorage.Remotes.Functions
+
 function class.initialize()
 	game.Players.PlayerAdded:Connect(function(player)
 		class.new(player)	
