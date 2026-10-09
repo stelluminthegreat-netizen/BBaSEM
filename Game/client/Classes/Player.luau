@@ -1,3 +1,4 @@
+local UserInputService = game:GetService("UserInputService")
 local class = {}
 class.Objects = {}
 class.__index = class
@@ -17,6 +18,21 @@ function class.new(plr: Player)
 	self.Instance = plr
 	self.Character = shared.GameClasses.Character.new(self)
 	return self
+end
+
+function class:Init()
+	local remoteFunc = game.ReplicatedStorage.Remotes.Functions.UserInput
+	while not remoteFunc do remoteFunc = game.ReplicatedStorage.Remotes.Functions.UserInput end
+	
+	UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+		if gameProcessedEvent == true then return end
+		remoteFunc:InvokeServer(true, input)
+	end)
+
+	UserInputService.InputEnded:Connect(function(input, gameProcessedEvent)
+		if gameProcessedEvent == true then return end
+		remoteFunc:InvokeServer(false, input)
+	end)
 end
 
 return class
