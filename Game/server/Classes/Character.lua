@@ -5,11 +5,11 @@ class.__index = class
 
 local ragdoll = shared.Libraries.Ragdoll
 
-function class.new(player: Player)
+function class.new(player)
 	local self = setmetatable({}, class)
 	self.Player = player
-	self.Instance = player.Character or player.CharacterAdded:Wait()
-	self.Id = player.Name
+	self.Instance = player.Instance.Character or player.Instance.CharacterAdded:Wait()
+	self.Id = player.Id
 	class.Objects[self.Id] = self
 
 	return self
@@ -70,7 +70,7 @@ end
 
 
 function SwitchUI(self)
-	self.SwitchUIEvent:FireClient(self.Player)
+	self.SwitchUIEvent:FireClient(self.Player.Instance)
 end
 
 
