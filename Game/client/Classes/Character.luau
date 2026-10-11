@@ -74,7 +74,7 @@ function Revived(self)
 end
 
 function ToggleBlur(val: boolean)
-	Lighting.DepthOfField.Enabled = val
+	Lighting.Blur.Enabled = val
 end
 
 function ToggleNonObjUIs(self, num: number)
