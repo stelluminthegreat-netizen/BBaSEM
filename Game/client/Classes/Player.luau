@@ -28,6 +28,12 @@ function class:Init()
 	local remoteFunc = game.ReplicatedStorage.Remotes.Functions.UserInput
 	while not remoteFunc do remoteFunc = game.ReplicatedStorage.Remotes.Functions.UserInput print(remoteFunc) end
 	
+	if UserInputService.TouchEnabled then
+		shared.Classes.UI.new("RunBtn")
+
+		return
+	end
+
 	UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 		if gameProcessedEvent == true then return end
 		remoteFunc:InvokeServer(true, input.KeyCode)
