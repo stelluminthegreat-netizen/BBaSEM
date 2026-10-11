@@ -32,7 +32,7 @@ function class:Init()
 		if key == nil then return end
 		if plr ~= self.Instance then return end
 		
-		if signal then key = key.Name end
+		if signal ~= nil then key = key.Name end
 		if signal == true then
 			local name = key .. "_Began"
 			local func = self[name]
