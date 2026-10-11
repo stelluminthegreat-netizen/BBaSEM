@@ -28,7 +28,7 @@ function class.new(plr: Player)
 end
 
 function class:Init()
-	remoteFunc.OnServerInvoke = function(plr: player, signal: boolean, key)
+	remoteFunc.OnServerInvoke = function(plr: player, key, signal: boolean)
 		if key == nil then return end
 		if plr ~= self.Instance then return end
 		
