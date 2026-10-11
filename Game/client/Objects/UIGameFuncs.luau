@@ -28,5 +28,14 @@ function self.InfoFillUp(uiInfo)
     information:FindFirstChild("Icon").Image = uiInfo.Image
 end
 
+---------------- Player Input handler [Mobile]
+function self.MobilePlayerInput(ui)
+    ui.Conns.MB1 = ui.Instance.MouseButton1Click:Connect(function()
+        local remoteFunc = game.ReplicatedStorage.Remotes.Functions.UserInput
+        remoteFunc:InvokeServer(ui.Input)
+    end)
+end
+
+
 return self
 
