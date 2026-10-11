@@ -36,12 +36,12 @@ function class:Init()
 
 	UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 		if gameProcessedEvent == true then return end
-		remoteFunc:InvokeServer(true, input.KeyCode)
+		remoteFunc:InvokeServer(input.KeyCode, true)
 	end)
 
 	UserInputService.InputEnded:Connect(function(input, gameProcessedEvent)
 		if gameProcessedEvent == true then return end
-		remoteFunc:InvokeServer(false, input.KeyCode)
+		remoteFunc:InvokeServer(input.KeyCode, false)
 	end)
 end
 
