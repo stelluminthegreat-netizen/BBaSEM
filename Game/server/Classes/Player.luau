@@ -14,6 +14,13 @@ function class.initialize()
 		if class.Objects[plr.Name] then continue end
 		class.new(plr)
 	end
+
+	
+	remoteFunc.OnServerInvoke = function(plr: player, key, signal: boolean)
+		for _, player in class.Objects do
+			player:InputHandler(plr, key, signal)
+		end
+	end
 end
 
 function class.new(plr: Player)
@@ -28,29 +35,31 @@ function class.new(plr: Player)
 end
 
 function class:Init()
-	remoteFunc.OnServerInvoke = function(plr: player, key, signal: boolean)
-		if key == nil then return end
-		if plr ~= self.Instance then return end
+	class.Objects[self.Id] = self
+end
+
+function class:InputHandler(plr: player, key, signal: boolean)
+	if key == nil then return end
+	if plr ~= self.Instance then return end
 		
-		if signal ~= nil then key = key.Name end
-		if signal == true then
-			local name = key .. "_Began"
-			local func = self[name]
-			if not func then return end
-
-			return func(self)
-		elseif signal == false then
-			local name = key .. "_Ended"
-			local func = self[name]
-			if not func then return end
-
-			return func(self)
-		end
-
-		local func = self[key]
+	if signal ~= nil then key = key.Name end
+	if signal == true then
+		local name = key .. "_Began"
+		local func = self[name]
 		if not func then return end
+
+		return func(self)
+	elseif signal == false then
+		local name = key .. "_Ended"
+		local func = self[name]
+		if not func then return end
+
 		return func(self)
 	end
+
+	local func = self[key]
+	if not func then return end
+	return func(self)
 end
 
 function class:LeftControl_Ended()
