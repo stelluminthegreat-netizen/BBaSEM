@@ -46,6 +46,10 @@ function class:Init()
 
 			return func(self)
 		end
+
+		local func = self[key]
+		if not func then return end
+		return func(self)
 	end
 end
 
