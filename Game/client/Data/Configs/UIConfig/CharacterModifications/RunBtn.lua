@@ -1,6 +1,8 @@
 local config = {
     UIConfig = true,
 
+    Input = "LeftControl_Began",
+
     Name = "RunBtn",
     InstanceName = "RunBtn",
     InstanceParentName = "IgnoreSafeArea",
