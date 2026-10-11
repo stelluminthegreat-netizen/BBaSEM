@@ -26,8 +26,12 @@ local config = {
 
     -- Changes
     Changes = {
-        Opened = {},
-        Closed = {},
+        Opened = {
+            Position = UDim2.fromScale(0, 0)
+        },
+        Closed = {
+            Position = UDim2.fromScale(0, -1)
+        },
     },
 
     -- Initializers
