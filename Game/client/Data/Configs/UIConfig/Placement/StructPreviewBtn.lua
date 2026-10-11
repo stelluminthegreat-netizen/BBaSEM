@@ -1,3 +1,4 @@
+local UserInputService = game:GetService("UserInputService")
 function Preview(self)
     self.Conns.MB1 = self.Instance.MouseButton1Click:Connect(function()
         local tier = self.ObjParent.Tier
@@ -10,7 +11,10 @@ function Preview(self)
         local cancelBtn = shared.Classes.UI.new("StructCancelBtn")
         cancelBtn.Placement = shared.Placements["T" .. tier][type]
 
-        print("T" .. tier, type, shared.Placements["T" .. tier][type], shared.Placements)
+        if UserInputService.TouchEnabled then
+            local rotateBtn = shared.Classes.UI.new("RotateBtn")
+            rotateBtn.Placement = shared.Placements["T" .. tier][type] 
+        else  
 
         shared.Placements["T" .. tier][type]:noPlotActivate(
             self.ObjParent.ModelName,
