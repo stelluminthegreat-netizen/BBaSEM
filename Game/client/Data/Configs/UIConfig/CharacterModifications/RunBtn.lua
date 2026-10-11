@@ -1,3 +1,11 @@
+function OnClick(self)
+    self.Conns.MB1_2 = self.Instance.MouseButton1Click:Connect(function()
+        task.wait()
+        shared.Classes.UI.new("WalkBtn")
+        self:Close()
+    end)
+end
+
 local config = {
     UIConfig = true,
 
@@ -41,7 +49,9 @@ local config = {
     GameInit = {
         [1] = "MobilePlayerInput"
     },
-    InitFuncs = {},
+    InitFuncs = {
+        OnClick
+    },
 
     -- Target UIs
     ToClose = {},
