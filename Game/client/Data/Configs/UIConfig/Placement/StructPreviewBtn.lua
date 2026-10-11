@@ -15,6 +15,9 @@ function Preview(self)
             local rotateBtn = shared.Classes.UI.new("RotateBtn")
             rotateBtn.Placement = shared.Placements["T" .. tier][type] 
         else  
+            buyBtn.Instance.Visible = false
+        end
+
 
         shared.Placements["T" .. tier][type]:noPlotActivate(
             self.ObjParent.ModelName,
