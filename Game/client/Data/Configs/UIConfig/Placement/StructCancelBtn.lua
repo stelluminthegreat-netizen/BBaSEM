@@ -9,6 +9,7 @@ function TerminatePlacementListener(self)
         -- Close Buy & Cancel Btn
         shared.Classes.UI.Objects.StructBuyBtn:Close()
         shared.Classes.UI.Objects.StructCancelBtn:Close()
+        shared.Classes.UI.Objects.RotateBtn:Close()
     end)
 end
 
