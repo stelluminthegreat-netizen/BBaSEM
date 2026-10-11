@@ -3,6 +3,10 @@ function TerminatePlacementListener(self)
         -- Terminate placement
         self.Placement:terminate()
         self.Placement = nil
+
+        shared.Classes.UI.Objects.RotateBtn.Placement:terminate()
+        shared.Classes.UI.Objects.RotateBtn.Placement = nil
+
         -- Open Structs Btn
         shared.Classes.UI.new("StructsBtn")
 
