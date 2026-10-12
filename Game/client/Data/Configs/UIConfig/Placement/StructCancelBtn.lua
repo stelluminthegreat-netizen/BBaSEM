@@ -4,8 +4,12 @@ function TerminatePlacementListener(self)
         self.Placement:terminate()
         self.Placement = nil
 
-        shared.Classes.UI.Objects.RotateBtn.Placement:terminate()
-        shared.Classes.UI.Objects.RotateBtn.Placement = nil
+        local RotateBtn = shared.Classes.UI.Objects.RotateBtn
+        if RotateBtn then
+            RotateBtn.Placement:terminate()
+            RotateBtn.Placement = nil
+            RotateBtn:Close()
+        end
 
         -- Open Structs Btn
         shared.Classes.UI.new("StructsBtn")
@@ -13,7 +17,6 @@ function TerminatePlacementListener(self)
         -- Close Buy & Cancel Btn
         shared.Classes.UI.Objects.StructBuyBtn:Close()
         shared.Classes.UI.Objects.StructCancelBtn:Close()
-        shared.Classes.UI.Objects.RotateBtn:Close()
     end)
 end
 
