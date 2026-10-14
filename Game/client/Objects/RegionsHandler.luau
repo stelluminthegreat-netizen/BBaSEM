@@ -1,5 +1,6 @@
 local self = {}
 self.Regions = {}
+self.SIZE = 50
 
 function self.initialize()
 	local remote = game.ReplicatedStorage.Remotes.Events.NewRegion
@@ -27,6 +28,13 @@ function ExistingHandler(existing: table)
 
         self.Regions[x][z] = {}
     end
+end
+
+function clamp(x: number, z: number)
+    x = math.floor(x / self.SIZE) * self.SIZE
+    z = math.floor(z / self.SIZE) * self.SIZE
+
+    return x, z
 end
 
 function self.start()
