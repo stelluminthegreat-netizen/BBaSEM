@@ -28,10 +28,11 @@ function  Bulk(terrains: table)
     end
 end
 
-function New(x: number, y: number, z: number)
-    local terrain = game.ReplicatedStorage.Map.Terrain.TerrainBlock:Clone()
-    terrain.Parent = workspace.Map.Terrain
-    terrain:PivotTo(CFrame.new(Vector3.new(x, y, z)))
+function self:Create(terrain)
+    local x = terrain.x
+    local z = terrain.z
+
+    self.Terrains[x .. z] = terrain
 end
 
 function Existing(x: number, y: number, z: number)
