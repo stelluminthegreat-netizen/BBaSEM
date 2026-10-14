@@ -5,6 +5,19 @@ function class.initialize()
 	BulkAssign()
 end
 
+function class.Populate(region)
+	local regX, regZ = region.Position.x, region.Position.z
+	local size = 50
+
+	for x = regX, regX + size, 10 do
+		task.wait()
+		for z = regZ, regZ + size, 10 do
+			task.wait()
+			class.new(x, z)
+		end 
+	end
+end
+
 function class.new(x, z)
 	local self = setmetatable({}, class)
 	self.Y = GetHeight(x, z)
