@@ -19,6 +19,7 @@ return {
     EventNames = {
         [1] = "Destroyed",
         [2] = "Died",
+        [3] = "Y_Changed",
     },
     HitDelay = 0.7,
     RemainingDelay = 0.2,
