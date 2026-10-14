@@ -5,8 +5,21 @@ function class.initialize()
 	BulkAssign()
 end
 
-function class.new()
+function class.new(x, z)
 	local self = setmetatable({}, class)
+	self.Y = GetHeight(x, z)
+	self.Position = {["x"] = x, ["z"] = z}
+	self.Instance = game.ReplicatedStorage.Map.Terrain.TerrainBlock:Clone()
+	self.Instance.Parent = workspace.Map.Terrain
+	self.Instance:PivotTo(CFrame.new(x, self.Y, z))
+	self.Id = x .. z
+
+	self.Assigned = {}
+	if not class.Terrains[x] then class.Terrains[x] = {} end
+	class.Terrains[x][z] = self
+	class.Objects[self.Id] = self  
+	class.Instances[self.Id] = self.Instance
+
 	return self
 end
 
