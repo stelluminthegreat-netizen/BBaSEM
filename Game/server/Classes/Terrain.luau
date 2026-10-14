@@ -1,4 +1,7 @@
 local class = {}
+class.Objects = {}
+class.Terrains = {}
+class.Instances = {}
 class.__index = class
 
 function class.initialize()
