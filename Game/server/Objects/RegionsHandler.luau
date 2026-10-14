@@ -3,6 +3,8 @@ self.Regions = {}
 self.GLOBAL = {}
 self.SIZE = 50
 self.PossibleVals = {50, -50, 0}
+self.New = shared.Classes.Event.new()
+
 
 function self.initialize()
     shared.Classes.Threads:Spawn(function()
@@ -49,7 +51,9 @@ function self:Create(x: number, z: number)
         Position = {["z"] = z, ["x"] = x},
         Objects = {},
     }
-    -- self:Visualize(self.Regions[x][z])
+
+    self.New:Fire(self.Regions[x][z])
+    self:Visualize(self.Regions[x][z])
 end
 
 function self:Expand()
