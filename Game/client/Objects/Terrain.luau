@@ -35,15 +35,13 @@ function self:Create(terrain)
     self.Terrains[x .. z] = terrain
 end
 
-function Existing(x: number, y: number, z: number)
-    print(x, y, z)
-    local terrain = game.ReplicatedStorage.Map.Terrain.TerrainBlock:Clone()
-    terrain.Parent = workspace.Map.Terrain
-    terrain:PivotTo(CFrame.new(Vector3.new(x, y, z)))
-end
+function self:Visualize(terrain)
+    local x = terrain.x
+    local y = terrain.y
+    local z = terrain.z
 
-function self.start()
-	
+    local terrainBlock = game.ReplicatedStorage.Map.Terrain.TerrainBlock:Clone()
+    terrainBlock.Parent = workspace.Map.Terrain
+    terrainBlock:PivotTo(CFrame.new(Vector3.new(x, y, z)))
 end
-
 return self
