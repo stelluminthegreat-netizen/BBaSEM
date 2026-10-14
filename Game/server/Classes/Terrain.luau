@@ -4,6 +4,8 @@ class.Terrains = {}
 class.Instances = {}
 class.__index = class
 
+local createClientTerrain = game.ReplicatedStorage.Remotes.Events.CreateTerrain
+
 function class.initialize()
 	local regionsHandler = shared.GameClasses.RegionsHandler
 	regionsHandler.New:Connect(function(_, region)
@@ -11,6 +13,17 @@ function class.initialize()
 	end)
 
 	BulkAssign()
+
+	game.Players.PlayerAdded:Connect(function(player)
+		print(class.Objects)
+		for _, terrain in class.Objects do
+			local x = terrain.Position.x
+			local y = terrain.Y
+			local z = terrain.Position.z
+			print(x, y, z)
+			game.ReplicatedStorage.Remotes.Events.CreateTerrain:FireClient(player, "existing", x, y, z)
+		end
+	end)
 end
 
 function class.Populate(region)
@@ -18,9 +31,8 @@ function class.Populate(region)
 	local size = 50
 
 	for x = regX, regX + size, 10 do
-		task.wait()
 		for z = regZ, regZ + size, 10 do
-			task.wait()
+			task.wait(0.5)
 			class.new(x, z)
 		end 
 	end
@@ -30,16 +42,18 @@ function class.new(x, z)
 	local self = setmetatable({}, class)
 	self.Y = GetHeight(x, z)
 	self.Position = {["x"] = x, ["z"] = z}
-	self.Instance = game.ReplicatedStorage.Map.Terrain.TerrainBlock:Clone()
-	self.Instance.Parent = workspace.Map.Terrain
-	self.Instance:PivotTo(CFrame.new(x, self.Y, z))
+	-- self.Instance = game.ReplicatedStorage.Map.Terrain.TerrainBlock:Clone()
+	-- self.Instance.Parent = workspace.Map.Terrain
+	-- self.Instance:PivotTo(CFrame.new(x, self.Y, z))
 	self.Id = x .. z
 
 	self.Assigned = {}
 	if not class.Terrains[x] then class.Terrains[x] = {} end
 	class.Terrains[x][z] = self
 	class.Objects[self.Id] = self  
-	class.Instances[self.Id] = self.Instance
+	-- class.Instances[self.Id] = self.Instance
+
+	createClientTerrain:FireAllClients("new", x, self.Y, z)
 
 	return self
 end

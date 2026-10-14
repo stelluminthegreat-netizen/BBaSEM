@@ -4,6 +4,7 @@ local event = game.ReplicatedStorage.Remotes.Events.CreateTerrain
 
 function self.initialize()
 	event.OnClientEvent:Connect(function(msg: string, ...)
+        print(msg, ...)
         if msg == "new" then
             New(...)
         elseif msg == "existing" then
