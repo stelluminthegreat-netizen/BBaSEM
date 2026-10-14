@@ -73,7 +73,10 @@ function BulkAssign()
 
 			for _, enemy in enemies do
 				local pivot = enemy.Instance:GetPivot().Position
-				local x, z = pivot.X, pivot.Z
+				local x, z = clamp(pivot.X, pivot.Z) 
+				local terrain = class.Terrains[x][z]
+
+				terrain:Assign(enemy)
 			end
 		end)
 	end)
