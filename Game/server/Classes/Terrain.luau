@@ -2,6 +2,11 @@ local class = {}
 class.__index = class
 
 function class.initialize()
+	local regionsHandler = shared.GameClasses.RegionsHandler
+	regionsHandler.New:Connect(function(_, region)
+		class.Populate(region)
+	end)
+
 	BulkAssign()
 end
 
