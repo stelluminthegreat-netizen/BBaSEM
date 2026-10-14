@@ -147,7 +147,7 @@ function class:DetectObstacle()
 	params.FilterDescendantsInstances = class.ObjectsInstances
 
 	local result = workspace:Raycast(origin, direction, params)
-	if not result then
+	if not result or result.Instance.Name == "Grass" or result.Instance.Name == "Dirt" then
 		self:Move()
 		return
 	end
