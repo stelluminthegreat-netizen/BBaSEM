@@ -14,15 +14,31 @@ function class.initialize()
 
 	BulkAssign()
 
+
+	-- I am so sorry about this 
+	-- I promise to refactor when I feel like it
 	game.Players.PlayerAdded:Connect(function(player)
-		print(class.Objects)
-		for _, terrain in class.Objects do
-			local x = terrain.Position.x
-			local y = terrain.Y
-			local z = terrain.Position.z
-			print(x, y, z)
-			game.ReplicatedStorage.Remotes.Events.CreateTerrain:FireClient(player, "existing", x, y, z)
+		local terrains = {}
+		for x, zS in regionsHandler.Regions do
+			for z, region in zS do
+				
+				local regX, regZ = region.Position.x, region.Position.z
+				local size = 50
+				for x = regX, regX + size, 10 do
+					for z = regZ, regZ + size, 10 do
+						-- task.wait()
+						local terrain = class.new(x, z)
+						local terrainX, terrainZ = terrain.Position.x, terrain.Position.z
+						local y = terrain.Y
+
+						terrains[terrainX .. terrainZ] = {['x'] = terrainX, ['y'] = y, ['z'] = terrainZ}
+						
+					end 
+				end
+			end
 		end
+
+		createClientTerrain:FireAllClients("bulk", terrains)
 	end)
 end
 
@@ -30,12 +46,21 @@ function class.Populate(region)
 	local regX, regZ = region.Position.x, region.Position.z
 	local size = 50
 
+	local terrains = {}
+
 	for x = regX, regX + size, 10 do
 		for z = regZ, regZ + size, 10 do
-			task.wait(0.5)
-			class.new(x, z)
+			-- task.wait()
+			local terrain = class.new(x, z)
+			local terrainX, terrainZ = terrain.Position.x, terrain.Position.z
+			local y = terrain.Y
+
+			terrains[terrainX .. terrainZ] = {['x'] = terrainX, ['y'] = y, ['z'] = terrainZ}
+			
 		end 
 	end
+
+	createClientTerrain:FireAllClients("bulk", terrains)
 end
 
 function class.new(x, z)
@@ -52,8 +77,6 @@ function class.new(x, z)
 	class.Terrains[x][z] = self
 	class.Objects[self.Id] = self  
 	-- class.Instances[self.Id] = self.Instance
-
-	createClientTerrain:FireAllClients("new", x, self.Y, z)
 
 	return self
 end
