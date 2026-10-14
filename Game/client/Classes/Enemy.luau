@@ -68,6 +68,11 @@ function class:StopMove()
 	self.AnimTracks.Idle:Play()
 end
 
+function class:Y_Change(y)
+	self.Y = Vector3.new(0, y, 0)	
+	self.Zero = Vector3.new(1, 0, 1)
+end
+
 function class:SetDirection(direction: Vector3, startTick: number, StartPos: Vector3)
 	if not direction then return end
 	self.Direction = direction
@@ -79,7 +84,7 @@ function class:CalcNextPos()
 	local pivot = self.Instance:GetPivot()
 	local currentTick = shared.Classes.Task.Tick
 	self.ElapsedTick = currentTick - (self.StartTick or currentTick)
-	self.NextPos = (self.StartPos or pivot.Position) + self.Direction * self.ElapsedTick * self.WalkSpeed
+	self.NextPos = (self.StartPos * self.Zero  + self.Y or pivot.Position) + self.Direction * self.ElapsedTick * self.WalkSpeed
 end
 
 function class:Attack()

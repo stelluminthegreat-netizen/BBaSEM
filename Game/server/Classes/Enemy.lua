@@ -144,7 +144,7 @@ function class:DetectObstacle()
 
 	local params = RaycastParams.new()
 	params.FilterType = Enum.RaycastFilterType.Exclude
-	params.FilterDescendantsInstances = class.ObjectsInstances
+	params.FilterDescendantsInstances = {class.ObjectsInstances, shared.GameClasses.Terrain.Instances}
 
 	local result = workspace:Raycast(origin, direction, params)
 	if not result or result.Instance.Name == "Grass" or result.Instance.Name == "Dirt" then
