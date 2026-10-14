@@ -44,6 +44,21 @@ function class.new(x, z)
 	return self
 end
 
+function class:Assign(enemy)
+	-- Remove previous terrain
+	local prev = enemy.PrevTerrain 
+	if prev then enemy.PrevTerrain.Assigned[enemy.Id] = nil end
+	if prev == self then return end
+	enemy.PrevTerrain = nil
+
+	self.Assigned[enemy.Id] = enemy
+	enemy.PrevTerrain = self
+	enemy.Y = self.Y
+
+	enemy.Events.Y_Changed:Fire()
+end
+
+
 function BulkAssign()
 	shared.Classes.Threads:Spawn(function()
 		shared.Classes.Task.OnTick:Connect(function()
