@@ -391,8 +391,8 @@ function BulkMoving()
 		if tick % 2 ~= 0 then return end
 
 		for _, enemy in class.Moving do
-			if not enemy then return end
-			if enemy.Dying or enemy.Destroying then return end
+			if not enemy then continue end
+			if enemy.Dying or enemy.Destroying then continue end
 
 			enemy:DetectObstacle()
 
@@ -418,8 +418,8 @@ function BulkIdling()
 		if tick % 2 ~= 0 then return end
 		for _, enemy in class.Idling do
 			-- Terminate if list is empty
-			if not enemy then return end
-			if enemy.Dying or enemy.Destroying then return end
+			if not enemy then continue end
+			if enemy.Dying or enemy.Destroying then continue end
 			-- Terminate if enemy NextPos/Direction has not yet been calculated
 			
 			if enemy.Target then enemy:Attack() end
