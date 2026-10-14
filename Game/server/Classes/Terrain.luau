@@ -58,6 +58,13 @@ function class:Assign(enemy)
 	enemy.Events.Y_Changed:Fire()
 end
 
+function clamp(x: number, z: number)
+	local size = 10
+    x = math.floor(x / size) * size
+    z = math.floor(z / size) * size
+
+    return x, z
+end
 
 function BulkAssign()
 	shared.Classes.Threads:Spawn(function()
