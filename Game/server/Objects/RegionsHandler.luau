@@ -13,7 +13,7 @@ function self.initialize()
         local count = 0
         while true do
             count += 1
-            -- task.wait(0.5)
+            task.wait(0.5)
             self:Expand()
             if count == 10 then break end
         end
