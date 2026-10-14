@@ -66,7 +66,7 @@ function self:Create(x: number, z: number)
     }
 
     self.New:Fire(self.Regions[x][z])
-    remoteNew:FireAllClients(x, z)
+    remoteNew:FireAllClients("new" ,x, z)
     self:Visualize(self.Regions[x][z])
 end
 
