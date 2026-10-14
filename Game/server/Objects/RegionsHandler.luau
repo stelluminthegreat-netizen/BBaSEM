@@ -5,6 +5,7 @@ self.SIZE = 50
 self.PossibleVals = {50, -50, 0}
 self.New = shared.Classes.Event.new()
 
+local remoteNew = game.ReplicatedStorage.Remotes.Events.NewRegion
 
 function self.initialize()
     shared.Classes.Threads:Spawn(function()
@@ -53,6 +54,7 @@ function self:Create(x: number, z: number)
     }
 
     self.New:Fire(self.Regions[x][z])
+    remoteNew:FireAllClients(x, z)
     self:Visualize(self.Regions[x][z])
 end
 
