@@ -58,6 +58,10 @@ function class:Init(pivot: CFrame)
 	self.Instance:PivotTo(pivot)
 	self:CalcNextPos()
 	self:CalcDirection()
+
+	self.Conns.Y_Changed = self.Events.Y_Changed:Connect(function()
+	actionEvent:FireAllClients(self.Id, "Y_Change", nil, self.Y)
+	end)
 end
 
 function class:InitEvents()
@@ -106,7 +110,7 @@ function class:CalcNextPos()
 	local currentTick = shared.Classes.Task.Tick
 
 	self.ElapsedTick = currentTick - (self.StartTick or currentTick)
-	self.NextPos = (self.StartPos or pivot.Position) + (self.Direction or pivot.LookVector) * self.ElapsedTick * self.WalkSpeed
+	self.NextPos = (self.StartPos * Vector3.new(1, 0, 1) + Vector3.new(0, self.Y, 0) or pivot.Position) + (self.Direction or pivot.LookVector) * self.ElapsedTick * self.WalkSpeed
 end
 
 function class:CalcDirection()
@@ -120,7 +124,7 @@ function class:CalcDirection()
 	if self.PreviousTargetPos and samePos then return end
 
 	self.StartTick = shared.Classes.Task.Tick
-	self.StartPos = self.Instance:GetPivot().Position
+	self.StartPos = self.Instance:GetPivot().Position + Vector3.new(0, self.Y, 0)
 	
 	self.PreviousTargetPos = targetPivot.Position 
 	local direction = targetPivot.Position - (self.Instance:GetPivot().Position)
@@ -373,7 +377,8 @@ function class:Destroy()
 
 	for name, conn in self.Conns do conn:Disconnect() self.Conns[name] = nil end
 	for name, _ in self.Events do self.Events[name] = nil end
-	
+	self.PrevTerrain = nil
+
 	self.Instance:Destroy()
 	shared.Libraries.Table.DeepClean(self)
 end
