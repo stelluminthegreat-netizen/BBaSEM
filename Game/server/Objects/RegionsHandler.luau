@@ -18,6 +18,18 @@ function self.initialize()
             if count == 10 then break end
         end
     end)
+
+    game.Players.PlayerAdded:Connect(function(player)
+        task.wait()
+        local existing = {}
+        for x, Zs in self.Regions do
+            for z, region in Zs do
+                existing[x .. z] = {["x"] = x, ["z"] = z}
+            end
+        end
+
+        remoteNew:FireClient(player, "existing",existing)
+    end)
 end
 
 function self.start()
