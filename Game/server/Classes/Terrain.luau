@@ -17,6 +17,7 @@ function class.initialize()
 
 	-- I am so sorry about this 
 	-- I promise to refactor when I feel like it
+
 	game.Players.PlayerAdded:Connect(function(player)
 		local terrains = {}
 		for x, zS in regionsHandler.Regions do
@@ -37,14 +38,16 @@ function class.initialize()
 				end
 			end
 		end
-
+		
+		task.wait(2)
+		print("Sent", terrains)
 		createClientTerrain:FireAllClients("bulk", terrains)
 	end)
 end
 
 function class.Populate(region)
 	local regX, regZ = region.Position.x, region.Position.z
-	local size = 50
+	local size = 40
 
 	local terrains = {}
 
@@ -60,7 +63,7 @@ function class.Populate(region)
 		end 
 	end
 
-	createClientTerrain:FireAllClients("bulk", terrains)
+	-- createClientTerrain:FireAllClients("bulk", terrains)
 end
 
 function class.new(x, z)
@@ -70,11 +73,11 @@ function class.new(x, z)
 	-- self.Instance = game.ReplicatedStorage.Map.Terrain.TerrainBlock:Clone()
 	-- self.Instance.Parent = workspace.Map.Terrain
 	-- self.Instance:PivotTo(CFrame.new(x, self.Y, z))
-	self.Id = x .. z
+	self.Id = x .. "_" .. z
 
 	self.Assigned = {}
 	if not class.Terrains[x] then class.Terrains[x] = {} end
-	class.Terrains[x][z] = self
+	class.Terrains[x][z] = self 	
 	class.Objects[self.Id] = self  
 	-- class.Instances[self.Id] = self.Instance
 

@@ -17,7 +17,10 @@ end
 
 function NewHandler(x: number, z: number)
     if not self.Regions[x] then self.Regions[x] = {} end
-    self.Regions[x][z] = {}
+    self.Regions[x][z] = {['x'] = x, ['z'] = z}
+    self.Regions[x][z].Id = x .. "_" .. z
+
+    self:Visualize(self.Regions[x][z])
 end
 
 function ExistingHandler(existing: table)
@@ -26,7 +29,9 @@ function ExistingHandler(existing: table)
         local z = coordinates.z
         if not self.Regions[x] then self.Regions[x] = {} end
 
-        self.Regions[x][z] = {}
+        self.Regions[x][z] = {['x'] = x, ['z'] = z}
+        self.Regions[x][z].Id = x .. "_" .. z
+        self:Visualize(self.Regions[x][z])
     end
 end
 
@@ -68,17 +73,17 @@ end
 
 
 function self:Visualize(region)
-    local part = Instance.new("Part", workspace)
-    part.Transparency = 0.8
-    part.Position = Vector3.new(region.Position.x + 25, 0, region.Position.z + 25)
-    part.Size = Vector3.new(self.SIZE, 1000, self.SIZE)
+    -- local part = Instance.new("Part", workspace)
+    -- part.Transparency = 0.8
+    -- part.Position = Vector3.new(region.x + 25, 0, region.z + 25)
+    -- part.Size = Vector3.new(self.SIZE, 125, self.SIZE)
     
-    part.CanCollide = false
-    part.CanQuery = false
-    part.CanTouch = false
-    part.Anchored = true
+    -- part.CanCollide = false
+    -- part.CanQuery = false
+    -- part.CanTouch = false
+    -- part.Anchored = true
 
-    region.Instance = part
+    -- region.Instance = part
 end
 
 function self.start()

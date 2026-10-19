@@ -13,9 +13,9 @@ function self.initialize()
         local count = 0
         while true do
             count += 1
-            task.wait(0.5)
+            task.wait(0.25)
             self:Expand()
-            if count == 10 then break end
+            if count == 50 then break end
         end
     end)
 
@@ -24,7 +24,7 @@ function self.initialize()
         local existing = {}
         for x, Zs in self.Regions do
             for z, region in Zs do
-                existing[x .. z] = {["x"] = x, ["z"] = z}
+                existing[x .. "_" .. z] = {["x"] = x, ["z"] = z}
             end
         end
 
@@ -183,13 +183,12 @@ function self:Visualize(region)
     local part = Instance.new("Part", workspace)
     part.Transparency = 0.8
     part.Position = Vector3.new(region.Position.x + 25, 0, region.Position.z + 25)
-    part.Size = Vector3.new(self.SIZE, self.SIZE, self.SIZE)
+    part.Size = Vector3.new(self.SIZE, 125, self.SIZE)
     
     part.CanCollide = false
     part.CanQuery = false
     part.CanTouch = false
     part.Anchored = true
-
     region.Instance = part
 end
 
