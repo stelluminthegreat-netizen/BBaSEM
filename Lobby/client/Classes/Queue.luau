@@ -2,21 +2,27 @@ local class = {}
 class.__index = class
 local count = 0
 
-function class.new(instance: Part)
+function class.initialize()
+	local queue = class.new()
+	queue:Initialize()
+end
+
+function class.new()
 	count += 1
 
 	local self = setmetatable({}, class)
-	self.Instance = instance
-	self.ID = "Queue_" .. count
+	self.Id = "Queue_" .. count
+	self.Instance = game.Workspace:FindFirstChild(self.Id)
 	self.Instance:SetAttribute("Id", self.Id)
 	return self
 end
 
 function class:Initialize()
+	self.Conns = {}
 	self.Conns.Touched = self.Instance.Touched:Connect(function(op: Part)
 		if self.ProcessingTouch == true then return end
 		self.ProcessingTouch = true
-		print(op)
+		self:Host()
 	end)
 end
 
