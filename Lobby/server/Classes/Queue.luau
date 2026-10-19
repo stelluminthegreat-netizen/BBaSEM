@@ -1,7 +1,7 @@
 local class = {}
 class.__index = class
+local count = 0
 
-function class.new()
 	local self = setmetatable({}, class)
 	return self
 end
