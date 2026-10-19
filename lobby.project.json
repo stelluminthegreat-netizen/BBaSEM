@@ -6,7 +6,7 @@
     "$className": "DataModel",
 
     "ReplicatedStorage": {
-      "S_Shared":{
+      "L_Shared":{
         "$path": "Lobby/shared"
       },
       "Shared":{
@@ -18,7 +18,7 @@
     },
 
     "ServerScriptService": {
-      "S_Server":{
+      "L_Server":{
         "$path": "Lobby/server"
       },
       "Server":{
@@ -28,7 +28,7 @@
 
     "StarterPlayer": {
       "StarterPlayerScripts": {
-        "S_Client":{
+        "L_Client":{
           "$path": "Lobby/client"
         },
         "Client":{
