@@ -20,6 +20,11 @@ function class:Initialize()
 	end)
 end
 
+function class:Host()
+	local remote = game.ReplicatedStorage.Remotes.Functions.RequestHost
+	remote:InvokeServer()
+end
+
 
 
 
