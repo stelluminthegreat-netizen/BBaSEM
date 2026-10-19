@@ -1,9 +1,16 @@
 local class = {}
 class.__index = class
+local count = 0
 
-function class.new()
+function class.new(instance: Part)
+	count += 1
+
 	local self = setmetatable({}, class)
+	self.Instance = instance
+	self.ID = "Queue_" .. count
 	return self
 end
+
+
 
 return class
