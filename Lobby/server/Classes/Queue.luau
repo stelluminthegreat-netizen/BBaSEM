@@ -1,4 +1,5 @@
 local class = {}
+class.Objects = {}
 class.__index = class
 local count = 0
 
