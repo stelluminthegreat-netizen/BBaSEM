@@ -29,6 +29,9 @@ function class:AddLoad(player: Player)
 	if self.State ~= "active" then self.State = "active" end
 	self.Load += 1
 
+	local character = player.Character
+	character:PivotTo(self.Instance:GetPivot())
+
 	return true
 end
 
