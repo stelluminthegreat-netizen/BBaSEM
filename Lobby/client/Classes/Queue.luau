@@ -19,7 +19,7 @@ end
 
 function class:Initialize()
 	self.Conns = {}
-	self.Conns.Touched = self.Instance.Touched:Connect(function(op: Part)
+	self.Conns.Touched = self.Instance.Queue.Touched:Connect(function(op: Part)
 		if self.ProcessingTouch == true then return end
 		self.ProcessingTouch = true
 		self:Host()
