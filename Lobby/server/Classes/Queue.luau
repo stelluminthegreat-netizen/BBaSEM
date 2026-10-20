@@ -32,5 +32,27 @@ function class:AddLoad(player: Player)
 	return true
 end
 
+function class:StartCD()
+	for i = 3, 0, -1 do
+		if self.Cancel == true then break end
+		task.wait(1)
+		self.Instance.Billboard.CD.Text = i
+	end
+
+	
+	self.State = "progress"
+
+	local options = Instance.new("TeleportOptions")
+	options.ShouldReserveServer = true
+
+	local players = {}
+	for _, player in self.Players do
+		table.insert(players, player)
+	end
+
+	tpServ:TeleportAsync(117485455380700, players, options)
+end
+
+
 
 return class
