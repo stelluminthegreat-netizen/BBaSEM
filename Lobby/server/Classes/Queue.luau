@@ -14,6 +14,13 @@ function class.new(instance: Part)
 	self.Id = "Queue_" .. count
 	self.Instance = instance
 	self.Instance.Name = self.Id
+
+	self.Load = 0
+	self.Players = {}
+	self.State = "inactive"
+	self.Cancelled = false
+
+	class.Objects[self.Id] = self
 	return self
 end
 
