@@ -28,7 +28,7 @@ end
 
 function class:Host()
 	local remote = game.ReplicatedStorage.Remotes.Functions.RequestHost
-	remote:InvokeServer()
+	remote:InvokeServer(self.Id, 1)
 end
 
 
