@@ -24,4 +24,13 @@ function class.new(instance: Part)
 	return self
 end
 
+function class:AddLoad(player: Player)
+	self.Players[player.Name] = player
+	if self.State ~= "active" then self.State = "active" end
+	self.Load += 1
+
+	return true
+end
+
+
 return class
