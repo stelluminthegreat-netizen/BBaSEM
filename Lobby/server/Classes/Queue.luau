@@ -53,6 +53,15 @@ function class:StartCD()
 	tpServ:TeleportAsync(117485455380700, players, options)
 end
 
+function class:Host(host: Player, queueId: string)
+	local queue = class.Objects[queueId]
+	queue.Size = 1
+	self:AddLoad(host)
+	self:StartCD()
+
+	return true
+end
+
 
 
 return class
