@@ -133,6 +133,7 @@ function class:StartCD()
 		table.insert(players, player)
 	end
 
+	if self.Cancel == true then return end
 	tpServ:TeleportAsync(117485455380700, players, options)
 end
 
