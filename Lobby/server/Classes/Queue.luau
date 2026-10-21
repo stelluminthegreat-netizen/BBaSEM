@@ -115,10 +115,11 @@ function class:Unload()
 end
 
 function class:StartCD()
-	for i = 3, 0, -1 do
-		if self.Cancel == true then break end
+	for i = 30, 0, -1 do
+		if self.Cancel == true then self.Instance.Billboard.CD.Text = "Frees" return end
+		self.CD = i
+		self:UpdBillboard()
 		task.wait(1)
-		self.Instance.Billboard.CD.Text = i
 	end
 
 	
