@@ -23,6 +23,31 @@ local requestJoinRemote = Instance.new("RemoteFunction")
 requestJoinRemote.Parent = game.ReplicatedStorage.Remotes.Functions
 requestJoinRemote.Name = "RequestJoin"
 
+local tpServ = game:GetService("TeleportService")
+
+function class.initialize()
+	class.new(game.Workspace.Queue)
+	requestHostRemote.OnServerInvoke = function(plr: Player, id: string, size: number)
+		return class.Objects[id]:Host(plr, id, size)
+	end
+
+	requestStateRemote.OnServerInvoke = function(plr: Player, id: string)
+		return class.Objects[id]:RespondStateRequest()
+	end
+
+	requestLeaveRemote.OnServerInvoke = function(plr: Player, id: string)
+		return class.Objects[id]:RemoveLoad(plr)
+	end
+
+	requestPlayersRemote.OnServerInvoke = function(_, id)
+		return class.Objects[id].Players
+	end
+
+	requestJoinRemote.OnServerInvoke = function(plr: Player, id: string)
+		return class.Objects[id]:RequestJoin(plr)
+	end
+end
+
 function class.new(instance: Part)
 	count += 1
 	local self = setmetatable({}, class)
