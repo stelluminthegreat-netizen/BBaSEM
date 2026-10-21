@@ -94,6 +94,13 @@ function class:RemoveLoad(player: Player)
 	end
 end
 
+function class:RequestJoin(player)
+	if self.Load >= self.Size then return false end
+	self:AddLoad(player)
+	return true
+end
+
+
 function class:StartCD()
 	for i = 3, 0, -1 do
 		if self.Cancel == true then break end
