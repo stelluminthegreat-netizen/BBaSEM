@@ -15,6 +15,7 @@ function class.new()
 	self.Id = "Queue_" .. count
 	self.Instance = game.Workspace:FindFirstChild(self.Id)
 	self.Instance:SetAttribute("Id", self.Id)
+	class.Objects[self.Id] = self
 	return self
 end
 
