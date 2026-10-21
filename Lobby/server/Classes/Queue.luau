@@ -101,6 +101,10 @@ function class:RequestJoin(player)
 end
 
 
+function class:Unload()
+	table.clear(self.Players)
+end
+
 function class:StartCD()
 	for i = 3, 0, -1 do
 		if self.Cancel == true then break end
