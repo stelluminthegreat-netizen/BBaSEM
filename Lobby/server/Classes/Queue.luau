@@ -79,6 +79,19 @@ function class:AddLoad(player: Player)
 	return true
 end
 
+function class:RemoveLoad(player: Player)
+	self.Players[player.Name] = nil
+	self.Load -= 1
+	self.LoadText = self.Load .. "/" .. self.Size
+	self:UpdBillboard()
+	local character = player.Character
+	character:PivotTo(CFrame.new(Vector3.zero))
+	if self.Load <= 0 then
+		self.Load = 0
+		self:CancelCD()
+	end
+end
+
 function class:StartCD()
 	for i = 3, 0, -1 do
 		if self.Cancel == true then break end
