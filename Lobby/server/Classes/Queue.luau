@@ -64,6 +64,10 @@ function class.new(instance: Part)
 	return self
 end
 
+function class:RespondStateRequest()
+	return self.State
+end
+
 function class:AddLoad(player: Player)
 	self.Players[player.Name] = player
 	if self.State ~= "active" then self.State = "active" end
