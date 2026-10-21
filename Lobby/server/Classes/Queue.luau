@@ -140,6 +140,8 @@ function class:StartCD()
 	self.State = "inactive"
 end
 
+function class:UpdBillboard()
+	self.Instance.Billboard.CD.Text = self.LoadText .. " : " .. (self.CD or 30)
 end
 
 function class:Host(host: Player, queueId: string)
