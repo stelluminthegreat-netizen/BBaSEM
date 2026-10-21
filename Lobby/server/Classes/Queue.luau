@@ -72,6 +72,8 @@ function class:AddLoad(player: Player)
 	self.Players[player.Name] = player
 	if self.State ~= "active" then self.State = "active" end
 	self.Load += 1
+	self.LoadText = self.Load .. "/" .. self.Size
+	self:UpdBillboard()
 
 	local character = player.Character
 	character:PivotTo(self.Instance:GetPivot())
