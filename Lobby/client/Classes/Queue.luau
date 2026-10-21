@@ -32,6 +32,34 @@ function class:Initialize()
 		if self.Touching[playerName] then return end
 		self.Touching[playerName] = true
 
+		local state = self:RequestState()
+		if state == "active" then
+			-- Handle join
+			local success = game.ReplicatedStorage.Remotes.Functions.RequestJoin:InvokeServer(self.Id)
+			if success == true then 
+				local leaveBtn = shared.Classes.UI.new("LeaveQueueBtn")
+				leaveBtn.QueueId = self.Id
+			end
+		elseif state == "inactive" then
+			-- Handle host
+			if shared.Classes.UI.Objects["SizeSelector"] then return end
+
+			local sizeSelector = shared.Classes.UI.new("SizeSelector")
+			sizeSelector.QueueId = self.Id
+
+			while self.HostSuccess == nil do
+				task.wait()
+			end
+			if self.HostSuccess == true then
+				self.HostSuccess = nil
+				local leaveBtn = shared.Classes.UI.new("LeaveQueueBtn")
+				leaveBtn.QueueId = self.Id
+			elseif self.HostSuccess == false then
+				self.HostSuccess = nil
+			end
+		end
+	end)
+
 	self.Conns.TouchEnded = self.Instance.Queue.TouchEnded:Connect(function()
 		self.Touching[game.Players.LocalPlayer.Name] = nil
 	end)
