@@ -135,6 +135,11 @@ function class:StartCD()
 
 	if self.Cancel == true then return end
 	tpServ:TeleportAsync(117485455380700, players, options)
+	task.wait()
+	self:Unload()
+	self.State = "inactive"
+end
+
 end
 
 function class:Host(host: Player, queueId: string)
