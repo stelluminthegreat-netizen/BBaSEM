@@ -7,6 +7,21 @@ local requestHostRemote = Instance.new("RemoteFunction")
 requestHostRemote.Parent = game.ReplicatedStorage.Remotes.Functions
 requestHostRemote.Name = "RequestHost"
 
+local requestStateRemote = Instance.new("RemoteFunction")
+requestStateRemote.Parent = game.ReplicatedStorage.Remotes.Functions
+requestStateRemote.Name = "RequestState"
+
+local requestLeaveRemote = Instance.new("RemoteFunction")
+requestLeaveRemote.Parent = game.ReplicatedStorage.Remotes.Functions
+requestLeaveRemote.Name = "RequestLeave"
+
+local requestPlayersRemote = Instance.new("RemoteFunction")
+requestPlayersRemote.Parent = game.ReplicatedStorage.Remotes.Functions
+requestPlayersRemote.Name = "RequestPlayers"
+
+local requestJoinRemote = Instance.new("RemoteFunction")
+requestJoinRemote.Parent = game.ReplicatedStorage.Remotes.Functions
+requestJoinRemote.Name = "RequestJoin"
 
 function class.new(instance: Part)
 	count += 1
