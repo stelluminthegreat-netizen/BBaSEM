@@ -100,6 +100,15 @@ function class:RequestJoin(player)
 	return true
 end
 
+function class:CancelCD()
+	shared.Classes.Threads:Spawn(function()
+		self.Cancel = true
+		self.State = "cancelling"
+		task.wait(1.5)
+		self.State = "inactive"
+		self.Cancel = false
+	end)
+end
 
 function class:Unload()
 	table.clear(self.Players)
