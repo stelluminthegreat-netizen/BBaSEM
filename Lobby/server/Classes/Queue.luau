@@ -144,7 +144,8 @@ function class:UpdBillboard()
 	self.Instance.Billboard.CD.Text = self.LoadText .. " : " .. (self.CD or 30)
 end
 
-function class:Host(host: Player, queueId: string)
+function class:Host(host: Player, queueId: string, size: number)
+	if self.State ~= "inactive" then return false end
 	local queue = class.Objects[queueId]
 	queue.Size = size
 	shared.Classes.Threads:Spawn(function()
