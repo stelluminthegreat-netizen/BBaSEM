@@ -146,9 +146,11 @@ end
 
 function class:Host(host: Player, queueId: string)
 	local queue = class.Objects[queueId]
-	queue.Size = 1
-	self:AddLoad(host)
-	self:StartCD()
+	queue.Size = size
+	shared.Classes.Threads:Spawn(function()
+		self:AddLoad(host)
+		self:StartCD()
+	end)
 
 	return true
 end
