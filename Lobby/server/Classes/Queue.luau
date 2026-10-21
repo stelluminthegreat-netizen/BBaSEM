@@ -122,7 +122,6 @@ function class:StartCD()
 		task.wait(1)
 	end
 
-	
 	self.State = "progress"
 
 	local options = Instance.new("TeleportOptions")
