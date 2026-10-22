@@ -61,6 +61,10 @@ function class:Initialize()
 	end)
 
 	self.Conns.TouchEnded = self.Instance.Queue.TouchEnded:Connect(function()
+		local items = workspace:GetPartBoundsInBox(self.Instance:GetPivot(), self.Instance.Queue.Size + Vector3.new(0.1, 0.1, 0.1))
+		for _, item in items do
+			if item.Name == "HumanoidRootPart" and item.Parent.Name == game.Players.LocalPlayer.Name then return end
+		end
 		self.Touching[game.Players.LocalPlayer.Name] = nil
 	end)
 end
