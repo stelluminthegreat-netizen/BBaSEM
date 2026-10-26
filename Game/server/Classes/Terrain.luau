@@ -24,7 +24,7 @@ function class.initialize()
 			for z, region in zS do
 				
 				local regX, regZ = region.Position.x, region.Position.z
-				local size = 50
+				local size = 40
 				for x = regX, regX + size, 10 do
 					for z = regZ, regZ + size, 10 do
 						-- task.wait()
