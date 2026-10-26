@@ -5,6 +5,8 @@ self.Terrains = {}
 self.BlockSize = 10
 
 local event = game.ReplicatedStorage.Remotes.Events.CreateTerrain
+local event2 = event.Parent.CreateTerrain2
+
 local regionsHandler = shared.GameClasses.RegionsHandler
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
@@ -14,7 +16,11 @@ local loadedTerrains = {}
 
 function self.initialize()
 	event.OnClientEvent:Connect(function(msg: string, ...)
-        print(msg)
+        if msg == "bulk" then
+            Bulk(...)
+        end
+    end)
+	event2.OnClientEvent:Connect(function(msg: string, ...)
         if msg == "bulk" then
             Bulk(...)
         end
@@ -23,7 +29,6 @@ end
 
 function Bulk(terrains: table)
     for _, terrain in terrains do
-        RunService.Heartbeat:Wait()
         self:Create(terrain)
     end
 end
