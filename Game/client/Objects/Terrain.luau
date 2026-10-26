@@ -103,7 +103,7 @@ function self.start()
         local x, z = position.X, position.Z
 
         -- Get nearby regions
-        local regions = regionsHandler:GetNearbyRegions(x, z, 20)
+        local regions = regionsHandler:GetNearbyRegions(x, z, 5)
 
         -- Filter and unload regions
         for x, zS in loaded do
