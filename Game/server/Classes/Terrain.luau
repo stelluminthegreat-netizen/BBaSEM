@@ -32,7 +32,7 @@ function class.initialize()
 						local terrainX, terrainZ = terrain.Position.x, terrain.Position.z
 						local y = terrain.Y
 
-						terrains[terrainX .. terrainZ] = {['x'] = terrainX, ['y'] = y, ['z'] = terrainZ}
+						terrains[terrainX .. "_" .. terrainZ] = {['x'] = terrainX, ['y'] = y, ['z'] = terrainZ}
 						
 					end 
 				end
@@ -58,7 +58,7 @@ function class.Populate(region)
 			local terrainX, terrainZ = terrain.Position.x, terrain.Position.z
 			local y = terrain.Y
 
-			terrains[terrainX .. terrainZ] = {['x'] = terrainX, ['y'] = y, ['z'] = terrainZ}
+			terrains[terrainX .. "_" .. terrainZ] = {['x'] = terrainX, ['y'] = y, ['z'] = terrainZ}
 			
 		end 
 	end
