@@ -5,6 +5,8 @@ class.Instances = {}
 class.__index = class
 
 local createClientTerrain = game.ReplicatedStorage.Remotes.Events.CreateTerrain
+local createClientTerrain2 = game.ReplicatedStorage.Remotes.Events.CreateTerrain2
+local mode = false
 
 function class.initialize()
 	local regionsHandler = shared.GameClasses.RegionsHandler
@@ -62,7 +64,13 @@ function class.Populate(region)
 		end 
 	end
 
-	-- createClientTerrain:FireAllClients("bulk", terrains)
+	if mode == false then
+		createClientTerrain:FireAllClients("bulk", terrains)
+		mode = true
+	elseif mode == true then
+		mode = false
+		createClientTerrain2:FireAllClients("bulk", terrains)
+	end
 end
 
 function class.new(x, z)
