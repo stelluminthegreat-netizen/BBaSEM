@@ -4,7 +4,19 @@ self.SIZE = 50
 
 function self.initialize()
 	local remote = game.ReplicatedStorage.Remotes.Events.NewRegion
+    local remote2 = remote.Parent.NewRegion2
+
     remote.OnClientEvent:Connect(function(state: string, ...)
+        if state == "existing" then
+            ExistingHandler(...) 
+        elseif state == "new" then
+            NewHandler(...)
+        else
+            warn("New regions remote received no state", state, ...)
+        end
+    end)
+    
+    remote2.OnClientEvent:Connect(function(state: string, ...)
         if state == "existing" then
             ExistingHandler(...) 
         elseif state == "new" then

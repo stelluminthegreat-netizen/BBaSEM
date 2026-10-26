@@ -6,6 +6,8 @@ self.PossibleVals = {50, -50, 0}
 self.New = shared.Classes.Event.new()
 
 local remoteNew = game.ReplicatedStorage.Remotes.Events.NewRegion
+local remoteNew2 = remoteNew.Parent.NewRegion2
+local mode = false
 
 function self.initialize()
     shared.Classes.Threads:Spawn(function()
@@ -13,7 +15,7 @@ function self.initialize()
         local count = 0
         while true do
             count += 1
-            task.wait(0.25)
+            task.wait(0.5)
             self:Expand()
             if count == 50 then break end
         end
@@ -27,7 +29,7 @@ function self.initialize()
                 existing[x .. "_" .. z] = {["x"] = x, ["z"] = z}
             end
         end
-
+        task.wait(0.25)
         remoteNew:FireClient(player, "existing",existing)
     end)
 end
@@ -66,7 +68,13 @@ function self:Create(x: number, z: number)
     }
 
     self.New:Fire(self.Regions[x][z])
-    remoteNew:FireAllClients("new" ,x, z)
+    if mode == false then
+        mode = true
+        remoteNew:FireAllClients("new", x, z)
+    elseif mode == true then
+        mode = false
+        remoteNew2:FireAllClients("new",x, z)
+    end
     self:Visualize(self.Regions[x][z])
 end
 
