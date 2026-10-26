@@ -39,9 +39,8 @@ function class.initialize()
 			end
 		end
 		
-		task.wait(2)
 		print("Sent", terrains)
-		createClientTerrain:FireAllClients("bulk", terrains)
+		createClientTerrain:FireClient(player, "bulk", terrains)
 	end)
 end
 
