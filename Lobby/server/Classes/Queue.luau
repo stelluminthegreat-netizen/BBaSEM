@@ -112,6 +112,7 @@ end
 
 function class:Unload()
 	table.clear(self.Players)
+	self.Load = 0
 end
 
 function class:StartCD()
