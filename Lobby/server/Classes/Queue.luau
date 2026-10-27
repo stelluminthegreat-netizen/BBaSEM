@@ -145,7 +145,7 @@ function class:StartCD()
 end
 
 function class:UpdBillboard()
-	self.Instance.Billboard.CD.Text = self.LoadText .. " : " .. (self.CD or 30)
+	self.Instance.Billboard.CD.Text = (self.LoadText or "0/0") .. " : " .. (self.CD or "Empty")
 end
 
 function class:Host(host: Player, queueId: string, size: number)
