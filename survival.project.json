@@ -1,6 +1,6 @@
 {
   "name": "BBaSEM",
-  "servePlaceIds": [103183711587193],
+  "servePlaceIds": [117485455380700],
   "servePort": 8080,
   "tree": {
     "$className": "DataModel",
