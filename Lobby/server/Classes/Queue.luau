@@ -141,6 +141,7 @@ function class:StartCD()
 
 	self.CD = nil
 	self.LoadText = nil
+	self:UpdBillboard()
 end
 
 function class:UpdBillboard()
