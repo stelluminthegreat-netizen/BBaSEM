@@ -138,6 +138,9 @@ function class:StartCD()
 	task.wait()
 	self:Unload()
 	self.State = "inactive"
+
+	self.CD = nil
+	self.LoadText = nil
 end
 
 function class:UpdBillboard()
