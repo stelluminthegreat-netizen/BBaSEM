@@ -1,4 +1,4 @@
-local class = {}
+local class = setmetatable({}, shared.GameClasses.Structure)
 class.__index = class
 class.HasTarget = {}
 class.NoTarget = {}
@@ -21,6 +21,10 @@ function class.start()
 end
 
 function class.new(type: string)
+	if getmetatable(class) == nil then
+		setmetatable(class, shared.GameClasses.Structure)
+	end
+
 	turretCount += 1
 	local self = setmetatable(shared.Libraries.Table.DeepClone(require(configs[type])), class)
 	self.Instance = game.ReplicatedStorage.ToClone.Server.Structures["T" .. self.Tier].Turret[type]:Clone()
