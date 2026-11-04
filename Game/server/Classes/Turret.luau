@@ -37,12 +37,21 @@ end
 
 function class:Init(cf)
 	if self.Dying then return end
+
+	local targs = self:Enable()
+
 	self:InitEvents()
 	shared.Entities[self.Id] = self
 	self.Instance.Parent = workspace
 	self.Instance:PivotTo(cf)
 
 	self.HealthBar = shared.GameClasses.HealthBar.new(self.Instance.Ref, self.MaxHealth)
+	self:Animate()
+
+	task.wait(0.5)
+
+	self:Disable(targs)
+end
 
 function class:Enable()
 	local targs = {}
