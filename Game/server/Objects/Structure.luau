@@ -27,7 +27,7 @@ function self:Animate()
 
         local targetCf = descendant:GetPivot() + Vector3.new(0, 5, 0)
 
-        descendant:ScaleTo(0.001)
+        descendant:ScaleTo(0.1)
         descendant:PivotTo(targetCf)
     end
 
@@ -48,7 +48,7 @@ function self:Tween(comp, properties)
         -- tween to original scale
         local conn
         local numVal = Instance.new("NumberValue")
-        numVal.Value = 0.001
+        numVal.Value = 0.1
 
         conn = numVal:GetPropertyChangedSignal("Value"):Connect(function()
             local num = numVal.Value
