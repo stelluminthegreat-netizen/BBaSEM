@@ -1,4 +1,4 @@
-local class = {}
+local class = setmetatable({}, shared.GameClasses.Structure)
 class.Objects = {}
 class.IsReady = {}
 class.__index = class
@@ -11,6 +11,10 @@ function class.initialize()
 end
 
 function class.new(TYPE: string)
+	if getmetatable(class) == nil then
+		setmetatable(class, shared.GameClasses.Structure)
+	end
+
 	count += 1
 
 	local self = setmetatable(shared.Libraries.Table.DeepClone(require(configs[TYPE])), class)
