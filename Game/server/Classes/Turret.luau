@@ -43,7 +43,11 @@ function class:Init(cf)
 	self.Instance:PivotTo(cf)
 
 	self.HealthBar = shared.GameClasses.HealthBar.new(self.Instance.Ref, self.MaxHealth)
-	print(self.HealthBar)
+
+function class:Disable(targs)
+	for _, ins in targs do
+		ins.Anchored = false
+	end
 end
 
 function class:InitEvents()
