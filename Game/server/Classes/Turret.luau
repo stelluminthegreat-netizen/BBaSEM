@@ -44,6 +44,18 @@ function class:Init(cf)
 
 	self.HealthBar = shared.GameClasses.HealthBar.new(self.Instance.Ref, self.MaxHealth)
 
+function class:Enable()
+	local targs = {}
+	for _, ins in self.Instance:GetDescendants() do
+		if not ins:IsA("BasePart") then continue end
+		if ins.Anchored == true then continue end
+		ins.Anchored = true
+		targs[ins] = ins
+	end
+
+	return targs
+end
+
 function class:Disable(targs)
 	for _, ins in targs do
 		ins.Anchored = false
