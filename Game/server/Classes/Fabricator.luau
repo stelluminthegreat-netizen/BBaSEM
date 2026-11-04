@@ -35,6 +35,7 @@ function class:Init(cf: CFrame)
 	self.Instance:PivotTo(cf)
 
 	self.HealthBar = shared.GameClasses.HealthBar.new(self.Instance.Head, self.MaxHealth)
+	self:Animate()
 end
 
 function class:InitEvents()
