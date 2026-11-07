@@ -88,12 +88,25 @@ function self:Tween(comp, properties)
         sound.SoundId = "rbxassetid://9116541944"
         sound:Play()
 
+        -- Spark effect
+        local spark = game.ReplicatedStorage.ToClone.Server.Particles.Spark:Clone()
+        spark.Parent = comp
+
+        local cf, size = comp:GetBoundingBox()
+        local bottomCenter = cf.Position - cf.UpVector * (size.Y / 2)
+
+        spark.Position = Vector3.new(0, bottomCenter, 0)
+        spark.Spark:Emit(100)
+        task.wait(0.5)
+
         -- clean-up
         conn:Disconnect()
         cfVal:Destroy()
         numVal:Destroy()
         tween:Destroy()
         sound:Destroy()
+        spark:Destroy()
+        
 
     end)
 end
