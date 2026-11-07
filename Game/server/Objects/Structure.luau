@@ -81,12 +81,19 @@ function self:Tween(comp, properties)
         tween = TweenService:Create(cfVal, info, changes)
         tween:Play()
         tween.Completed:Wait()
-        
+
+        -- Audio effect
+        sound:Destroy()
+        sound = Instance.new("Sound", comp)
+        sound.SoundId = "rbxassetid://9116541944"
+        sound:Play()
+
         -- clean-up
         conn:Disconnect()
         cfVal:Destroy()
         numVal:Destroy()
         tween:Destroy()
+        sound:Destroy()
 
     end)
 end
