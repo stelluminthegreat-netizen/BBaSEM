@@ -45,6 +45,11 @@ end
 
 function self:Tween(comp, properties)
     shared.Classes.Threads:Spawn(function()
+        -- Play woosh
+        local sound = Instance.new("Sound", comp)
+        sound.SoundId = "rbxassetid://135595810064855"
+        sound:Play()
+        
         -- tween to original scale
         local conn
         local numVal = Instance.new("NumberValue")
