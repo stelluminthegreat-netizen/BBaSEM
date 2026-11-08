@@ -46,10 +46,9 @@ end
 function self:Tween(comp, properties)
     shared.Classes.Threads:Spawn(function()
         -- Play woosh
-        local sound = Instance.new("Sound", comp)
-        sound.SoundId = "rbxassetid://135595810064855"
-        sound:Play()
-        
+        local whoosh = game.ReplicatedStorage.ToClone.Server.Sound.Whoosh:Clone()
+        whoosh.Parent = comp:FindFirstChildWhichIsA("BasePart")
+        whoosh:Play()
         -- tween to original scale
         local conn
         local numVal = Instance.new("NumberValue")
@@ -83,10 +82,9 @@ function self:Tween(comp, properties)
         tween.Completed:Wait()
 
         -- Audio effect
-        sound:Destroy()
-        sound = Instance.new("Sound", comp)
-        sound.SoundId = "rbxassetid://9116541944"
-        sound:Play()
+        local clank = game.ReplicatedStorage.ToClone.Server.Sound.Clank:Clone()
+        clank.Parent = comp:FindFirstChildWhichIsA("BasePart")
+        clank:Play()
 
         -- Spark effect
         local spark = game.ReplicatedStorage.ToClone.Server.Particles.Spark:Clone()
