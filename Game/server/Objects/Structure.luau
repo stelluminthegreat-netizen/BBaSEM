@@ -89,11 +89,7 @@ function self:Tween(comp, properties)
         -- Spark effect
         local spark = game.ReplicatedStorage.ToClone.Server.Particles.Spark:Clone()
         spark.Parent = comp
-
-        local cf, size = comp:GetBoundingBox()
-        local bottomCenter = cf.Position - cf.UpVector * (size.Y / 2)
-
-        spark.Position = Vector3.new(0, bottomCenter, 0)
+        spark.Position = Vector3.zero
         spark.Spark:Emit(100)
         task.wait(0.5)
 
