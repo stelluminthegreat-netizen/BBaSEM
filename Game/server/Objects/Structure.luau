@@ -120,9 +120,11 @@ function self:Tween(comp, properties)
         cfVal:Destroy()
         numVal:Destroy()
         tween:Destroy()
-        sound:Destroy()
+        clank:Destroy()
         spark:Destroy()
-        
+        highlight:Destroy()
+        whoosh:Destroy()
+
 
     end)
 end
