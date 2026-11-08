@@ -91,7 +91,29 @@ function self:Tween(comp, properties)
         spark.Parent = comp
         spark.Position = Vector3.zero
         spark.Spark:Emit(100)
+
+        
+        -- Highlight effect
+        local highlight = Instance.new("Highlight", comp)
+        highlight.FillColor = Color3.new(0, 255, 0)
+        highlight.FillTransparency = 1
+
+        local in_change = {FillTransparency = 0.9}
+        local out_change = {FillTransparency = 1}
+        info = TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
+        tween = TweenService:Create(highlight, info, in_change)
+        
+        tween:Play()
+        tween.Completed:Wait()
+
+        tween:Destroy()
+        tween = TweenService:Create(highlight, info, out_change)
+        tween:Play()
+        tween.Completed:Wait()
+        highlight.OutlineTransparency = 1
+
         task.wait(0.5)
+
 
         -- clean-up
         conn:Disconnect()
