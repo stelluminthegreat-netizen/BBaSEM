@@ -75,7 +75,7 @@ function self:Create(x: number, z: number)
         mode = false
         remoteNew2:FireAllClients("new",x, z)
     end
-    self:Visualize(self.Regions[x][z])
+    -- self:Visualize(self.Regions[x][z])
 end
 
 function self:Expand()
