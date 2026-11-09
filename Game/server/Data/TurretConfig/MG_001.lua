@@ -8,6 +8,7 @@ return {
     Range = 2,
     BulletType = "MG_Normal_001",
     FireVfx = "MG_Normal_Vfx",
+    FireSfx = "MG_Normal_Sfx",
     Conns = {},
     Events = {},
     EventNames = {
