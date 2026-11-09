@@ -1,13 +1,13 @@
 local config = {
     UIConfig = true,
 
-    Name = "MG_001",
+    Name = "SingleBarrelMg",
     InstanceName = "StructCard",
     InstanceParentName = "StructsFrame",
     UIGroup = "StructsFrame",
 
     Image = "rbxassetid://6846488809",
-    UI_InfoName = "MG_001Info",
+    UI_InfoName = "SingleBarrelMgInfo",
 
     -- Children related
     ChildrenNames = {},

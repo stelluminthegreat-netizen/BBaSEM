@@ -6,7 +6,7 @@ function OnClicked(self)
         local existingInfo
         if StructsFrame then existingInfo = StructsFrame.ExistingInfo end 
         if existingInfo then existingInfo:Close() return end
-        local newInfo = shared.Classes.UI.new("MG_001Info")
+        local newInfo = shared.Classes.UI.new("SingleBarrelMgInfo")
         StructsFrame.ExistingInfo = newInfo
     end)
 end

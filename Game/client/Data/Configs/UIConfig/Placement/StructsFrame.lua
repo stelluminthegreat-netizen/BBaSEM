@@ -8,7 +8,7 @@ local config = {
 
     -- Children related
     ChildrenNames = {
-        "MG_001Card",
+        "SingleBarrelMgCard",
         "Fabricator_T1Card",
     },
     Children = {},

@@ -1,7 +1,7 @@
 local config = {
     UIConfig = true,
 
-    Name = "MG_001Info",
+    Name = "SingleBarrelMgInfo",
     InstanceName = "StructInfo",
     InstanceParentName = "IgnoreSafeArea",
     UIGroup = "StructInfo",
@@ -9,7 +9,7 @@ local config = {
     -- Information
     Tier = 1,
     Type = "Turret",
-    ModelName = "MG_001",
+    ModelName = "SingleBarrelMg",
 
     Image = "rbxassetid://6846488809",
     Price = "$5,000",
