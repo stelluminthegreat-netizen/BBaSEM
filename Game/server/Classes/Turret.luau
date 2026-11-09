@@ -160,14 +160,14 @@ function class:Fire()
 	if self.Dying then return end
 	if not self.Instance then return end
 	local targetDirection = (self.Target.Instance.HumanoidRootPart.Position - self.Instance.Ref.Position).Unit
-	local look = self.Instance.Housing.Gun.Barrel.CFrame.LookVector
+	local look = self.Instance:FindFirstChild("Barrel", true).CFrame.LookVector
 	local dot = look:Dot(targetDirection)
 	if dot < 0.99 then return end
 	if self.Status.Attacking == true then return end
 	self.Status.Attacking = true
 	-- self.Target:IncrementHealth(-self.Dmg)	
 	local bullet = shared.GameClasses.Bullet.new(self.BulletType)
-	local muzzleCFrame = self.Instance.Housing.Gun.Muzzle.CFrame
+	local muzzleCFrame = self.Instance:FindFirstChild("Muzzle", true).CFrame
 	bullet:Initialize(muzzleCFrame.Position, muzzleCFrame.LookVector)
 	bullet:Start()
 	task.wait(self.AttackInterval)
