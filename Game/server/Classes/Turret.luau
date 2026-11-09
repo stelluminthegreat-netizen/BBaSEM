@@ -167,7 +167,7 @@ function class:Fire()
 	self.Status.Attacking = true
 
 	-- VFX
-	local vfx = game.ReplicatedStorage.ToClone.Server.Particles.BulletFire:Clone() 
+	local vfx = game.ReplicatedStorage.ToClone.Server.Particles[self.FireVfx]:Clone() 
 	vfx.Parent = self.Instance:FindFirstChild("Muzzle", true)
 	vfx.Position = Vector3.zero
 	vfx.Cloud:Emit(1)
