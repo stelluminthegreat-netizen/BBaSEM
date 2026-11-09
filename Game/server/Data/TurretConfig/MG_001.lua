@@ -7,6 +7,7 @@ return {
     AttackInterval = 0.25,
     Range = 2,
     BulletType = "MG_Normal_001",
+    FireVfx = "MG_Normal_Vfx",
     Conns = {},
     Events = {},
     EventNames = {
