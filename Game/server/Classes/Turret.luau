@@ -165,12 +165,29 @@ function class:Fire()
 	if dot < 0.99 then return end
 	if self.Status.Attacking == true then return end
 	self.Status.Attacking = true
+
+	-- VFX
+	local vfx = game.ReplicatedStorage.ToClone.Server.Particles.BulletFire:Clone() 
+	vfx.Parent = self.Instance:FindFirstChild("Muzzle", true)
+	vfx.Position = Vector3.zero
+	vfx.Cloud:Emit(1)
+	vfx.Star:Emit(1)
+	vfx.Flipbook:Emit(10)
+	vfx.Smoke:Emit(5)
+
+	-- SFX
+	local sfx = game.ReplicatedStorage.ToClone.Server.Sound.MG_Gunshot:Clone()
+	sfx.Parent = self.Instance:FindFirstChild("Muzzle", true)
+	sfx:Play()
+
 	-- self.Target:IncrementHealth(-self.Dmg)	
 	local bullet = shared.GameClasses.Bullet.new(self.BulletType)
 	local muzzleCFrame = self.Instance:FindFirstChild("Muzzle", true).CFrame
 	bullet:Initialize(muzzleCFrame.Position, muzzleCFrame.LookVector)
 	bullet:Start()
 	task.wait(self.AttackInterval)
+	sfx:Destroy()
+	vfx:Destroy()
 	if not self.Destroying then self.Status.Attacking = false end
 end
 
