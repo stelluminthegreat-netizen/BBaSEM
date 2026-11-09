@@ -176,7 +176,7 @@ function class:Fire()
 	vfx.Smoke:Emit(5)
 
 	-- SFX
-	local sfx = game.ReplicatedStorage.ToClone.Server.Sound.MG_Gunshot:Clone()
+	local sfx = game.ReplicatedStorage.ToClone.Server.Sound[self.FireSfx]:Clone()
 	sfx.Parent = self.Instance:FindFirstChild("Muzzle", true)
 	sfx:Play()
 
